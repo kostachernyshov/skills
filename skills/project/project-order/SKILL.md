@@ -1,0 +1,47 @@
+---
+name: project-order
+description: Rules for where to put each new file in an analysis project, how to name it, and what not to save. Use each time you create, save, or move a file in a project that has runs/ and releases/ folders.
+---
+
+# Project order
+
+Each file has one correct place. A file that has no place is not saved.
+
+## Where a file goes
+
+| File | Place |
+|---|---|
+| Input data | `data/` (read only) |
+| Code for one iteration | `runs/RNN-<slug>/code/` |
+| Tables and figures from one iteration | `runs/RNN-<slug>/out/` |
+| Notes on one iteration | `runs/RNN-<slug>/run.yaml` (the `notes` field) |
+| What the client sees | `releases/vN-<YYYY-MM-DD>/` (only the skill "release" writes here) |
+| A decision | one entry in `LOG.md` |
+| Where the work is now | the `State` section in `CLAUDE.md` |
+| Anything temporary | `scratch/` |
+
+## Runs
+
+- Start a new run when the question, the sample set, or the method changes. Keep the same run for small fixes.
+- Number runs in order: `R01`, `R02`, ... Add a short slug: `R02-no-normals`.
+- Each run has `run.yaml`. Use [RUN.yaml](RUN.yaml) as the template.
+- Do not delete a run. Set `status: dropped` and write the reason in `notes`.
+- Status values: `open` (in work), `candidate` (good result, can go to a client), `dropped`, `shipped` (in a release).
+
+## Do not create
+
+- Handoff files, summary files, or notes files. Update `CLAUDE.md` "State" or `LOG.md`.
+- A README in a run folder. Use `run.yaml`.
+- Copies of a table with a new suffix (`_v2`, `_final`). Start a new run or overwrite the file in the same run.
+- More than one `.md` file per run.
+
+## Names
+
+- Lowercase, hyphens, no spaces: `de-genes-er-pos-vs-neg.csv`.
+- The name says what the file contains, not when it was made.
+- Figures: `fig-<what>.png`. Tables: `<what>.csv`.
+
+## Done when
+
+- Each new file is in a place from the table above.
+- Each run folder has `run.yaml` with a status.

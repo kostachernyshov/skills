@@ -1,0 +1,17 @@
+# Grilling topics
+
+Use these topics to build the frontier. Skip a topic when the data or the files answer it.
+
+| Topic | Example question |
+|---|---|
+| Decision | What will you do differently for each possible answer? |
+| Owner | Who makes the decision? Who reads the result? |
+| Question | Which comparison answers the question? Which groups? |
+| Population | Which samples are in scope? Which samples are out (normal tissue, metastasis, male, repeats)? |
+| Endpoint | Which variable is the outcome? How is it measured? |
+| Design | Is there a batch, a site, a time effect? Are samples paired? |
+| Controls | Which result must appear if the data is correct (positive control)? |
+| Prior knowledge | Which published result must we reproduce or compare with? |
+| Success | Which number or figure ends the analysis? |
+| Cost of error | What happens if the answer is wrong? Can the decision be reversed? |
+| Delivery | When is the result due? Which format? |
