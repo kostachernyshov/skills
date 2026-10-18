@@ -1,0 +1,19 @@
+# Tests
+
+Each test round runs a fresh agent on a scenario. The agent uses the skills as a user would. A grader scores the project with `RUBRIC.md`. Each failure becomes a change in a skill or a new check.
+
+## Protocol
+
+1. Make an empty project folder outside this repository. Copy the data into it.
+2. Give the agent: the path to `skills/`, the path to `persona.md`, the project folder. Do not give it `RUBRIC.md`.
+3. The agent simulates the person who types the person skills in this order: `/ask-kosta`, `/grill-me`, `/setup-project`, `/to-analysis-plan`, analysis, `/decision-brief`, `/release`, `/checkpoint`. The agent skills start when their description fits.
+4. The persona file answers the grilling questions. A question without an answer gets "use your recommendation".
+5. The agent reports: the grilling rounds, the result, and each point where a skill was unclear or wrong (friction).
+6. The grader scores the project folder with `RUBRIC.md` and writes `results/round-N.md`.
+
+## Scenarios
+
+| Id | Data | Question | Traps |
+|---|---|---|---|
+| s1-tcga-esr1 | TCGA-BRCA from UCSC Xena: log2(RSEM+1) RNA-seq, clinical matrix | Can ESR1 mRNA replace IHC ER status for trial screening? | normal tissue, metastases, male patients, two ER columns, indeterminate values |
+| s2-gse7390-signature | GEO GSE7390 (TRANSBIG), 198 patients, 76 probes, clinical | Does the 76-gene signature predict distant metastasis beyond clinical factors? | probe ids without symbols, signature weights not in data, time in days, label typo, ER-specific signature |
