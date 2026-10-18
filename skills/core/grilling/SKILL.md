@@ -14,7 +14,7 @@ Find what the person must decide. Ask only what you cannot find yourself.
    - the published result that the analysis must reproduce or compare with,
    - whether the thing under discussion (a signature, a method, a cut-off, a data set) is already public, and on which terms.
    A public fact can change the decision. Put it in the next round.
-   If a site blocks access, try another source and use the abstract. Record the blocked source. Mark a prior from an abstract only as `weak`.
+   If a site blocks access, try another source: the publisher page, an institutional repository PDF, a preprint server, or the abstract. Record the blocked source. Mark a prior from an abstract only as `weak`.
 3. Make the **frontier**: the list of open questions that block the analysis. Use the topics in [TOPICS.md](TOPICS.md).
 4. Ask one round: 3 to 6 questions. Give each question:
    - options on short lines,
@@ -29,7 +29,9 @@ Find what the person must decide. Ask only what you cannot find yourself.
 question: <one sentence>
 decision: <what changes with the answer>; owner: <who decides>; reader: <who reads>
 cost-of-error: <which error costs more>
-success: <threshold for "yes"> (set by person | assumed)
+population: <who is in scope>
+reference: <the reference test or variable, if any>
+success: <threshold for "yes">, on <assay or platform where the decision applies> (set by person | assumed)
 prior: <result, reference> (strong | weak | none found)
 sources: <URLs or references used; blocked sources>
 assumed: <one line per choice made without the person>

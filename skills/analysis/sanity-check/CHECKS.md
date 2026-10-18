@@ -22,7 +22,17 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 | identifiers | Find the identifier type (symbol, Ensembl, probe). | Annotation exists, or the result uses raw identifiers and says so. |
 | sex-genes | If sex is in the clinical data and the data has Y genes (RPS4Y1, DDX3Y, KDM5D, EIF1AY): call sex from the mean of the Y genes. Set the threshold at the gap between the two groups. Do not use XIST: some male tumors express it. | Expression sex matches the recorded sex. List each mismatch. |
 | outliers | PCA on the top 2000 variable genes (all genes for a small panel). Distance of each sample from the center on PC1 and PC2 in SD units. | No sample beyond 4 SD, or it is listed with a reason. |
+| tissue-composition | If the score measures cells that also live in the sampled tissue (immune cells in lymph nodes, stroma, normal tissue), compare the score across sample sites. | The effect holds within each site, or the model includes the site. |
 | batch | Color PCA by batch or plate. If no batch column exists, use the collection site or center (for TCGA: the tissue source site in the barcode). If site and outcome are linked, test site within each outcome group. | The main axes do not follow batch, or the model includes batch. |
+
+## Methylation array data (input checks)
+
+| Check | How | Pass |
+|---|---|---|
+| meth-scale | Find if values are beta (0 to 1) or M-values. Convert with M = log2(beta / (1 - beta)) when a published model needs M. | The scale fits the model. A model fit on another scale is a `warn`. |
+| meth-probes | Check that each probe the analysis needs is present and has few missing values. | All needed probes are present. |
+| meth-sex | If a probe manifest with chromosomes is available, compare chrX and chrY probe signal with the recorded sex. | Matches, or `n/a` with the reason. |
+| cross-reactive | Check needed probes against published lists of cross-reactive or SNP-affected probes. | None of the needed probes is affected, or it is reported. |
 
 ## Expression data (result checks)
 
@@ -38,6 +48,7 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 | Check | How | Pass |
 |---|---|---|
 | split | Choose the cut-off on one part of the data and measure on another part, or use cross-validation. Applies each time the brief gives a classification rate. | Agreement is measured on data not used to choose the cut-off. |
+| error-location | List the false negatives and false positives. Compare them with the clinically critical subgroup (for example MSI tumors with normal MLH1, which include Lynch cases). | The error rate in the critical subgroup is reported. |
 | test-size | Compute the confidence interval of the key rate in the test part. | The interval is narrow enough to tell if the success threshold is met. If not, write `warn`. |
 | threshold-uncertainty | Compare the confidence interval of the main result (any data type) with the `success` threshold. | The whole interval is on one side of the threshold. If the interval crosses it, write `warn` and say so in the brief. |
 | platform-transfer | A cut-off found on one assay (RNA-seq) does not move to another assay (qPCR, IHC, a new lab) without new calibration. | The brief says on which assay the cut-off is valid. |
@@ -47,7 +58,9 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 
 | Check | How | Pass |
 |---|---|---|
-| endpoint-validation | Test a known strong factor against the outcome (for example stage III-IV vs stage I). | The known factor gives the expected effect. This shows that the outcome variable is built correctly. |
+| endpoint-validation | Test a known strong factor against the outcome. Use a factor measured at the time origin: stage for survival from diagnosis; distant vs regional metastasis for survival from sampling. | The known factor gives the expected effect. This shows that the outcome variable is built correctly. |
+| time-origin | Compare the date of the sample with the date of diagnosis. | If samples were taken long after diagnosis, survival starts at sampling, or the analysis corrects for left truncation. |
+| treatment-received | A group defined by treatment received after the start of follow-up (for example "patients who got temozolomide") favors patients who lived long enough to get it. | Use a landmark analysis or treat the group as confounded. Do not claim a treatment-specific effect without an interaction test in a fair comparison. |
 | follow-up | Median follow-up of patients without an event (reverse Kaplan-Meier). Number at risk at the time horizon of the question. | Follow-up covers the horizon. If not, write `warn` and name the horizon that the data can support. |
 | treatment | Find which treatment patients received. Count unknown values. | Treatment is known and in the model, or the missing information is a `warn` in the brief. |
 | events | Count events. Divide by the number of model terms (events per variable, EPV). | EPV 10 or more: pass. 5 to 10: warn. Below 5: fail. |

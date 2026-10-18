@@ -24,5 +24,10 @@
 
 <Recommended option and one line why. The reader decides.>
 
+## Next steps
+| Step | Owner | When |
+|---|---|---|
+| | | |
+
 ## Not checked
 - <What we did not test and why.>

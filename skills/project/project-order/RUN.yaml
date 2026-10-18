@@ -1,7 +1,7 @@
 # One key per line. Change values in place. Quote text that has a colon.
 id: R01
 slug: "baseline"
-status: open          # open | candidate | dropped | shipped
+status: open          # open | candidate | superseded | dropped | shipped
 parent: null          # the run this run changes, for example R01
 created: "YYYY-MM-DD"
 question: "<one sentence>"

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 (2026-10-18)
+Fixes from test round 4 (see tests/results/round-4.md).
+- Deck layout script v2: big-number slides (`kpis`), full-width figures and tables, highlighted recommended option, larger fonts, title height fixed.
+- deck-review: renders at 100 dpi, titles test when no subagent, final verify render, new criteria (readability, space, consistency), brief criteria.
+- grilling: topics time origin, reference test, measurement transfer; `population`, `reference`, and assay in `success`.
+- to-analysis-plan: check that the data can answer the threshold before work starts.
+- sanity-check: methylation checks; time-origin, treatment-received, tissue-composition, error-location; endpoint validation at the time origin; weaker-than-prior is post-hoc; post-hoc subgroups flagged in the brief.
+- Status `superseded`. Brief: Next steps with owners (no invented owners), cross-run sources.
+
 ## 0.4.0 (2026-10-18)
 - New skill `decision-deck`: a title slide and 4 to 6 slides from the brief, built with `scripts/make_deck.py`, checked by eye as images.
 - Release includes the deck. Router adds `/decision-deck`.

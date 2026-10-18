@@ -33,10 +33,10 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 
 ## When the planned method gives an unusable result
 
-The plan can be wrong. Example: a pre-set cut-off rule gives a cut-off that misclassifies one group. A change of method after you see the outcome result is also post-hoc: write it in `notes`. A bug fix (wrong label, wrong column) is not post-hoc: fix it in the same run and write one line in `notes`.
+The plan can be wrong. Examples: a pre-set cut-off rule gives a cut-off that misclassifies one group; the planned model works but is clearly weaker than the published prior. A change of method after you see the outcome result is also post-hoc: write it in `notes`. A bug fix (wrong label, wrong column) is not post-hoc: fix it in the same run and write one line in `notes`.
 1. Keep the planned result in the run. Set the run `status: dropped` only if nothing in it is usable.
-2. Start a new run with `parent` set to the first run. Put the changed method in the new run.
-3. Add a `DECISION` entry to `LOG.md` that starts with `post-hoc:`. Say what changed and why. The brief must say that the choice was made after the data were seen.
+2. Start a new run with `parent` set to the first run. Put the changed method in the new run. Set the first run to `superseded` when the new run replaces it.
+3. Add a `DECISION` entry to `LOG.md` that starts with `post-hoc:`. Say what changed and why. The brief must say that the choice was made after the data were seen. This also applies to a sensitivity analysis or a subgroup that you added after you saw the outcome.
 
 ## Never
 

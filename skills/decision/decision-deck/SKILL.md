@@ -11,7 +11,7 @@ The deck tells the same story as the brief, in a form that a group can discuss i
 ## Steps
 
 1. Read `runs/RNN-<slug>/out/brief.md`. If it does not exist, tell the person to run `/decision-brief` first. Stop.
-2. Write the slide plan in `runs/RNN-<slug>/code/deck.yaml`. Use the structure in [DECK.md](DECK.md). Use only numbers, figures, and tables that the brief uses. The script needs `python-pptx` and `pyyaml`.
+2. Write the slide plan in `runs/RNN-<slug>/code/deck.yaml`. In the subtitle, write the next release number with `(planned)`. Use the structure in [DECK.md](DECK.md). Use only numbers, figures, and tables that the brief uses. The script needs `python-pptx` and `pyyaml`.
 3. Build the deck: `python3 <this skill>/scripts/make_deck.py runs/RNN-<slug>/code/deck.yaml runs/RNN-<slug>/out/deck.pptx`. The script also writes `deck.pdf` if LibreOffice is installed.
 4. Call the Skill tool with "deck-review". It reviews the deck in two rounds with the eyes of the reader and fixes it.
 5. Check against the brief: the answer, the numbers, and the recommended option are the same on the slides and in the brief.

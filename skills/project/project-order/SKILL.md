@@ -31,7 +31,7 @@ A table with one row per patient or per sample can identify people. Name it `<wh
 - Number runs in order: `R01`, `R02`, ... Add a short slug: `R02-no-normals`.
 - Each run has `run.yaml`. Copy [RUN.yaml](RUN.yaml) as the template.
 - Do not delete a run. Set `status: dropped` and write the reason in `notes`.
-- Status values: `open` (in work), `candidate` (checks done, can go to a client), `dropped`, `shipped` (in a release).
+- Status values: `open` (in work), `candidate` (checks done, can go to a client), `superseded` (a later run replaces it; name the run in `notes`), `dropped`, `shipped` (in a release).
 
 ## Edit run.yaml safely
 

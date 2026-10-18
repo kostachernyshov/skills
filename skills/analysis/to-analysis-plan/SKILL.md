@@ -20,11 +20,12 @@ The plan says what result ends the analysis. Without it, the analysis does not s
    - `done_when`: the number, the table, or the figure that ends the analysis.
    - `success`, `success_source`: from the grilling entry.
    Put all analysis code in `code/` of the run. Use as many scripts as you need. Each script writes each number it computes to a table in `out/`.
-3. Parse `run.yaml` (see "project-order"). Fix errors.
-4. Show the plan to the person in 5 to 8 lines. Ask one question: "Start with this plan? yes / change". Do not ask the grilling questions again.
-5. Add one `DECISION` entry to `LOG.md`: the plan is accepted. If the person is not available, add the line `assumed: plan accepted`.
-6. Update `State` in `CLAUDE.md`: question, current run, next step. Commit.
-7. After the analysis and the checks, set `status: candidate` and fill `result`.
+3. Check that the data can answer the `success` threshold. Count the cases in the smallest key group. Compute the confidence interval that this count gives at the threshold (for example, 53 positives give a 95% interval of about plus or minus 6 points around 94% sensitivity). If the interval is wider than the margin, write it in `notes` and tell the person: the answer will be "cannot tell" unless the threshold or the data change.
+4. Parse `run.yaml` (see "project-order"). Fix errors.
+5. Show the plan to the person in 5 to 8 lines. Ask one question: "Start with this plan? yes / change". Do not ask the grilling questions again.
+6. Add one `DECISION` entry to `LOG.md`: the plan is accepted. If the person is not available, add the line `assumed: plan accepted`.
+7. Update `State` in `CLAUDE.md`: question, current run, next step. Commit.
+8. After the analysis and the checks, set `status: candidate` and fill `result`.
 
 ## Done when
 
