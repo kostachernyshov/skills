@@ -30,6 +30,7 @@ Type `/ask-kosta` in a project. It tells you the next skill.
 | `sanity-check` | agent | Checks before each result. |
 | `decision-brief` | person | One page for the person who decides. |
 | `decision-deck` | person | 4 to 6 slides from the brief for the decision meeting. |
+| `deck-review` | agent | Two review rounds of the deck with the eyes of the reader; fixes overload and unclear messages. |
 
 "Person" skills have `disable-model-invocation: true`. Type `/name` to start them. "Agent" skills start by themselves when the situation fits.
 

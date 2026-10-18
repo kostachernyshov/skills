@@ -13,7 +13,7 @@ The deck tells the same story as the brief, in a form that a group can discuss i
 1. Read `runs/RNN-<slug>/out/brief.md`. If it does not exist, tell the person to run `/decision-brief` first. Stop.
 2. Write the slide plan in `runs/RNN-<slug>/code/deck.yaml`. Use the structure in [DECK.md](DECK.md). Use only numbers, figures, and tables that the brief uses. The script needs `python-pptx` and `pyyaml`.
 3. Build the deck: `python3 <this skill>/scripts/make_deck.py runs/RNN-<slug>/code/deck.yaml runs/RNN-<slug>/out/deck.pptx`. The script also writes `deck.pdf` if LibreOffice is installed.
-4. Check the deck yourself. Convert the PDF to images (`pdftoppm -png -r 50 runs/RNN-<slug>/out/deck.pdf scratch/slide`). Look at each image. Fix text that is cut, overlaps, or is too small, and build again.
+4. Call the Skill tool with "deck-review". It reviews the deck in two rounds with the eyes of the reader and fixes it.
 5. Check against the brief: the answer, the numbers, and the recommended option are the same on the slides and in the brief.
 
 ## Rules
@@ -28,5 +28,5 @@ The deck tells the same story as the brief, in a form that a group can discuss i
 ## Done when
 
 - `out/deck.pptx` exists with a title slide and 4 to 6 slides, and `out/deck.pdf` if LibreOffice exists.
-- You looked at each slide image and nothing is cut or overlaps.
+- `out/deck-review.csv` has 2 rounds, and round 2 has no score of 0.
 - Each number on a slide is in the brief.

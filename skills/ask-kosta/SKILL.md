@@ -31,6 +31,7 @@ This is a map. It does not run skills. Read the situation, then tell the person 
 - "grilling": the interview method.
 - "project-order": where each file goes.
 - "sanity-check": checks before each result.
+- "deck-review": two review rounds of the deck and the brief with the eyes of the reader.
 
 ## Not in this repository
 

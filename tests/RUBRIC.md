@@ -36,3 +36,4 @@ Score each item 0 (no), 1 (partly), 2 (yes). Give the evidence (a path or a quot
 - D2. Numbers and the recommended option match the brief.
 - D3. A decision slide with options, the recommended option, and next steps with an owner.
 - D4. No cut or overlapping text (grader looks at slide images).
+- D5. Two review rounds recorded; round 2 fixed real issues from round 1; the cold-read message matches the brief.

@@ -3,6 +3,7 @@
 ## 0.4.0 (2026-10-18)
 - New skill `decision-deck`: a title slide and 4 to 6 slides from the brief, built with `scripts/make_deck.py`, checked by eye as images.
 - Release includes the deck. Router adds `/decision-deck`.
+- New skill `deck-review`: two rounds of review from slide images, a cold read by a subagent, a score per slide, fixes, and a record in `deck-review.csv`.
 
 ## 0.3.1 (2026-10-18)
 Small fixes from test round 3 (see tests/results/round-3.md).
