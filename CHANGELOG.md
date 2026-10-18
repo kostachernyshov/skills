@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 (2026-10-18)
+Small fixes from test round 3 (see tests/results/round-3.md).
+- Post-hoc vs bug fix defined. Prior on the same scale before "not comparable".
+- New check threshold-uncertainty. Rules for small gene panels (outliers, positive control).
+- Grilling: answers that miss the question. Setup: source status `derived from`.
+- Brief: answer directly after Question; captions do not count. Checkpoint: commit only if changed. Router step 4 clarified.
+
 ## 0.3.0 (2026-10-18)
 Fixes from test round 2 (see tests/results/round-2.md).
 - Success threshold: asked in grilling, stored in run.yaml (`success`, `success_source`); an assumed threshold is shown in the brief Answer with a sensitivity line.

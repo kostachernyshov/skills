@@ -40,7 +40,7 @@ assumed: <one line per choice made without the person>
 
 - The person makes decisions. You find facts.
 - Always ask for the success threshold: the number that makes the answer "yes". If the person cannot give one, recommend one and mark it `assumed`. The brief must show it.
-- When an answer is vague, restate it as a rule and ask for "yes". If the person is not available, use your rule and mark it `assumed`.
+- When an answer is vague or does not answer the question, restate it as a rule and ask for "yes". If the person is not available, use your rule and mark it `assumed`.
 - When the person is not available, use the recommended option. Write one `assumed:` line for each such choice in the `DECISION` entry. Continue.
 - Stop when the frontier is empty. Do not ask questions that do not change the analysis.
 

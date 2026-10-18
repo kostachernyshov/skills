@@ -13,7 +13,7 @@ This is a map. It does not run skills. Read the situation, then tell the person 
 1. `/setup-project`: make the layout once (skip if `CLAUDE.md` and `runs/` exist).
 2. `/grill-me`: understand the question and the decision before any analysis.
 3. `/to-analysis-plan`: write the question, the checks, and the "done" criterion in the first run.
-4. Ask the agent to run the plan. It works in `runs/`, applies "project-order" and "sanity-check" by itself, and sets the run to `candidate` when all checks are done.
+4. Say "run the plan". This is not a skill. The agent works in `runs/` and applies "project-order" and "sanity-check" by itself (see step 7 of "to-analysis-plan").
 5. `/decision-brief`: one page for the person who asked.
 6. `/release`: freeze what the client sees.
 

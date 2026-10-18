@@ -21,14 +21,14 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 | scale | Look at min, median, max. Find out if values are counts, log, or z-scores. | The scale fits the method. |
 | identifiers | Find the identifier type (symbol, Ensembl, probe). | Annotation exists, or the result uses raw identifiers and says so. |
 | sex-genes | If sex is in the clinical data and the data has Y genes (RPS4Y1, DDX3Y, KDM5D, EIF1AY): call sex from the mean of the Y genes. Set the threshold at the gap between the two groups. Do not use XIST: some male tumors express it. | Expression sex matches the recorded sex. List each mismatch. |
-| outliers | PCA on the top 2000 variable genes. Distance of each sample from the center on PC1 and PC2 in SD units. | No sample beyond 4 SD, or it is listed with a reason. |
+| outliers | PCA on the top 2000 variable genes (all genes for a small panel). Distance of each sample from the center on PC1 and PC2 in SD units. | No sample beyond 4 SD, or it is listed with a reason. |
 | batch | Color PCA by batch or plate. If no batch column exists, use the collection site or center (for TCGA: the tissue source site in the barcode). If site and outcome are linked, test site within each outcome group. | The main axes do not follow batch, or the model includes batch. |
 
 ## Expression data (result checks)
 
 | Check | How | Pass |
 |---|---|---|
-| positive-control | Find a gene or effect that must appear (for example ESR1 high in ER-positive breast tumors). The control must not be the predictor under test: if ESR1 is the predictor, use PGR, GATA3, or FOXA1. If the data has no such gene, use a known clinical association. | The control appears with the expected sign and a clear size. |
+| positive-control | Find a gene or effect that must appear (for example ESR1 high in ER-positive breast tumors). The control must not be the predictor under test: if ESR1 is the predictor, use PGR, GATA3, or FOXA1. If the data has no such gene (small panel), use a named clinical association with a published effect, for example "grade 3 vs grade 1 predicts metastasis". | The control appears with the expected sign and a clear size. |
 | p-value-distribution | Histogram of raw p-values. Only for many tests. | Flat with a peak near 0. A peak near 1 or a hill in the middle is a fail. |
 | effect-size | Look at the top effects. | Sizes are plausible for the biology (not 20 log2 units). |
 | prior | Compare with the published result. | Agrees or the difference is explained. |
@@ -39,6 +39,7 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 |---|---|---|
 | split | Choose the cut-off on one part of the data and measure on another part, or use cross-validation. Applies each time the brief gives a classification rate. | Agreement is measured on data not used to choose the cut-off. |
 | test-size | Compute the confidence interval of the key rate in the test part. | The interval is narrow enough to tell if the success threshold is met. If not, write `warn`. |
+| threshold-uncertainty | Compare the confidence interval of the main result (any data type) with the `success` threshold. | The whole interval is on one side of the threshold. If the interval crosses it, write `warn` and say so in the brief. |
 | platform-transfer | A cut-off found on one assay (RNA-seq) does not move to another assay (qPCR, IHC, a new lab) without new calibration. | The brief says on which assay the cut-off is valid. |
 | error-balance | Report both error types (false positive and false negative) with confidence intervals. | The error that costs more for the decision is named and measured. |
 

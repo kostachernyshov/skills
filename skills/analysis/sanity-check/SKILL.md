@@ -27,13 +27,13 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 1. Find the data type. Open [CHECKS.md](CHECKS.md). Take the checks for that type.
 2. Before the analysis, run the **input checks**.
 3. Run the analysis.
-4. After the analysis, run the **result checks**. One of them is `prior`: compare the main result with the `prior` field. Write agrees, partly agrees, or disagrees, with the two numbers side by side. If the prior measures a different thing, write `warn - not comparable - <reason>`.
+4. After the analysis, run the **result checks**. One of them is `prior`: compare the main result with the `prior` field. Write agrees, partly agrees, or disagrees, with the two numbers side by side. If the prior uses a different scale (for example a high-vs-low class HR against your per-SD HR), first compute your result on the prior's scale. If the prior measures a different thing, write `warn - not comparable - <reason>`.
 5. If the main result is near the `success` threshold, compute the answer at 2 or 3 nearby thresholds. Save the table. The brief uses it.
 6. For each `fail`: stop and tell the person what failed and what you propose.
 
 ## When the planned method gives an unusable result
 
-The plan can be wrong. Example: a pre-set cut-off rule gives a cut-off that misclassifies one group. A small change of method after you see the data is also post-hoc: write it in `notes`.
+The plan can be wrong. Example: a pre-set cut-off rule gives a cut-off that misclassifies one group. A change of method after you see the outcome result is also post-hoc: write it in `notes`. A bug fix (wrong label, wrong column) is not post-hoc: fix it in the same run and write one line in `notes`.
 1. Keep the planned result in the run. Set the run `status: dropped` only if nothing in it is usable.
 2. Start a new run with `parent` set to the first run. Put the changed method in the new run.
 3. Add a `DECISION` entry to `LOG.md` that starts with `post-hoc:`. Say what changed and why. The brief must say that the choice was made after the data were seen.
