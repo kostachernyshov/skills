@@ -15,7 +15,8 @@ This is a map. It does not run skills. Read the situation, then tell the person 
 3. `/to-analysis-plan`: write the question, the checks, and the "done" criterion in the first run.
 4. Say "run the plan". This is not a skill. The agent works in `runs/` and applies "project-order" and "sanity-check" by itself (see step 7 of "to-analysis-plan").
 5. `/decision-brief`: one page for the person who asked.
-6. `/release`: freeze what the client sees.
+6. `/decision-deck`: 4 to 6 slides from the brief, for the meeting where they decide.
+7. `/release`: freeze what the client sees: brief, deck, and the files they use.
 
 ## Other entries
 

@@ -15,7 +15,8 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 3. Commit all work. Record this commit hash: it is the source of the release.
 4. Make `releases/vN-<YYYY-MM-DD>/`. N is the last release number + 1.
 5. Copy into it, in one flat folder, only:
-   - `brief.md` from the run (make it with the skill "decision-brief" if it does not exist),
+   - `brief.md` from the run (if it does not exist, tell the person to run `/decision-brief`),
+   - `deck.pptx` and `deck.pdf` from the run (if they do not exist, tell the person to run `/decision-deck`),
    - each figure and table that the brief names.
    Do not copy code, intermediate tables, or `*.private.*` files. For 2 or more variants, add the run id to each file name.
 6. Write `SOURCE.txt`: for each variant, the run id, the source commit from step 3, and each input file with its md5 checksum. Add one line: "The tag vN marks the release commit. The source commit is the analysis state before it."
@@ -26,6 +27,6 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 
 ## Done when
 
-- `releases/vN-<date>/` has `brief.md`, `SOURCE.txt`, and only the files the brief names.
+- `releases/vN-<date>/` has `brief.md`, `deck.pptx`, `SOURCE.txt`, and only the files the brief and the deck use.
 - The tag `vN` exists.
 - `LOG.md` has the `RELEASE` entry.

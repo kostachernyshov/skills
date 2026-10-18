@@ -7,7 +7,7 @@ This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`
 - understand the question before the work (`grilling`),
 - keep the project in order (`setup-project`, `project-order`, `checkpoint`, `release`),
 - check each result before you state it (`sanity-check`),
-- give the person who asked a one-page decision brief (`decision-brief`).
+- give the person who asked a one-page decision brief and a short deck (`decision-brief`, `decision-deck`).
 
 Scope of version 1: processed tabular data (expression tables, clinical tables, survival). No raw data.
 
@@ -29,6 +29,7 @@ Type `/ask-kosta` in a project. It tells you the next skill.
 | `to-analysis-plan` | person | Writes the plan and the "done" criterion into the first run. |
 | `sanity-check` | agent | Checks before each result. |
 | `decision-brief` | person | One page for the person who decides. |
+| `decision-deck` | person | 4 to 6 slides from the brief for the decision meeting. |
 
 "Person" skills have `disable-model-invocation: true`. Type `/name` to start them. "Agent" skills start by themselves when the situation fits.
 

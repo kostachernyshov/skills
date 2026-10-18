@@ -30,3 +30,9 @@ Score each item 0 (no), 1 (partly), 2 (yes). Give the evidence (a path or a quot
 
 ## Correctness
 - R1. Main result agrees with published evidence or the difference is explained.
+
+## Deck (from v0.4.0)
+- D1. Title slide plus 4 to 6 slides; each slide title is a message, not a topic.
+- D2. Numbers and the recommended option match the brief.
+- D3. A decision slide with options, the recommended option, and next steps with an owner.
+- D4. No cut or overlapping text (grader looks at slide images).
