@@ -12,11 +12,12 @@ The reader is the person who asked. The reader makes the decision. The brief giv
 
 1. Read the `question`, `decision`, `checks`, and `result` in `run.yaml`.
 2. If any check is `fail`, stop. Tell the person. A brief does not hide a failed check.
-3. Write the brief with [TEMPLATE.md](TEMPLATE.md). Keep the text to 400 words or fewer. The options table does not count. Use 1 or 2 figures.
+3. Write the brief with [TEMPLATE.md](TEMPLATE.md). Keep the text to 400 words or fewer. All text counts except tables. Embed 1 or 2 figures with `![<what it shows>](fig-<what>.png)`. Name at most 4 tables.
 4. Use the words of the reader, not the words of the method. Write "patients with ER-negative tumors", not "ER=0 stratum".
 5. Give each option a cost of error and say if the decision can be reversed.
-6. In "Confidence and limits", name each `warn` that can change the decision. Add one line: "Other technical warnings: see run.yaml."
-7. Save the brief as `runs/RNN-<slug>/out/brief.md`. Refer to figures and tables by file name only (`fig-km.png`), not by path. The skill "release" copies them next to the brief.
+6. If `success_source` is `assumed`, write the threshold in the Answer line ("No, at the assumed threshold of 95% specificity"). Add one line in Evidence: how the answer changes at nearby thresholds.
+7. In "Confidence and limits", name each `warn` that can change the decision. Add one line: "Other technical warnings: see run.yaml."
+8. Save the brief as `runs/RNN-<slug>/out/brief.md`. Refer to figures and tables by file name only (`fig-km.png`), not by path. The skill "release" copies them next to the brief.
 
 ## Numbers
 
@@ -26,6 +27,6 @@ The reader is the person who asked. The reader makes the decision. The brief giv
 
 ## Done when
 
-- The brief has the 6 sections of the template.
+- The brief has the 6 sections of the template: Question, Answer, Evidence, Confidence and limits, Options, Not checked.
 - The answer is one sentence in the first 3 lines.
 - The text is 400 words or fewer, without the options table.

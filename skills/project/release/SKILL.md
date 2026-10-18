@@ -18,10 +18,11 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
    - `brief.md` from the run (make it with the skill "decision-brief" if it does not exist),
    - each figure and table that the brief names.
    Do not copy code, intermediate tables, or `*.private.*` files. For 2 or more variants, add the run id to each file name.
-6. Write `SOURCE.txt`: for each variant, the run id, the commit hash from step 3, the input files.
+6. Write `SOURCE.txt`: for each variant, the run id, the source commit from step 3, and each input file with its md5 checksum. Add one line: "The tag vN marks the release commit. The source commit is the analysis state before it."
 7. Set `status: shipped` in each chosen `run.yaml`.
 8. Add a `RELEASE` entry to `LOG.md`: version, runs, what changed from the last release.
-9. Commit with the message `release vN`. Tag this commit `vN`.
+9. Update `State` in `CLAUDE.md`: what was released, what the client must decide, next step.
+10. Commit with the message `release vN`. Tag this commit `vN`.
 
 ## Done when
 

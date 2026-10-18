@@ -30,7 +30,7 @@ scratch/       # temporary files, not in git
    - `gitignore.tmpl` to `.gitignore`.
 5. Make `AGENTS.md` so that other agents read the same rules. Try a symlink to `CLAUDE.md`. If the symlink fails, write one line in `AGENTS.md`: `Read CLAUDE.md. It has all project rules.`
 6. Move each input file into `data/`. If the files came in another folder (for example `incoming/`), move them and delete the empty folder. Do not change the content of input files.
-7. Record each input file in the `Data` table of `CLAUDE.md`: source, date, size, rows x columns. If the source is not known, write `client file, source not verified`.
+7. Record each input file in the `Data` table of `CLAUDE.md`. Source status: `verified` if you checked the source, `named by client` if the client named it and you could not check it, `not known` if nobody knows.
 8. Run `git init` if the folder is not a git repository. Make the first commit.
 9. Call the Skill tool with "project-order". Apply its rules from now on.
 

@@ -11,6 +11,8 @@ method: "<one line, with the package>"
 params: {}
 prior: "<published result with reference, or: none found>"
 done_when: "<the number, table, or figure that ends the analysis>"
+success: "<the threshold that makes the answer yes, for example: specificity >= 95%>"
+success_source: "set by person"   # set by person | assumed
 checks:               # name: "status - evidence". status: todo | pass | warn | fail | n/a
   ids-match: "todo"
 result: "<one sentence, empty while open>"

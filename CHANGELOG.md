@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0 (2026-10-18)
+Fixes from test round 2 (see tests/results/round-2.md).
+- Success threshold: asked in grilling, stored in run.yaml (`success`, `success_source`); an assumed threshold is shown in the brief Answer with a sensitivity line.
+- State in CLAUDE.md is updated at plan, status change, and release.
+- Grilling DECISION entry has a fixed list of lines, with sources and prior strength; blocked sources are recorded.
+- Sample removal counts go in run.yaml; LOG holds the rule.
+- New checks: endpoint-validation, follow-up, treatment, test-size, platform-transfer for any cut-off. Sex from Y genes only. Outlier metric. Positive control must not be the predictor.
+- to-analysis-plan builds the check list from CHECKS.md.
+- Brief: word count rule, embedded figures, at most 4 tables.
+- Release: two commits explained, md5 of inputs, State update.
+- Checkpoint: commands to find misplaced files.
+
 ## 0.2.0 (2026-10-18)
 Fixes from test round 1 (see tests/results/round-1.md).
 - Flow order: setup-project before grill-me.
