@@ -47,6 +47,14 @@ scratch/    # temporary
 
 ## Install
 
+As a Claude Code plugin (after the repository is public):
+
+```
+/plugin install bio-decision-skills --marketplace kosta-blackshow/bio-decision-skills
+```
+
+Or copy the skills by hand:
+
 Claude Code finds a skill only one level below the skills folder. Copy each skill folder, not the bucket folder:
 
 ```
