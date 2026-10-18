@@ -10,8 +10,8 @@ This is a map. It does not run skills. Read the situation, then tell the person 
 
 ## Main flow: question to decision
 
-1. `/grill-me`: understand the question and the decision before any work.
-2. `/setup-project`: make the layout once (skip if `CLAUDE.md` and `runs/` exist).
+1. `/setup-project`: make the layout once (skip if `CLAUDE.md` and `runs/` exist).
+2. `/grill-me`: understand the question and the decision before any analysis.
 3. `/to-analysis-plan`: write the question, the checks, and the "done" criterion in the first run.
 4. Work in runs. The agent applies "project-order" and "sanity-check" by itself.
 5. `/decision-brief`: one page for the person who asked.
@@ -33,7 +33,10 @@ This is a map. It does not run skills. Read the situation, then tell the person 
 
 ## Not in this repository
 
-Raw data processing and pipelines (alignment, variant calling, nf-core): see `UPSTREAM.md`.
+Raw data processing and pipelines. Use these instead:
+- NGS pipelines: nf-core (https://nf-co.re), Seqera AI skills.
+- Skills for one tool or database: K-Dense-AI/scientific-agent-skills, GPTomics/bioSkills.
+- Databases and literature: mims-harvard/ToolUniverse, anthropics/life-sciences.
 
 ## How to answer
 

@@ -1,12 +1,17 @@
+# One key per line. Change values in place. Quote text that has a colon.
 id: R01
-slug: baseline
-question: <one sentence>
-parent: null          # the run this run changes, for example R01
+slug: "baseline"
 status: open          # open | candidate | dropped | shipped
-created: <YYYY-MM-DD>
-samples: <which samples, how many, which were removed and why>
-method: <one line>
+parent: null          # the run this run changes, for example R01
+created: "YYYY-MM-DD"
+question: "<one sentence>"
+decision: "<the decision the result serves, and who makes it>"
+samples: "<inclusion rule, exclusion rule, counts>"
+method: "<one line, with the package>"
 params: {}
-checks: {}            # filled by the skill "sanity-check": name: pass | fail | warn
-result: <one sentence, empty while open>
-notes: <why this run exists, why it was dropped>
+prior: "<published result with reference, or: none found>"
+done_when: "<the number, table, or figure that ends the analysis>"
+checks:               # name: "status - evidence". status: todo | pass | warn | fail | n/a
+  ids-match: "todo"
+result: "<one sentence, empty while open>"
+notes: "<why this run exists; reasons for warn checks; why it was dropped>"

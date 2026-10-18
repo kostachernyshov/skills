@@ -13,9 +13,9 @@ The next reader gets the full state from two places: the `State` section in `CLA
 1. Update the `State` section in `CLAUDE.md`. Keep it at 20 lines or fewer. Replace old text. Do not add history.
    - Question, decision it serves, current run, open items, next step.
 2. Add a `LOG.md` entry for each decision from this session that is not in the log.
-3. For each run in `runs/`, make sure that `run.yaml` has the correct status.
-4. Find files that break the rules of the skill "project-order". Move them or delete them. Ask the person before you delete a file outside `scratch/`.
-5. Empty `scratch/`, or tell the person what is in it.
+3. For each run, parse `run.yaml` and make sure that the status is correct.
+4. Find files that break the rules of the skill "project-order". Move them. Ask the person before you delete a file outside `scratch/`. Output files that the brief does not use can stay in `out/`.
+5. In `scratch/`: move any file that is evidence for a check into the `out/` of its run. Then empty `scratch/`.
 6. Commit with the message `checkpoint: <next step>`.
 
 ## Done when

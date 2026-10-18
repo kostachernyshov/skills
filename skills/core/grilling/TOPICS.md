@@ -12,6 +12,8 @@ Use these topics to build the frontier. Skip a topic when the data or the files 
 | Design | Is there a batch, a site, a time effect? Are samples paired? |
 | Controls | Which result must appear if the data is correct (positive control)? |
 | Prior knowledge | Which published result must we reproduce or compare with? |
+| Public or private | Is the asset under discussion (signature, method, data) already published? What does a license add? |
+| Same variable twice | Two columns can record the same thing (two ER fields, two dates). Which one is the reference? |
 | Success | Which number or figure ends the analysis? |
 | Cost of error | What happens if the answer is wrong? Can the decision be reversed? |
 | Delivery | When is the result due? Which format? |

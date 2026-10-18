@@ -10,20 +10,21 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 
 ## Steps
 
-1. Ask the person which runs go into the release. One release can hold 2 or 3 variants. Each variant is one run.
-2. Check that each chosen run has `status: candidate` and that all its `checks` are `pass` or have a written reason in `notes`. If not, stop and tell the person.
-3. Make `releases/vN-<YYYY-MM-DD>/`. N is the last release number + 1.
-4. Copy into it only the files that the client needs:
-   - `brief.md` (make it with the skill "decision-brief"),
-   - `tables/` and `figures/` that the brief uses.
-   Do not copy code, intermediate tables, or logs.
-5. Write `SOURCE.txt`: for each variant, the run id, the commit hash, the input files.
-6. Set `status: shipped` in each chosen `run.yaml`.
-7. Add a `RELEASE` entry to `LOG.md`: version, runs, what changed from the last release.
-8. Commit. Tag the commit `vN`.
+1. Ask the person which runs go into the release. One release can hold 2 or 3 variants. Each variant is one run. If the person is not available, use the runs with `status: candidate` and write `assumed:` in the log entry.
+2. Check each chosen run: `status: candidate`, no check is `fail` or `todo`. A `warn` with evidence is acceptable. If a check fails, stop and tell the person.
+3. Commit all work. Record this commit hash: it is the source of the release.
+4. Make `releases/vN-<YYYY-MM-DD>/`. N is the last release number + 1.
+5. Copy into it, in one flat folder, only:
+   - `brief.md` from the run (make it with the skill "decision-brief" if it does not exist),
+   - each figure and table that the brief names.
+   Do not copy code, intermediate tables, or `*.private.*` files. For 2 or more variants, add the run id to each file name.
+6. Write `SOURCE.txt`: for each variant, the run id, the commit hash from step 3, the input files.
+7. Set `status: shipped` in each chosen `run.yaml`.
+8. Add a `RELEASE` entry to `LOG.md`: version, runs, what changed from the last release.
+9. Commit with the message `release vN`. Tag this commit `vN`.
 
 ## Done when
 
-- `releases/vN-<date>/` has `brief.md`, `SOURCE.txt`, and only the files the brief uses.
+- `releases/vN-<date>/` has `brief.md`, `SOURCE.txt`, and only the files the brief names.
 - The tag `vN` exists.
 - `LOG.md` has the `RELEASE` entry.

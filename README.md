@@ -45,4 +45,10 @@ scratch/    # temporary
 
 ## Install
 
-Copy the folders from `skills/` into `~/.claude/skills/` or into `.claude/skills/` of your project.
+Claude Code finds a skill only one level below the skills folder. Copy each skill folder, not the bucket folder:
+
+```
+for d in skills/ask-kosta skills/*/*/; do cp -r "$d" ~/.claude/skills/; done
+```
+
+Do not copy `skills/in-progress/` or `skills/deprecated/`.
