@@ -51,10 +51,18 @@ def bullets(slide, x, y, w, h, items, size):
         p.space_after = Pt(size * 0.6)
 
 
-def table(slide, x, y, w, rows, highlight=None, size=18):
+def row_heights(rows, w, size):
+    col_in = w / 914400 / len(rows[0])
+    chars = max(1, int(col_in * 72 / (size * 0.5)) - 2)
+    return [Inches(0.25 + 1.35 * size / 72 * max(-(-len(str(v)) // chars) for v in r)) for r in rows]
+
+
+def table(slide, x, y, w, rows, highlight=None, size=20):
     n, m = len(rows), len(rows[0])
-    row_h = Inches(0.62)
-    t = slide.shapes.add_table(n, m, x, y, w, row_h * n).table
+    hs = row_heights(rows, w, size)
+    t = slide.shapes.add_table(n, m, x, y, w, sum(hs)).table
+    for i, h in enumerate(hs):
+        t.rows[i].height = h
     for i, r in enumerate(rows):
         for j, v in enumerate(r):
             c = t.cell(i, j)
@@ -62,9 +70,10 @@ def table(slide, x, y, w, rows, highlight=None, size=18):
             c.fill.solid()
             c.fill.fore_color.rgb = ACCENT if i == 0 else (SOFT if i == highlight else WHITE)
             for p in c.text_frame.paragraphs:
-                p.font.size = Pt(size)
-                p.font.bold = i == 0 or i == highlight
-                p.font.color.rgb = WHITE if i == 0 else INK
+                for r in p.runs:  # run-level font: LibreOffice ignores paragraph defaults in tables
+                    r.font.size = Pt(size)
+                    r.font.bold = i == 0 or i == highlight
+                    r.font.color.rgb = WHITE if i == 0 else INK
 
 
 def figure(slide, path, x, y, w, h):
@@ -83,7 +92,9 @@ def kpis(slide, items, y, h):
         x = M + i * (w + gap)
         shp = slide.shapes.add_shape(1, x, y, w, h)
         shp.fill.solid(); shp.fill.fore_color.rgb = SOFT; shp.line.fill.background()
-        box(slide, x, y + Inches(0.3), w, Inches(1.4), k["value"], 54, ACCENT, True, PP_ALIGN.CENTER)
+        v = str(k["value"])
+        size = 54 if len(v) <= 6 else 44 if len(v) <= 9 else 36
+        box(slide, x, y + Inches(0.3), w, Inches(1.4), v, size, ACCENT, True, PP_ALIGN.CENTER)
         box(slide, x + Inches(0.2), y + Inches(1.8), w - Inches(0.4), h - Inches(2.0), k["label"], 20, INK, False, PP_ALIGN.CENTER)
 
 
@@ -98,7 +109,7 @@ def main(spec_path, out_path):
     s = prs.slides.add_slide(blank)
     n = title_lines(spec["title"], 12.1, 40)
     box(s, M, Inches(2.0), cw, Inches(0.75 * n), spec["title"], 40, bold=True)
-    box(s, M, Inches(2.0) + Inches(0.75 * n) + Inches(0.4), cw, Inches(0.8), spec.get("subtitle", ""), 20, MUTED)
+    box(s, M, Inches(2.0) + Inches(0.75 * n) + Inches(0.4), cw, Inches(0.8), spec.get("subtitle", ""), 24, MUTED)
 
     for sl in spec["slides"]:
         s = prs.slides.add_slide(blank)
@@ -110,30 +121,30 @@ def main(spec_path, out_path):
         if sl.get("kpis"):
             kpis(s, sl["kpis"], TOP + Inches(0.2), Inches(3.2))
             if bl:
-                bullets(s, M, TOP + Inches(3.7), cw, Inches(1.6), bl, 20)
+                bullets(s, M, TOP + Inches(3.6), cw, Inches(1.8), bl, 22)
         elif side and len(bl) <= 2:
             y = TOP
             if sl.get("figure"):
                 for b in bl:
-                    box(s, M, y, cw, Inches(0.5), b, 20, MUTED)
-                    y += Inches(0.5)
+                    box(s, M, y, cw, Inches(0.55), b, 22)
+                    y += Inches(0.55)
                 figure(s, os.path.join(root, sl["figure"]), M, y, cw, H - y - Inches(0.3))
             else:
                 rows = sl["table"]
                 table(s, M, y, cw, rows, sl.get("highlight_row"))
-                y += Inches(0.62) * len(rows) + Inches(0.4)
+                y += sum(row_heights(rows, cw, 20)) + Inches(0.4)
                 if bl:
-                    bullets(s, M, y, cw, H - y - Inches(0.3), bl, 22)
+                    bullets(s, M, y, cw, H - y - Inches(0.3), bl, 24)
         elif side:
             bw = int(cw * 0.4)
-            bullets(s, M, TOP, bw, body_h, bl, 20)
+            bullets(s, M, TOP, bw, body_h, bl, 22)
             sx, sw = M + bw + Inches(0.3), cw - bw - Inches(0.3)
             if sl.get("figure"):
                 figure(s, os.path.join(root, sl["figure"]), sx, TOP, sw, body_h)
             else:
-                table(s, sx, TOP, sw, sl["table"], sl.get("highlight_row"), 16)
+                table(s, sx, TOP, sw, sl["table"], sl.get("highlight_row"), 18)
         else:
-            bullets(s, M, TOP + Inches(0.2), cw, body_h, bl, 26)
+            bullets(s, M, TOP + Inches(0.3), cw, body_h, bl, 28)
         if sl.get("note"):
             s.notes_slide.notes_text_frame.text = sl["note"]
 

@@ -12,16 +12,16 @@ The deck is the main product of the analysis. The reader sees the deck, not the 
 Do the steps below two times. Round 2 starts from the deck that round 1 fixed.
 
 1. **Render.** Convert the deck to images: `pdftoppm -png -r 100 runs/RNN-<slug>/out/deck.pdf scratch/review-R<round>`. Look at each image. Do not judge from the YAML or the code.
-2. **Cold read.** If you can start a subagent, give it only the slide images and one line about the reader (from `run.yaml` `decision`). Ask it: "What is the main message? What decision does the deck ask for? Which slide was hard to read, and why?" If you cannot start a subagent, do the titles test: write the slide titles in order, without the slides. They must tell the full story: question, answer, evidence, limit, decision. Then look at each image for 5 seconds and write the one thing a reader remembers. Mark the cold read `self` in the record.
+2. **Cold read.** If you can start a subagent, give it only the slide images and one line about the reader (from `run.yaml` `decision`). Ask it: "What is the main message? What decision does the deck ask for? Which slide was hard to read, and why?" If you cannot start a subagent, do the titles test: write the slide titles in order, without the slides. They must tell the full story: question, answer, evidence, limit, decision. Then look at each image for 5 seconds and write the one thing a reader remembers. Write these lines before you score. Mark the cold read `self` in the record.
 3. **Score each slide** with the criteria in [CRITERIA.md](CRITERIA.md). Each criterion: 2 (good), 1 (weak), 0 (fails).
 4. **Compare** the cold-read answer with the answer in the brief. If the main message differs, the deck fails. Fix slide 2 and the deck title first.
 5. **Fix** each criterion with a score of 0 or 1. Change the words, cut content, split a slide, or redraw a figure (larger fonts, fewer series, direct labels instead of a legend). Do not add new results.
 6. **Rebuild** the deck with the skill "decision-deck" script.
-7. **Record** the round in `runs/RNN-<slug>/out/deck-review.csv`: round, slide, criterion, score, issue, fix.
+7. **Record** the round in `runs/RNN-<slug>/out/deck-review.csv`: round, slide, criterion, score, issue, fix. For a new release, replace the file. The tag of the last release keeps the old review.
 
 8. **Verify.** After the round 2 fixes, render again and look at each changed slide. Fix any new problem before you finish.
 
-Apply the same two rounds to `brief.md` when it changes, with the brief criteria in [CRITERIA.md](CRITERIA.md). After the brief changes, check the deck against it again.
+Apply the same two rounds to `brief.md` when it changes, with the brief criteria in [CRITERIA.md](CRITERIA.md). Review the rendered `brief.pdf`, not the Markdown. After the brief changes, check the deck against it again.
 
 ## Done when
 

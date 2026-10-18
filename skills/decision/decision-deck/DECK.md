@@ -32,6 +32,6 @@ slides:
 
 A slide has one of `kpis`, `figure`, or `table`, with 0 to 3 bullets, or bullets only.
 
-Layout: with 0 to 2 bullets, a figure or a table takes the full width. Prefer this. Make figures for slides at 10 x 5.5 inches with fonts of 16 pt or more. The appendix slide may show counts and the release version that are not in the brief.
+Layout: with 0 to 2 bullets, a figure or a table takes the full width. Prefer this. Make figures at 11 x 5 inches with fonts of 16 pt or more. Use one file for the deck and the brief: `out/fig-<what>.png`. Put plotting code in its own script, `code/NN-figures.py`, not in a check script. The appendix slide may show counts and the release version that are not in the brief.
 
 Run the script from the project root: figure paths are relative to it.

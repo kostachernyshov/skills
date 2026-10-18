@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0 (2026-10-18)
+Fixes from test round 5 (see tests/results/round-5.md).
+- decision-brief: 300 words, 1 figure at half width, `scripts/brief_pdf.sh` renders an A4 PDF and counts pages; rule for revising a shipped brief.
+- Deck script: table fonts applied and row height from text; big-number size from text length; larger secondary text.
+- release: re-release of a shipped run without new numbers; brief.pdf; asks about other candidate runs.
+- deck-review: review the rendered brief; replace deck-review.csv per release; source bracket check; space criterion for short bullet slides.
+- DECK.md: one figure file for brief and deck, 11 x 5 in, plotting in its own script. Checkpoint and naming fixes.
+- Plugin and marketplace manifests.
+
 ## 0.5.0 (2026-10-18)
 Fixes from test round 4 (see tests/results/round-4.md).
 - Deck layout script v2: big-number slides (`kpis`), full-width figures and tables, highlighted recommended option, larger fonts, title height fixed.

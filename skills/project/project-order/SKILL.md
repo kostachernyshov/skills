@@ -48,7 +48,7 @@ A table with one row per patient or per sample can identify people. Name it `<wh
 
 ## Names
 
-- Lowercase, hyphens, no spaces: `de-genes-er-pos-vs-neg.csv`.
+- Lowercase, hyphens, no spaces: `de-genes-er-pos-vs-neg.csv`. Python files that other code imports need underscores; keep the style that the project already uses.
 - The name says what the file contains, not when it was made.
 - Figures: `fig-<what>.png`. Tables: `<what>.csv`.
 
