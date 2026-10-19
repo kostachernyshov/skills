@@ -56,7 +56,12 @@ claude plugin install bio-decision-skills@bio-decision
 
 To update: `claude plugin marketplace update bio-decision`, then `claude plugin update bio-decision-skills@bio-decision`.
 
-Codex reads `agents/openai.yaml` in each skill folder: the display name, and if the agent can call the skill by itself.
+Codex (not tested yet) uses the same marketplace and reads `agents/openai.yaml` in each skill folder:
+
+```
+codex plugin marketplace add kosta-blackshow/bio-decision-skills
+codex plugin add bio-decision-skills@bio-decision
+```
 
 Or copy the skills by hand:
 
