@@ -1,0 +1,3 @@
+interface:
+  display_name: "Reviewer"
+  short_description: "Review a deck or brief with the eyes of the reader"

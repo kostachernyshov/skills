@@ -2,11 +2,12 @@
 
 ## Rules
 
-- Follow the skill "project-order" for every new file.
+- Follow the skill "curator" for every new file.
 - Do not change files in `data/` or in `releases/`.
-- Write each decision in `LOG.md`. The person makes decisions.
-- Run the skill "sanity-check" before you state a result.
-- Update the `State` section when a plan is accepted, when a run changes status, and at a release.
+- `run.yaml` is the record of each run: plan, controls, checks, doubts (`todo`), result. Do not keep facts only in the chat.
+- Write each decision of the person in `LOG.md`. The person makes decisions.
+- Run the skill "checker" before you state a result.
+- Do not edit the State block by hand. The curator script builds it from `run.yaml`. You write only the `Next step` line.
 
 ## Data
 
@@ -16,10 +17,6 @@
 
 ## State
 
-Updated: <YYYY-MM-DD>
-
-- Question: <one sentence>
-- Decision it serves: <one sentence, who decides>
-- Current run: <RNN or none>
-- Open: <what is not done>
-- Next step: <one action>
+<!-- curator:begin -->
+- Next step: <the agent writes one action here>
+<!-- curator:end -->

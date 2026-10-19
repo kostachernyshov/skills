@@ -1,0 +1,5 @@
+interface:
+  display_name: "Planner"
+  short_description: "Fix the threshold and controls, get the plan approved"
+policy:
+  allow_implicit_invocation: false

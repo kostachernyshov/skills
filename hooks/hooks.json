@@ -1,0 +1,16 @@
+{
+  "description": "Curator: rebuild the State section of CLAUDE.md from run.yaml files after each agent answer.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/project/curator/scripts/curate.py\" --hook",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

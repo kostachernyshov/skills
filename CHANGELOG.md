@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.0 (2026-10-19)
+Roles. Decision by Kosta, based on Yoon et al. 2026 (agent research tasks): `decisions/2026-10-19-roles-v0.7.md` in the project files. The skill `judge` is added by this decision, not after a test failure: in rounds 1-5 the agent judged its own work and knew more than the files showed.
+- Renamed: `to-analysis-plan` → `planner`, `sanity-check` → `checker`, `decision-brief` → `editor`, `decision-deck` → `designer`, `deck-review` → `reviewer`, `release` → `publisher`.
+- `project-order` and `checkpoint` → `curator`. A script builds the State block in `CLAUDE.md` from `run.yaml`. The plugin runs it with a Claude Code `Stop` hook (`hooks/hooks.json`). The script lists files out of place and never moves or deletes them.
+- New: `judge`. A fresh subagent answers 5 yes/no questions from the files only. One "no" is a veto, written in `run.yaml` (`verdict`).
+- `planner`: positive, negative (shuffled labels), and robustness controls fixed before the data; the person must approve the plan.
+- `checker`: doubts become `todo` lines in `run.yaml`; the word "new" needs a recorded literature search; stop after 3 failed repairs of one check.
+- `editor`: a fresh subagent writes the brief from `run.yaml`, `out/`, and `LOG.md`; then `judge` and `reviewer`.
+- `publisher`: no release with a veto; only the person can override, with a reason in `LOG.md`; the person signs each release.
+- Three points where the person acts: grilling answers, plan approval, release signature.
+- `LOG.md` holds only decisions of the person and releases. Review records: `review-brief.csv`, `review-deck.csv`.
+
 ## 0.6.0 (2026-10-18)
 Fixes from test round 5 (see tests/results/round-5.md).
 - decision-brief: 300 words, 1 figure at half width, `scripts/brief_pdf.sh` renders an A4 PDF and counts pages; rule for revising a shipped brief.

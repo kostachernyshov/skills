@@ -1,0 +1,5 @@
+interface:
+  display_name: "Publisher"
+  short_description: "Freeze a signed release for the client"
+policy:
+  allow_implicit_invocation: false

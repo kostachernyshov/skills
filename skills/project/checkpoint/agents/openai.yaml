@@ -1,5 +1,0 @@
-interface:
-  display_name: "Checkpoint"
-  short_description: "Save the project state for the next session"
-policy:
-  allow_implicit_invocation: false

@@ -1,5 +1,0 @@
-interface:
-  display_name: "Decision Deck"
-  short_description: "Make a short deck from the brief"
-policy:
-  allow_implicit_invocation: false
