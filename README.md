@@ -51,16 +51,16 @@ As a Claude Code plugin (after the repository is public):
 
 ```
 claude plugin marketplace add kostachernyshov/skills
-claude plugin install bio-decision-skills@kostachernyshov
+claude plugin install skills@kostachernyshov
 ```
 
-To update: `claude plugin marketplace update kostachernyshov`, then `claude plugin update bio-decision-skills@kostachernyshov`.
+To update: `claude plugin marketplace update kostachernyshov`, then `claude plugin update skills@kostachernyshov`.
 
 Codex (not tested yet) uses the same marketplace and reads `agents/openai.yaml` in each skill folder:
 
 ```
 codex plugin marketplace add kostachernyshov/skills
-codex plugin add bio-decision-skills@kostachernyshov
+codex plugin add skills@kostachernyshov
 ```
 
 Or copy the skills by hand:
