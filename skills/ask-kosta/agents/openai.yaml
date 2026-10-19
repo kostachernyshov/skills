@@ -1,0 +1,5 @@
+interface:
+  display_name: "Ask Kosta"
+  short_description: "Find the right skill for the next step"
+policy:
+  allow_implicit_invocation: false

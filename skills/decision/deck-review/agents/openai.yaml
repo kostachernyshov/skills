@@ -1,0 +1,3 @@
+interface:
+  display_name: "Deck Review"
+  short_description: "Review a deck with the eyes of the reader"

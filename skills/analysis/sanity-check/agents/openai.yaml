@@ -1,0 +1,3 @@
+interface:
+  display_name: "Sanity Check"
+  short_description: "Check data and results before a conclusion"

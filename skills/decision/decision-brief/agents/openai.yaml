@@ -1,0 +1,5 @@
+interface:
+  display_name: "Decision Brief"
+  short_description: "Write a one-page brief for the decision"
+policy:
+  allow_implicit_invocation: false

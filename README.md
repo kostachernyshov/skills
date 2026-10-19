@@ -50,8 +50,13 @@ scratch/    # temporary
 As a Claude Code plugin (after the repository is public):
 
 ```
-/plugin install bio-decision-skills --marketplace kosta-blackshow/bio-decision-skills
+claude plugin marketplace add kosta-blackshow/bio-decision-skills
+claude plugin install bio-decision-skills@bio-decision
 ```
+
+To update: `claude plugin marketplace update bio-decision`, then `claude plugin update bio-decision-skills@bio-decision`.
+
+Codex reads `agents/openai.yaml` in each skill folder: the display name, and if the agent can call the skill by itself.
 
 Or copy the skills by hand:
 
