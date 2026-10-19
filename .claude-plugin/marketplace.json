@@ -1,8 +1,8 @@
 {
-  "name": "bio-decision",
+  "name": "kostachernyshov",
   "owner": {
     "name": "Kosta",
-    "url": "https://github.com/kosta-blackshow"
+    "url": "https://github.com/kostachernyshov"
   },
   "description": "Bioinformatics decision skills as an installable Claude Code plugin.",
   "plugins": [
