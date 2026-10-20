@@ -78,10 +78,17 @@ def grade_one(scenario_id, project):
            "--dangerously-skip-permissions", "--setting-sources", ""]
     out = subprocess.run(cmd, cwd=blind, env=clean_env(), capture_output=True, text=True, timeout=3600)
     try:
-        result = json.loads(out.stdout.strip().splitlines()[-1])["result"]
+        meta = json.loads(out.stdout.strip().splitlines()[-1])
+        result = meta["result"]
         data = json.loads(result[result.index("{"): result.rindex("}") + 1])
     except Exception as exc:  # noqa: BLE001
         data = {"error": str(exc), "raw": out.stdout[-2000:]}
+    try:
+        data["cost_usd"] = meta.get("total_cost_usd")
+        data["usage"] = meta.get("usage")
+        data["seconds"] = meta.get("duration_ms", 0) / 1000
+    except NameError:
+        pass
     data["blind_name"] = name
     data["traps"] = traps
     return data
@@ -92,7 +99,7 @@ def main():
     jobs = [a.split(":", 1) for a in sys.argv[2:]]
     random.shuffle(jobs)
     results = {}
-    with cf.ThreadPoolExecutor(max_workers=6) as pool:
+    with cf.ThreadPoolExecutor(max_workers=int(os.environ.get("GRADE_WORKERS", "3"))) as pool:
         futs = {pool.submit(grade_one, s, p): (s, p) for s, p in jobs}
         for fut in cf.as_completed(futs):
             s, p = futs[fut]
