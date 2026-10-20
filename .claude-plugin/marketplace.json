@@ -9,13 +9,14 @@
     {
       "name": "skills",
       "source": "./",
-      "description": "Skills for the path from a bioinformatics question to a decision: grilling, project order, sanity checks, decision brief and deck.",
+      "description": "Skills for the path from a bioinformatics question to a decision: grilling, a plan with controls, checks, a brief judged in a fresh context, a deck, and a signed release.",
       "category": "science",
       "keywords": [
         "bioinformatics",
         "skills",
         "grilling",
-        "sanity-check",
+        "checks",
+        "judge",
         "decision-brief"
       ]
     }

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Curator"
+  short_description: "Build project State from run.yaml and keep file order"

@@ -1,5 +1,0 @@
-interface:
-  display_name: "To Analysis Plan"
-  short_description: "Turn the interview into a plan with checks"
-policy:
-  allow_implicit_invocation: false

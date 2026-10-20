@@ -1,0 +1,3 @@
+interface:
+  display_name: "Checker"
+  short_description: "Check data, controls, and results before a conclusion"
