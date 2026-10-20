@@ -9,7 +9,7 @@
 | 5 | Decision and next steps | Options table (what happens, cost if wrong, can reverse). Recommended option. Next steps with owner. |
 | 6 | Appendix: data and methods | Data source, sample counts, method, checks summary, release version. |
 
-Slides 3 and 4 can merge if the result is simple. Use 4 slides minimum.
+Slides 3 and 4 can merge if the result is simple. The title slide does not count. The appendix counts. So a deck has a title slide and 4 to 6 slides.
 
 ## deck.yaml format
 

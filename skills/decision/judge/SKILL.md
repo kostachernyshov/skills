@@ -17,17 +17,17 @@ The judge asks "can the reader trust this?". The skill "reviewer" asks "can the 
    > You are a judge. Read the file `<this skill>/QUESTIONS.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, and `LOG.md`. Do not read `code/`, the chat, or any other file.
 
    Do not give the subagent a summary of the work. Do not tell it what you expect.
-3. Copy the verdict line that the subagent returns into `run.yaml` as the value of `verdict`. Do not change the words. Parse `run.yaml` after the edit.
+3. Copy the verdict line that the subagent returns into `run.yaml` as the value of `verdict`. Do not change the words. Add the checksum of the brief at the end: ` - brief <first 8 characters of sha256sum out/brief.md>`. Parse `run.yaml` after the edit.
 4. If the verdict is `veto`: tell the person the question number and the reason. Fix the cause in the analysis or in the brief. Then start a new subagent. Do not send the old judge your answer.
 5. After 3 vetoes on the same question, stop. Ask the person what to do.
 
 ## Rules
 
 - Only this skill writes `verdict`. Never edit the verdict to `pass` by hand.
-- A change to `brief.md` or to a number in `out/` after the verdict makes the verdict old. Run the judge again.
+- A change to `brief.md` or to a number in `out/` after the verdict makes the verdict old. Run the judge again. The curator script shows a verdict whose checksum does not match the brief as `Open`.
 - If you cannot start a subagent, write `verdict: "veto - Q0: no fresh context; judge not run"` and tell the person. The skill "publisher" stops on it.
 
 ## Done when
 
-- `run.yaml` has `verdict` with `pass` or `veto`, a date, and the reason for a veto.
+- `run.yaml` has `verdict` with `pass` or `veto`, a date, the reason for a veto, and the checksum of the brief.
 - The verdict came from a subagent that did not see the chat.

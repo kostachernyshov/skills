@@ -14,7 +14,7 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 2. Check each chosen run:
    - `status: candidate`. A run with `status: shipped` can go into a new release if only the brief or the deck changed, not the numbers.
    - No check or control is `fail` or `todo`. The `todo` list is empty. A `warn` with evidence is acceptable.
-   - `verdict` starts with `pass`, and the brief did not change after the verdict (compare the date in the verdict with `git log -1 --format=%cs -- <brief>`). If the brief is newer, call the Skill tool with "judge".
+   - `verdict` starts with `pass`, and its checksum matches the brief (`sha256sum out/brief.md`, first 8 characters). If not, call the Skill tool with "judge".
    If a check fails, stop and tell the person.
 3. If the verdict is `veto`: stop. Do not make the release. Tell the person the reason. Only the person can remove a veto. To do it, the person gives a reason, and you write `## <date> · DECISION override: <run> <reason>` in `LOG.md`. Then the brief must name the override in "Confidence and limits": tell the person to run `/editor` again. Never remove a veto yourself.
 4. Show the person what goes out in 4 to 6 lines: version, runs, the Answer line of each brief, the judge verdict, each override. Ask: "Sign release vN? yes / no". Without "yes" from the person, stop. Do not use `assumed` here.

@@ -6,17 +6,18 @@ disable-model-invocation: true
 
 # Ask Kosta
 
-This is a map. It does not run skills. Read the situation, then tell the person which skill to use next and why.
+This is a map. It does not run skills and does not change files. Read the situation, then tell the person which skill to use next and why.
+
+If the skills come as a plugin, each command has the plugin prefix. Write the command as the person must type it (for example `/skills:planner`). Find the prefix in the name of this skill.
 
 ## Main flow: question to decision
 
 1. `/setup-project`: make the layout once (skip if `CLAUDE.md` and `runs/` exist).
 2. `/grill-me`: understand the question and the decision before any analysis. **The person answers.**
-3. `/planner`: fix the success threshold and three controls before the data. **The person approves the plan.**
-4. Say "run the plan". This is not a skill. The agent works in `runs/` and uses "checker" by itself. The curator hook keeps the State.
-5. `/editor`: a fresh subagent writes the one-page brief. The "judge" checks trust. The "reviewer" checks clarity.
-6. `/designer`: 4 to 6 slides from the brief, for the meeting where they decide.
-7. `/publisher`: freeze what the client sees. Only without a judge veto. **The person signs.**
+3. `/planner`: fix the success threshold and three controls before the data. **The person approves the plan.** After "yes" the agent runs the plan in `runs/` and uses "checker" by itself. The curator hook keeps the State.
+4. `/editor`: a fresh subagent writes the one-page brief. The "judge" checks trust. The "reviewer" checks clarity.
+5. `/designer`: 4 to 6 slides from the brief, for the meeting where they decide.
+6. `/publisher`: freeze what the client sees. Only without a judge veto. **The person signs.**
 
 The person is responsible for the result. The three bold steps are where the person acts. An agent does not do them for the person.
 

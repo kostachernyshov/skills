@@ -8,6 +8,7 @@ Usage:
 Deterministic, no model, idempotent: CLAUDE.md changes only when the block changes.
 It never moves or deletes files. It never exits with an error code, so it never blocks the agent.
 """
+import hashlib
 import json
 import os
 import re
@@ -69,6 +70,7 @@ def load_runs(root, yaml):
             errors.append(f"runs/{name}/run.yaml does not parse: {str(exc).splitlines()[0][:80]}")
             continue
         data["_dir"] = name
+        data["_root"] = root
         runs.append(data)
     return runs, errors
 
@@ -100,6 +102,14 @@ def run_items(run):
     if verdict.lower().startswith("veto"):
         items.append(f"{rid} judge {verdict}")
         all_ok = False
+    m = re.search(r"brief ([0-9a-f]{8})", verdict)
+    brief = os.path.join(run["_root"], "runs", run["_dir"], "out", "brief.md")
+    if m and os.path.isfile(brief):
+        with open(brief, "rb") as fh:
+            digest = hashlib.sha256(fh.read()).hexdigest()[:8]
+        if digest != m.group(1):
+            items.append(f"{rid} judge verdict is old: brief.md changed after it (run the judge again)")
+            all_ok = False
     status = str(run.get("status", "")).strip()
     if status not in RUN_STATUS:
         items.append(f"{rid} status '{status}' is not valid")

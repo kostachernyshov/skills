@@ -15,6 +15,8 @@
 
 ## Brief criteria
 
+Score each criterion 2 (good), 1 (weak), or 0 (fails), as for slides.
+
 - One page in `brief.pdf`. The answer is the line after the question.
 - Each number from the analysis has its source bracket.
 - Each section has its job: Evidence has numbers, Limits has warnings, Options has cost of error, Next steps has owners.

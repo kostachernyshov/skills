@@ -9,7 +9,7 @@ The project memory is computed, not written. The source of truth is `run.yaml` i
 
 ## How it runs
 
-- In Claude Code, the plugin hook runs the script after each answer of the agent (the `Stop` event). You do not start it.
+- In Claude Code, the plugin hook runs the script after each answer of the agent (the `Stop` event). You do not start it. Do not run it by hand after each edit. Run it by hand only when you need the State in the same answer, for example before a commit.
 - Without the hook (Codex, or a manual install), run it yourself at the end of a session: `python3 <this skill>/scripts/curate.py <project root>`.
 - The script is fast and has no model. It writes `CLAUDE.md` only when the State changes. It does not delete or move files.
 
@@ -18,7 +18,7 @@ The project memory is computed, not written. The source of truth is `run.yaml` i
 The block between `<!-- curator:begin -->` and `<!-- curator:end -->` in `CLAUDE.md`:
 
 - **Known**: each run where all checks and controls are `pass`, `warn`, or `n/a`, with its `result`.
-- **Open**: each check or control with `todo` or `fail`, each line in the `todo` list of a run, each judge veto, and each `run.yaml` that does not parse.
+- **Open**: each check or control with `todo` or `fail`, each line in the `todo` list of a run, each judge veto, each verdict whose checksum does not match `out/brief.md`, and each `run.yaml` that does not parse.
 - **Order**: each file that is not in its place (see the table below).
 - **Next step**: one line. You write this line. The script keeps it. It is the only line in the block that you change.
 

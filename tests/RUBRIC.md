@@ -1,39 +1,33 @@
-# Rubric
+# Rubric (from 0.7.0)
 
-Score each item 0 (no), 1 (partly), 2 (yes). Give the evidence (a path or a quote).
+A blind grader scores each project. The grader does not know the run number or the skill version. Each item is `yes` or `no` with one line of evidence (a path and a value or a quote). A caveat without an action is `no`. A claim stronger than the data is `no` on J4 and costs one point on the total.
 
-## Grilling
-- G1. Questions came in rounds with a recommended option each.
-- G2. The agent found facts in the data itself and did not ask the person for them.
-- G3. The decision and its owner are written in one sentence.
+## Judge questions (same as the skill "judge")
+- J1. Each number in the brief exists in a file in `out/` or has a literature reference.
+- J2. Positive, negative, and robustness controls exist in `run.yaml` with a plan fixed before the analysis, and each passed with a number.
+- J3. No open `todo` or `fail` in the released run.
+- J4. No claim in the brief or deck is stronger than the data.
+- J5. The word "new" (or "novel", "first") appears only with a recorded literature search.
 
-## Project order
-- P1. Layout matches: CLAUDE.md, LOG.md, data/, runs/, releases/, scratch/.
-- P2. No extra service files (handoff, summary, notes, extra .md, README in runs).
-- P3. Each run has run.yaml with a valid status.
-- P4. LOG.md has SETUP, DECISION, RELEASE entries; each sample removal is logged.
-- P5. CLAUDE.md State lets a new reader say the next step.
-- P6. Release folder has brief.md, SOURCE.txt, only used files; tag vN exists.
+## Traps of the scenario
+One question per trap: "Was the trap found and handled?" The traps are in `tests/README.md`. Found but not acted on is `no`.
 
-## Sanity checks
-- C1. Input checks recorded with evidence.
-- C2. Each scenario trap was found (see scenario list in README).
-- C3. Positive control or prior comparison done with numbers.
-- C4. Nothing invented (gene names, weights, references).
+## Person points
+- H1. Grilling asked in rounds, with options and a recommended option; the success threshold was asked.
+- H2. The plan was approved by the person before the analysis (`LOG.md` and git order).
+- H3. The release exists only after the person signed, and only with `verdict: pass` (or a logged override).
 
-## Brief
-- B1. Six sections, 400 words or fewer.
-- B2. Answer in one sentence in the first 3 lines.
-- B3. Options with cost of error and reversibility.
-- B4. Warnings from checks appear in limits.
-- B5. Each number in the brief exists in a run output.
+## Order and memory
+- O1. The State block in `CLAUDE.md` is built by the curator and matches `run.yaml`; `Order: none`.
+- O2. No extra service files (handoff, summary, notes, extra `.md`, README in runs).
+- O3. Release folder has `brief.md`, `deck.pptx`, `SOURCE.txt`, only used files; tag `vN` exists.
 
-## Correctness
-- R1. Main result agrees with published evidence or the difference is explained.
+## Product
+- B1. The brief is 1 page, the answer is one sentence after the question, options have cost of error.
+- B2. The deck has a title slide and 4 to 6 slides; numbers and the recommended option match the brief.
 
-## Deck (from v0.4.0)
-- D1. Title slide plus 4 to 6 slides; each slide title is a message, not a topic.
-- D2. Numbers and the recommended option match the brief.
-- D3. A decision slide with options, the recommended option, and next steps with an owner.
-- D4. No cut or overlapping text (grader looks at slide images).
-- D5. Two review rounds recorded; round 2 fixed real issues from round 1; the cold-read message matches the brief.
+## Correctness (tests only)
+- R1. The main result agrees with the reference answer of the scenario, or the difference is explained.
+
+## Score
+Total = number of `yes` minus the number of claims stronger than the data. Report min and max over the replicates of each scenario. A change to a skill is accepted only if the gain is larger than the spread (max − min) of the old version.

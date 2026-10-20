@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.1 (2026-10-20)
+Fixes from test round 6 (see tests/results/round-6.md).
+- `planner`: the positive control size needs a source and is not computed from the predictor. The negative control uses at least 200 shuffles and compares to the shuffled distribution. Robustness variants are named before the data. One figure `out/fig-<what>.png`. After "yes" the agent runs the plan without another command.
+- `checker`: a positive or negative control fail stops the work. A robustness fail does not block; it becomes `warn - answer changes when <variant>`, and the Answer says so. Each doubt is accepted by name; a general "use your recommendation" does not accept it.
+- `judge`: the verdict carries the checksum of `brief.md`. A defect means "no". A wrong source file, an unnamed robustness warn, an unsupported options cell, or a blanket acceptance of doubts is a "no".
+- `curator`: the script shows a verdict whose checksum does not match the brief. Do not run the script by hand after each edit; the hook runs it.
+- `editor`: the main agent may change words and layout, not numbers or claims; render the PDF again and run the judge again after each change.
+- `publisher`: compares the verdict checksum with `brief.md`.
+- `designer`: 4 to 6 slides; the title slide does not count, the appendix does. `reviewer`: brief criteria scored 0/1/2.
+- `ask-kosta`: commands with the plugin prefix; 6 steps.
+- Tests: scenarios s7-s9 with reference answers, blind grader (`tests/harness/grade.py`), skill-use table (`tests/harness/skill_usage.py`), resume after a usage limit.
+
 ## 0.7.0 (2026-10-19)
 Roles. Decision by Kosta, based on Yoon et al. 2026 (agent research tasks): `decisions/2026-10-19-roles-v0.7.md` in the project files. The skill `judge` is added by this decision, not after a test failure: in rounds 1-5 the agent judged its own work and knew more than the files showed.
 - Renamed: `to-analysis-plan` → `planner`, `sanity-check` → `checker`, `decision-brief` → `editor`, `decision-deck` → `designer`, `deck-review` → `reviewer`, `release` → `publisher`.
