@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Tests: misuse tests. `tests/misuse/*.json` hold the errors of the person per step. `tests/harness/run_misuse.py` runs them, with `--resume` after a usage limit. Results of round 1 on 0.7.1: `tests/results/misuse-1.md`.
+
 ## 0.8.0 (2026-10-21)
 Solution model and project rules. Decision by Kosta, without a test failure: `decisions/2026-10-21-model-and-rules.md` in the project files. Closes #2 and #3.
 - `grilling`: builds the solution model of the project (useful action, method, plausibility) in `CLAUDE.md` between `model:begin` and `model:end`. The useful action is never `assumed`; when the person cannot name it, the agent proposes 2 to 4 options from the context. Without the person, the model stays `draft`. Each later grilling shows the model and asks if it is still valid. Changes go in `DECISION model`.

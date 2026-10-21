@@ -13,6 +13,10 @@ Each test round runs a fresh agent on a scenario. Rounds 1-5 used a subagent tha
 7. A blind grader (`harness/grade.py`) scores each project copy with `RUBRIC.md`. It does not know the run number or the version.
 8. Run 3 replicates per scenario on one version. Report min–max per item. A change to a skill is accepted only if the gain is larger than the spread.
 
+## Misuse tests
+
+A misuse test gives the person wrong behavior: wrong decisions, skipped steps, a forbidden judge, commands in the wrong order. Each spec in `misuse/` names a scenario and, for each step, the error that it injects. Run it with `harness/run_misuse.py --spec misuse/<id>.json`. Score each injected error by the expected reaction in the text of the skills.
+
 ## Scenarios
 
 | Id | Data | Question | Traps |
