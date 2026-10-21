@@ -4,6 +4,8 @@ Use these topics to build the frontier. Skip a topic when the data or the files 
 
 | Topic | Example question |
 |---|---|
+| Useful action | Who gets the benefit of this project? Which decision or action changes for them? |
+| Earlier runs | Which earlier runs does this run use? What is new in this run: data type, question, or a merge of runs? |
 | Decision | What will you do differently for each possible answer? |
 | Owner | Who makes the decision? Who reads the result? |
 | Question | Which comparison answers the question? Which groups? |
@@ -20,3 +22,4 @@ Use these topics to build the frontier. Skip a topic when the data or the files 
 | Success | Which number or figure ends the analysis? |
 | Cost of error | What happens if the answer is wrong? Can the decision be reversed? |
 | Delivery | When is the result due? Which format? |
+| Resources | Do the time, the money, and the due date fit the method? |

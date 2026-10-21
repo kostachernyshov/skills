@@ -20,7 +20,7 @@ The agent that did the analysis remembers things that are not in the files. So a
    Do not give the subagent a summary of the work.
 3. Read the brief that the subagent wrote. You may change words and layout (for example to fit one page or to apply a fix of the reviewer). You may not add a number or a claim. If the brief misses a fact that the reader needs, put the fact in a file in `out/` or in `run.yaml` first. Then start a new subagent.
    After each change, render the PDF again: `bash <this skill>/scripts/brief_pdf.sh runs/RNN-<slug>/out/brief.md`. It prints the page count.
-4. Call the Skill tool with "judge". If the verdict is `veto`, fix the cause and go back to step 2 or to the analysis.
+4. Call the Skill tool with "judge". If the verdict is `veto`, fix the cause and go back to step 2 or to the analysis. After the fix, call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 5. Call the Skill tool with "reviewer" for the brief.
 6. If the brief changed after the verdict (any edit, also words), call the Skill tool with "judge" again. The verdict holds a checksum of the brief, so an old verdict is visible.
 7. Write the `Next step` line in the State block of `CLAUDE.md`.

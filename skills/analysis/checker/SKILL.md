@@ -25,7 +25,7 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 
 ## Steps
 
-1. Find the data type. Open [CHECKS.md](CHECKS.md). Take the checks for that type.
+1. Find the data type. Open [CHECKS.md](CHECKS.md). Take the checks for that type. Read `## Project rules` in `CLAUDE.md`. Apply each rule to this run.
 2. Before the analysis, run the **input checks**.
 3. Run the analysis.
 4. Run the three **controls** from the plan: positive, negative (shuffled labels), robustness. Use the rules that the plan fixed. Do not change a pass rule after you see the result.
@@ -33,14 +33,14 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
    - The robustness control reports the answer, it does not block it. If the answer is the same in all variants: `pass`. If the answer changes in a variant: `warn - answer changes when <variant>`. Then the answer is "not robust" or "only when <condition>", and the brief must say so in the Answer line. This is a valid result for the person.
 5. Run the **result checks**. One of them is `prior`: compare the main result with the `prior` field. Write agrees, partly agrees, or disagrees, with the two numbers side by side. If the prior uses a different scale (for example a high-vs-low class HR against your per-SD HR), first compute your result on the prior's scale. If the prior measures a different thing, write `warn - not comparable - <reason>`. If no prior exists, write `n/a - no prior; controls are the evidence`.
 6. If the main result is near the `success` threshold, compute the answer at 2 or 3 nearby thresholds. Save the table. The brief uses it.
-7. For each `fail`: stop and tell the person what failed and what you propose.
+7. For each `fail`: stop and tell the person what failed and what you propose. After the fix, call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 
 ## Doubts become todo
 
 - When you write or think "not checked", "possibly", "probably", "maybe", "unclear", or "probably new", add one line to the `todo` list in `run.yaml`. A doubt that is only in the chat is lost.
 - To close a `todo`, do the work. Then delete the line and put the evidence in a check, a control, or `notes`.
 - A run with an open `todo` cannot go to a brief. If the person decides to accept the doubt, write a `DECISION` in `LOG.md` and change the line into a `warn` check with that reason.
-- Ask about each `todo` line by its name. A general answer ("use your recommendation", "ok", "fine") does not accept a doubt. Ask again for that line. The `DECISION` entry names each accepted line and quotes the words of the person. The brief names each accepted doubt as a limit.
+- Ask about each `todo` line by its name. A general answer ("use your recommendation", "ok", "fine") does not accept a doubt. Ask again for that line. The `DECISION` entry names each accepted line and quotes the words of the person. The brief names each accepted doubt as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 
 ## The word "new"
 
@@ -58,6 +58,7 @@ The plan can be wrong. Examples: a pre-set cut-off rule gives a cut-off that mis
 1. Keep the planned result in the run. Set the run `status: dropped` only if nothing in it is usable.
 2. Start a new run with `parent` set to the first run. Put the changed method in the new run. Set the first run to `superseded` when the new run replaces it.
 3. Add a `DECISION` entry to `LOG.md` that starts with `post-hoc:`. Say what changed and why. Write the same line in `notes` of the new run. The brief must say that the choice was made after the data were seen. This also applies to a sensitivity analysis or a subgroup that you added after you saw the outcome.
+4. Call the Skill tool with "curator" and follow "Project rules" to propose a rule. The next run must not repeat the problem.
 
 ## Never
 

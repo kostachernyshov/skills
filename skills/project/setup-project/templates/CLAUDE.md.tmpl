@@ -7,7 +7,23 @@
 - `run.yaml` is the record of each run: plan, controls, checks, doubts (`todo`), result. Do not keep facts only in the chat.
 - Write each decision of the person in `LOG.md`. The person makes decisions.
 - Run the skill "checker" before you state a result.
+- Read the solution model and the project rules before each run. Each run starts with grilling.
+- Never change or delete a project rule. Only the person edits that section.
 - Do not edit the State block by hand. The curator script builds it from `run.yaml`. You write only the `Next step` line.
+
+## Solution model
+
+<!-- model:begin -->
+- Useful action: <who gets the benefit; which decision or action changes>
+- Method: <which data; which comparison; which result ends the work>
+- Plausibility: <mechanism or prior; controls; known limits>
+- Limits: <what the project cannot answer>
+- Confirmed: draft - not confirmed
+<!-- model:end -->
+
+## Project rules
+
+<!-- One line per rule: - RULE-NN (<run>, <date>): <rule>. Why: <problem>. The agent adds rules after the person says yes. Only the person edits or deletes them. -->
 
 ## Data
 

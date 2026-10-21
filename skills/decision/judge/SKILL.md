@@ -1,6 +1,6 @@
 ---
 name: judge
-description: Decide in a fresh context if a brief can be trusted. A subagent that sees only the files answers 5 fixed yes/no questions. One "no" is a veto. Use after a brief is written or changed, and before a release.
+description: Decide in a fresh context if a brief can be trusted. A subagent that sees only the files answers 6 fixed yes/no questions. One "no" is a veto. Use after a brief is written or changed, and before a release.
 ---
 
 # Judge
@@ -14,7 +14,7 @@ The judge asks "can the reader trust this?". The skill "reviewer" asks "can the 
 1. Find the run: `runs/RNN-<slug>/`. It must have `run.yaml`, `out/`, and `out/brief.md`.
 2. Start a new subagent with the Agent tool. Give it only this prompt, with the paths filled in:
 
-   > You are a judge. Read the file `<this skill>/QUESTIONS.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, and `LOG.md`. Do not read `code/`, the chat, or any other file.
+   > You are a judge. Read the file `<this skill>/QUESTIONS.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, `LOG.md`, and the section `## Project rules` in `CLAUDE.md`. Do not read `code/`, the chat, or any other file.
 
    Do not give the subagent a summary of the work. Do not tell it what you expect.
 3. Copy the verdict line that the subagent returns into `run.yaml` as the value of `verdict`. Do not change the words. Add the checksum of the brief at the end: ` - brief <first 8 characters of sha256sum out/brief.md>`. Parse `run.yaml` after the edit.

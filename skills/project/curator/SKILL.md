@@ -1,6 +1,6 @@
 ---
 name: curator
-description: Keep the project memory and file order. The State section in CLAUDE.md is built from run.yaml files by a script, not written by hand. Use each time you create, save, or move a file in a project that has runs/ and releases/ folders, and at the end of a work session.
+description: Keep the project memory and file order. The State section in CLAUDE.md is built from run.yaml files by a script, not written by hand. Project rules keep the lessons of earlier runs. Use each time you create, save, or move a file in a project that has runs/ and releases/ folders, and at the end of a work session.
 ---
 
 # Curator
@@ -35,7 +35,40 @@ The script never moves an item to "Known". Only the checks move it. To close an 
 | Facts about one iteration: plan, checks, doubts, result | `runs/RNN-<slug>/run.yaml` |
 | What the client sees | `releases/vN-<YYYY-MM-DD>/` (only the skill "publisher" writes here) |
 | A decision of the person (plan accepted, post-hoc change, override, release) | one entry in `LOG.md` |
+| The solution model of the project | the `model` block in `CLAUDE.md` (only the skill "grilling" writes it) |
+| A lesson for later runs | one line in `## Project rules` in `CLAUDE.md` and one `RULE` entry in `LOG.md` |
 | Anything temporary | `scratch/` |
+
+## Project rules
+
+A project rule keeps a lesson of one run for all later runs. Without it, the same problem can occur again in the next run.
+
+When to propose a rule:
+- after you fix a `fail`,
+- after a `post-hoc` change,
+- after you fix the cause of a judge veto,
+- after the person accepts a `todo` line by name,
+- when the person says "remember this".
+
+Steps:
+1. Write the rule as one instruction in one line. Name the run and the problem.
+2. Ask the person: "Add project rule RULE-NN: <rule>? yes / no". NN is the highest rule number in `CLAUDE.md` or `LOG.md` + 1.
+3. Without "yes", stop. The rule does not exist.
+4. After "yes", add one line at the end of the section `## Project rules` in `CLAUDE.md`:
+   `- RULE-NN (<run>, <YYYY-MM-DD>): <rule>. Why: <problem>.`
+5. Add one entry to `LOG.md`:
+   ```
+   ## <YYYY-MM-DD> · RULE RULE-NN
+   rule: <rule>
+   why: <problem in <run>>
+   accepted: <person>
+   ```
+6. If the rule applies to any bioinformatics project, not only this one, tell the person. Propose an issue in the skills repository: https://github.com/kostachernyshov/skills/issues.
+
+Rules for rules:
+- Never change or delete a project rule. Only the person edits the section, by hand.
+- The curator script does not build or change this section.
+- A run that does not follow a rule needs a `DECISION deviation RULE-NN` entry from grilling. The judge checks it.
 
 ## Patient-level tables
 

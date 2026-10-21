@@ -39,3 +39,4 @@ scratch/       # temporary files, not in git
 - The layout exists and is in the first commit.
 - `CLAUDE.md` names each input file and its source.
 - The State block exists in `CLAUDE.md`.
+- `CLAUDE.md` has the section `Solution model` (draft) and the section `Project rules` (empty).
