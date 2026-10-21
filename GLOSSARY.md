@@ -17,5 +17,9 @@
 | release | A frozen set of results that the client saw. `releases/vN-<date>/`. Never changed. The person signs it. |
 | brief | The one-page decision brief. |
 | frontier | The open questions in a grilling interview. |
+| solution model | A short explanation of the project in `CLAUDE.md`: useful action (who gets the benefit), method (how), plausibility (why it can work). Only grilling writes it. The person confirms it before each run. |
+| task of the run | The `DECISION grilling` entry for one run: question, method, plausibility, inputs, threshold. |
+| project rule | A lesson of one run for all later runs: `RULE-NN` in `## Project rules` in `CLAUDE.md`. The agent adds it after the person says yes. Only the person edits or deletes it. |
+| deviation | A `DECISION deviation RULE-NN` entry in `LOG.md`: the person chose not to follow a rule in one run. The brief names it. |
 | State | The block in `CLAUDE.md` that says where the work is now. The curator script builds it from `run.yaml`. |
 | responsibility points | The three steps where the person acts: grilling answers, plan approval, release signature. |

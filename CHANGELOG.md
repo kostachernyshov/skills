@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.8.0 (2026-10-21)
+Solution model and project rules. Decision by Kosta, without a test failure: `decisions/2026-10-21-model-and-rules.md` in the project files. Closes #2 and #3.
+- `grilling`: builds the solution model of the project (useful action, method, plausibility) in `CLAUDE.md` between `model:begin` and `model:end`. The useful action is never `assumed`; when the person cannot name it, the agent proposes 2 to 4 options from the context. Without the person, the model stays `draft`. Each later grilling shows the model and asks if it is still valid. Changes go in `DECISION model`.
+- `grilling`: the entry is the task of one run: `run`, `method`, `plausibility`, `inputs` (earlier runs), `rules`. Checks contradictions between the useful action, the data and method, and the resources. Reads the project rules and warns when an answer goes against one; a deviation is a `DECISION deviation RULE-NN` with the words of the person.
+- Each new run starts with `/grill-me`. `planner` stops without a grilling entry for the new run or with a `draft` model. `run.yaml` has `inputs` and `rules`.
+- Project rules: `curator` holds the steps. After a fixed `fail`, a post-hoc change, a fixed veto cause, an accepted `todo`, or "remember this", the agent proposes `RULE-NN` in one line. After "yes" it adds the line to `## Project rules` in `CLAUDE.md` and a `RULE` entry to `LOG.md`. The agent never changes or deletes a rule; only the person does, by hand. A general rule becomes a proposed issue in this repository.
+- `checker` and `editor` call "curator" to propose a rule. `checker` applies the project rules.
+- `judge`: question 6 (rules); the judge also reads `## Project rules` in `CLAUDE.md`.
+- `setup-project`: the `CLAUDE.md` template has the sections `Solution model` and `Project rules`. `LOG.md` entry types: `DECISION model`, `DECISION deviation`, `RULE`.
+- `ask-kosta`: each new run starts at `/grill-me`; new rows for a new run and for a lesson.
+
 ## 0.7.1 (2026-10-20)
 Fixes from test round 6 (see tests/results/round-6.md).
 - `planner`: the positive control size needs a source and is not computed from the predictor. The negative control uses at least 200 shuffles and compares to the shuffled distribution. Robustness variants are named before the data. One figure `out/fig-<what>.png`. After "yes" the agent runs the plan without another command.

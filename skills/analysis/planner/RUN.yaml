@@ -6,6 +6,7 @@ parent: null          # the run this run changes, for example R01
 created: "YYYY-MM-DD"
 question: "<one sentence>"
 decision: "<the decision the result serves, and who makes it>"
+inputs: []           # earlier runs that this run uses, for example [R01, R02]
 samples: "<inclusion rule, exclusion rule, counts>"
 method: "<one line, with the package>"
 params: {}
@@ -23,6 +24,7 @@ controls:             # fixed before the data are analysed. result: "status - ev
   robustness:
     plan: "<nearby thresholds and named subgroups; the answer must not flip>"
     result: "todo"
+rules: {}             # RULE-NN: "<how this run follows the rule>" or "deviation - LOG.md <date>"
 checks:               # name: "status - evidence". status: todo | pass | warn | fail | n/a
   ids-match: "todo"
 todo: []              # each doubt as one line: "not checked", "maybe", "possibly new"

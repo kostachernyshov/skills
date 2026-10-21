@@ -13,7 +13,7 @@ If the skills come as a plugin, each command has the plugin prefix. Write the co
 ## Main flow: question to decision
 
 1. `/setup-project`: make the layout once (skip if `CLAUDE.md` and `runs/` exist).
-2. `/grill-me`: understand the question and the decision before any analysis. **The person answers.**
+2. `/grill-me`: build the solution model (who gets the benefit, how, why it can work) and the task of the run. **The person answers.** Each new run starts here.
 3. `/planner`: fix the success threshold and three controls before the data. **The person approves the plan.** After "yes" the agent runs the plan in `runs/` and uses "checker" by itself. The curator hook keeps the State.
 4. `/editor`: a fresh subagent writes the one-page brief. The "judge" checks trust. The "reviewer" checks clarity.
 5. `/designer`: 4 to 6 slides from the brief, for the meeting where they decide.
@@ -27,15 +27,17 @@ The person is responsible for the result. The three bold steps are where the per
 |---|---|
 | A result looks wrong or surprising | "checker" (ask the agent to run it) |
 | The judge gave a veto | Fix the cause, then `/editor` again. Only the person can override, with a reason in `LOG.md`. |
+| A new run: a new data type, a new question, or a merge of earlier runs | `/grill-me`, then `/planner`. Grilling asks if the solution model is still valid. |
 | The question changed | `/grill-me` again, then `/planner` for a new run |
+| A lesson must hold for later runs | Ask the agent to add a project rule ("curator"). Only you edit or delete rules, by hand in `CLAUDE.md`. |
 | The work session ends | Nothing. The curator hook updates the State. Without the hook, ask the agent to run "curator". |
 
 ## Under the flow (the agent uses them by itself)
 
-- "grilling": the interview method.
+- "grilling": the interview method. It builds the solution model and checks the project rules.
 - "checker": checks and controls before each result; doubts become `todo`.
-- "curator": file order and the State block, built from `run.yaml` by a script.
-- "judge": a fresh subagent answers 5 yes/no questions; one "no" is a veto.
+- "curator": file order, the State block built from `run.yaml` by a script, and the project rules.
+- "judge": a fresh subagent answers 6 yes/no questions; one "no" is a veto.
 - "reviewer": two review rounds of the deck and the brief with the eyes of the reader.
 
 ## Not in this repository
@@ -47,6 +49,6 @@ Raw data processing and pipelines. Use these instead:
 
 ## How to answer
 
-1. Look at the project: does `CLAUDE.md` exist? Read the State block. Which runs exist and what status? Is there a verdict? Is there a release?
+1. Look at the project: does `CLAUDE.md` exist? Is the solution model confirmed or `draft`? Does `LOG.md` have a grilling entry for the next run? Read the State block. Which runs exist and what status? Is there a verdict? Is there a release?
 2. Find the step in the main flow.
 3. Say the next skill in one line and the reason in one line.

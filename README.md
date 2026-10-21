@@ -4,7 +4,7 @@ Skills for Claude Code (and other agents that read SKILL.md) for one path: from 
 
 This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`). This repository covers the layers around the method. Each skill is one role with one clear action:
 
-- understand the question before the work (`grill-me`, `grilling`),
+- understand the task before the work: who gets the benefit, how, and why it can work (`grill-me`, `grilling`),
 - fix the threshold and the controls before the data (`planner`),
 - check each result before you state it (`checker`),
 - keep the project memory and order without manual notes (`setup-project`, `curator`),
@@ -26,12 +26,12 @@ Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the co
 | `ask-kosta` | person | Map of the flow. Tells the next skill. |
 | `setup-project` | person | Makes the project layout and two service files. |
 | `grill-me` | person | Starts `grilling`. |
-| `grilling` | agent | Interview in rounds until the question, the decision, and the success threshold are clear. |
+| `grilling` | agent | Interview in rounds until the solution model of the project and the task of the run are clear. Checks the project rules. |
 | `planner` | person | Writes the plan in the first run: threshold, positive, negative, and robustness controls. The person approves it. |
 | `checker` | agent | Checks and controls before each result. Doubts become `todo`. "New" only after a literature search. Stops after 3 failed repairs. |
-| `curator` | hook + agent | A script builds the State in `CLAUDE.md` from `run.yaml` after each answer and lists files out of place. |
+| `curator` | hook + agent | A script builds the State in `CLAUDE.md` from `run.yaml` after each answer and lists files out of place. Keeps the project rules. |
 | `editor` | person | A fresh subagent writes the one-page brief from the files. Then calls `judge` and `reviewer`. |
-| `judge` | agent | A fresh subagent answers 5 yes/no questions from the files only. One "no" is a veto. |
+| `judge` | agent | A fresh subagent answers 6 yes/no questions from the files only. One "no" is a veto. |
 | `designer` | person | 4 to 6 slides from the brief for the decision meeting. Calls `reviewer`. |
 | `reviewer` | agent | Two review rounds of the deck or the brief with the eyes of the reader. |
 | `publisher` | person | Freezes a release. Only without a veto, and only after the person signs. |
