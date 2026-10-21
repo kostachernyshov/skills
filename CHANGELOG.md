@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Tests: round 8 for 0.8.0 (`tests/results/round-8.md`). New scenarios `s10-vague-model` and `s11-two-runs-rule`. `run_scenario.py` reads an optional `flow.json` and the persona text for a second run. New `harness/check_rules.py`.
+
 ## 0.8.0 (2026-10-21)
 Solution model and project rules. Decision by Kosta, without a test failure: `decisions/2026-10-21-model-and-rules.md` in the project files. Closes #2 and #3.
 - `grilling`: builds the solution model of the project (useful action, method, plausibility) in `CLAUDE.md` between `model:begin` and `model:end`. The useful action is never `assumed`; when the person cannot name it, the agent proposes 2 to 4 options from the context. Without the person, the model stays `draft`. Each later grilling shows the model and asks if it is still valid. Changes go in `DECISION model`.
