@@ -124,12 +124,13 @@ def truncate_session(project, session):
             return
 
 
-def candidate_exists(project):
+def candidate_count(project):
+    n = 0
     for path in glob.glob(os.path.join(project, "runs", "*", "run.yaml")):
         with open(path) as fh:
             if re.search(r"^status:\s*(candidate|shipped)", fh.read(), re.M):
-                return True
-    return False
+                n += 1
+    return n
 
 
 def main():
@@ -148,6 +149,8 @@ def main():
     persona = open(os.path.join(a.scenario, "persona.md")).read()
     m = re.search(r'## What \w+ says first\n"(.+?)"\n', persona, re.S)
     opening = m.group(1).strip() if m else ""
+    m2 = re.search(r'## What \w+ says for the second run\n"(.+?)"\n', persona, re.S)
+    opening2 = m2.group(1).strip() if m2 else ""
     os.makedirs(a.log, exist_ok=True)
     start_step, start_prompt, session, n, transcript = 0, None, None, 0, []
     if a.resume:
@@ -169,7 +172,13 @@ def main():
         for f in os.listdir(a.data):
             shutil.copy(os.path.join(a.data, f), os.path.join(a.project, "incoming", f))
 
-    steps = [
+    flow = os.path.join(a.scenario, "flow.json")
+    if os.path.exists(flow):
+        # A scenario can set its own command order, for example two runs in one project.
+        steps = [(FRICTION if p == "FRICTION" else p.format(opening=opening, opening2=opening2), k)
+                 for p, k in json.load(open(flow))]
+    else:
+        steps = [
         ("/skills:ask-kosta " + opening, 0),
         ("/skills:setup-project", 1),
         ("/skills:grill-me " + opening, 4),
@@ -179,7 +188,7 @@ def main():
         ("/skills:designer", 2),
         ("/skills:publisher", 3),
         (FRICTION, 0),
-    ]
+        ]
     agent_args = ["--plugin-dir", a.plugin, "--model", a.model, "--dangerously-skip-permissions"]
     for i, (prompt, loops) in enumerate(steps[: a.stop_after]):
         if i < start_step:
@@ -213,7 +222,8 @@ def main():
             tries += 1
             answer = persona_answer(persona, text, a.persona_model, a.log, n)
             if answer.strip().startswith("NO_QUESTION"):
-                if steps[i][0] == "Run the plan." and not candidate_exists(a.project) and tries < loops:
+                runs_so_far = sum(1 for p, _ in steps[: i + 1] if p == "Run the plan.")
+                if steps[i][0] == "Run the plan." and candidate_count(a.project) < runs_so_far and tries < loops:
                     prompt = "Continue until the plan is done and the run is a candidate."
                     continue
                 break
