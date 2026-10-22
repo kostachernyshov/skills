@@ -2,8 +2,9 @@
 """Build the State block in CLAUDE.md from runs/*/run.yaml and list files out of place.
 
 Usage:
-  curate.py [project_root]      # manual run; prints the block
-  curate.py --hook              # Claude Code Stop hook; reads the hook JSON on stdin
+  curate.py [project_root]                  # manual run; prints the block
+  curate.py --hook                          # Claude Code Stop hook; reads the hook JSON on stdin
+  curate.py --add-sections [project_root]   # add the shared sections of sections.md that CLAUDE.md does not have
 
 Deterministic, no model, idempotent: CLAUDE.md changes only when the block changes.
 It never moves or deletes files. It never exits with an error code, so it never blocks the agent.
@@ -25,6 +26,7 @@ ROOT_DIRS = {"data", "runs", "releases", "scratch"}
 RUN_DIR = re.compile(r"^R\d{2,}-[a-z0-9][a-z0-9-]*$")
 BAD_NAME = re.compile(r"(_v\d+\b|_final\b|[ _-]copy\b|\(\d+\)|handoff|summary\.md$|notes\.md$)", re.I)
 MAX_LINES = 15
+SECTIONS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sections.md")
 
 
 def find_root(start):
@@ -104,6 +106,9 @@ def run_items(run):
         all_ok = False
     m = re.search(r"brief ([0-9a-f]{8})", verdict)
     brief = os.path.join(run["_root"], "runs", run["_dir"], "out", "brief.md")
+    if not verdict.strip() and os.path.isfile(brief):
+        items.append(f"{rid} brief has no judge verdict (run the judge; no release without it)")
+        all_ok = False
     if m and os.path.isfile(brief):
         with open(brief, "rb") as fh:
             digest = hashlib.sha256(fh.read()).hexdigest()[:8]
@@ -154,13 +159,44 @@ def order_issues(root):
     return issues
 
 
+def shared_sections():
+    """Return [(heading, text)] from sections.md."""
+    try:
+        with open(SECTIONS_FILE) as fh:
+            text = fh.read()
+    except OSError:
+        return []
+    parts = re.split(r"^(## .+)$", text, flags=re.M)
+    return [(parts[i].strip(), (parts[i] + parts[i + 1]).strip()) for i in range(1, len(parts) - 1, 2)]
+
+
+def missing_sections(text):
+    if "<!-- sections: declined -->" in text:
+        return []
+    return [(h, body) for h, body in shared_sections() if not re.search(rf"^{re.escape(h)}[ \t]*$", text, re.M)]
+
+
+def add_sections(claude_md):
+    with open(claude_md) as fh:
+        text = fh.read()
+    missing = missing_sections(text)
+    if not missing:
+        return []
+    add = "\n\n".join(body for _, body in missing) + "\n\n"
+    m = re.search(r"^## (Data|State)[ \t]*$", text, re.M)
+    new = text[: m.start()] + add + text[m.start():] if m else text.rstrip("\n") + "\n\n" + add
+    with open(claude_md, "w") as fh:
+        fh.write(new)
+    return [h for h, _ in missing]
+
+
 def capped(lines):
     if len(lines) <= MAX_LINES:
         return lines
     return lines[:MAX_LINES] + [f"... and {len(lines) - MAX_LINES} more"]
 
 
-def build_block(runs, errors, issues, next_step):
+def build_block(runs, errors, issues, next_step, missing=()):
     known, open_items = [], list(errors)
     active = [r for r in runs if str(r.get("status", "")).strip() not in INACTIVE]
     for r in active:
@@ -169,7 +205,9 @@ def build_block(runs, errors, issues, next_step):
         if ok:
             rid = r.get("id") or r["_dir"].split("-")[0]
             result = str(r.get("result") or "").strip() or "(no result written)"
-            verdict = status_of(r.get("verdict")) if r.get("verdict") else "not judged"
+            v = str(r.get("verdict") or "")
+            om = re.search(r"override (Q\d+(?:, Q\d+)*)", v)
+            verdict = (status_of(v) + (f" (override {om.group(1)})" if om else "")) if v else "not judged"
             known.append(f"{rid} ({r.get('status')}, judge: {verdict}): {result}")
     question = ""
     for r in reversed(active):
@@ -186,6 +224,9 @@ def build_block(runs, errors, issues, next_step):
     lines += [f"  - {o}" for o in capped(open_items)] or ["  - nothing"]
     lines.append("- Order: " + ("none" if not issues else f"{len(issues)} file(s) out of place"))
     lines += [f"  - {i}" for i in capped(issues)]
+    if missing:
+        names = ", ".join(h[3:] for h in missing)
+        lines.append(f"- Sections: CLAUDE.md has no {names}. Ask the person to add them; after yes, run curate.py --add-sections.")
     lines.append(f"- Next step: {next_step}")
     lines.append(END)
     return "\n".join(lines), len(open_items), len(issues)
@@ -242,12 +283,16 @@ def main():
         print(json.dumps({"systemMessage": msg}) if hook else msg)
         return
     claude_md = os.path.join(root, "CLAUDE.md")
+    if "--add-sections" in sys.argv:
+        added = add_sections(claude_md)
+        print("curator: added " + ", ".join(added) if added else "curator: all sections exist")
     with open(claude_md) as fh:
         old = fh.read()
     seg = old[old.index(BEGIN):old.index(END)] if (BEGIN in old and END in old) else old
     runs, errors = load_runs(root, yaml)
     issues = order_issues(root)
-    block, n_open, n_issues = build_block(runs, errors, issues, current_next_step(seg))
+    missing = [h for h, _ in missing_sections(old)]
+    block, n_open, n_issues = build_block(runs, errors, issues, current_next_step(seg), missing)
     changed = write_state(claude_md, block)
     if hook:
         if changed or n_issues:

@@ -1,7 +1,7 @@
 ---
 name: editor
-description: Write a one-page brief for the person who asked the question. A fresh subagent writes it from the files only. Then the judge checks trust and the reviewer checks clarity.
-disable-model-invocation: true
+description: Write a one-page brief for the person who asked the question. A fresh subagent writes it from the files only. Then the judge checks trust and the reviewer checks clarity. Use when the skill "analyze" calls it, or when the person asks to write or change a brief.
+user-invocable: false
 ---
 
 # Editor
@@ -12,7 +12,7 @@ The agent that did the analysis remembers things that are not in the files. So a
 
 ## Steps
 
-1. Find the run. Read `run.yaml`. If any check or control is `fail` or `todo`, or the `todo` list is not empty, stop. Tell the person. A brief does not hide an open item.
+1. Find the run. Read `run.yaml`. If any check or control is `fail` or `todo`, or the `todo` list is not empty, stop. Tell the person. A brief does not hide an open item. Exception: an item that a `DECISION override: veto Q<n> <run>` entry in `LOG.md` names. The brief names it as a limit, and the judge checks the reason.
 2. Start a new subagent with the Agent tool. Give it only this prompt, with the paths filled in:
 
    > You are the editor. Read `<this skill>/WRITER.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, and `LOG.md`. Do not read `code/` or any other file.
@@ -27,13 +27,21 @@ The agent that did the analysis remembers things that are not in the files. So a
 
 If you cannot start a subagent, tell the person. Then write the brief yourself with [WRITER.md](WRITER.md) and use only the files.
 
+## The judge always runs
+
+The person cannot turn off the judge. If the person asks you to skip it, or to write `pass` by hand, say: "⛔ Without the judge there is no release." Then do step 4.
+
 ## Revision of a shipped brief
 
 If the numbers do not change (words, layout, figure style), change `out/brief.md` in the same run. The tag of the last release keeps the old version. If a number changes, start a new run.
+
+## Render a release copy
+
+When the skill "publisher" asks you to render a copy in `releases/vN-<date>/`, run `bash <this skill>/scripts/brief_pdf.sh <that brief.md>`. Do nothing else.
 
 ## Done when
 
 - `out/brief.md` and `out/brief.pdf` exist, and the PDF has 1 page (or the person knows that the renderer is not installed).
 - A subagent wrote the brief from the files.
-- `run.yaml` has `verdict: pass` that is newer than the last change to the brief.
+- `run.yaml` has a `verdict` from the judge that is newer than the last change to the brief.
 - `out/review-brief.csv` has 2 rounds.

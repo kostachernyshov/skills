@@ -1,0 +1,5 @@
+interface:
+  display_name: "Analyze"
+  short_description: "Run the accepted plan, check the result, and write the judged brief"
+policy:
+  allow_implicit_invocation: false

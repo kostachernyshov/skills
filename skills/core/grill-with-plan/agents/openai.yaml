@@ -1,0 +1,5 @@
+interface:
+  display_name: "Grill With Plan"
+  short_description: "Get interviewed, then approve the plan of the run"
+policy:
+  allow_implicit_invocation: false

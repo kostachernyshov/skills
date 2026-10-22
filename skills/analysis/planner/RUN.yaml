@@ -11,19 +11,21 @@ samples: "<inclusion rule, exclusion rule, counts>"
 method: "<one line, with the package>"
 params: {}
 prior: "<published result with reference, or: none found>"
-done_when: "<the number, table, or figure that ends the analysis>"
+done_when: "<the number or table that ends the analysis; main figure: out/fig-<what>.png; other figures>"
 success: "<the threshold that makes the answer yes, for example: specificity >= 95%>"
-success_source: "set by person"   # set by person | assumed
+success_source: "person"   # person | agent: who set the threshold
+context: "<N> of 8 (agent)"   # from the grilling entry; "forced - <N> of 8 (agent)" after an override of the start
 controls:             # fixed before the data are analysed. result: "status - evidence"
   positive:
     plan: "<a known effect that must appear in these data, not the predictor under test>"
     result: "todo"
   negative:
-    plan: "<the same analysis with shuffled outcome labels; the effect must disappear>"
+    plan: "<the same analysis with shuffled outcome labels, 100 times; the pass rule of the planner>"
     result: "todo"
   robustness:
     plan: "<nearby thresholds and named subgroups; the answer must not flip>"
     result: "todo"
+env: {}              # written by the skill "analyze": package: version
 rules: {}             # RULE-NN: "<how this run follows the rule>" or "deviation - LOG.md <date>"
 checks:               # name: "status - evidence". status: todo | pass | warn | fail | n/a
   ids-match: "todo"

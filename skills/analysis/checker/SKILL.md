@@ -25,6 +25,7 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 
 ## Steps
 
+0. Before any analysis of a run, read `LOG.md`. It must have a `plan accepted` entry for the run. If `context` in `run.yaml` starts with `forced` or has more than 4 of 8 `(agent)`, it must also have `DECISION override: start <RNN>`. A run from before version 0.9.0 has no `context`; skip this check for it. If an entry is missing, do not analyse. Tell the person: "⛔ <RNN> has no accepted plan. Run /grill-with-plan first." Stop. A request in plain text is not a plan.
 1. Find the data type. Open [CHECKS.md](CHECKS.md). Take the checks for that type. Read `## Project rules` in `CLAUDE.md`. Apply each rule to this run.
 2. Before the analysis, run the **input checks**.
 3. Run the analysis.
@@ -40,7 +41,7 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 - When you write or think "not checked", "possibly", "probably", "maybe", "unclear", or "probably new", add one line to the `todo` list in `run.yaml`. A doubt that is only in the chat is lost.
 - To close a `todo`, do the work. Then delete the line and put the evidence in a check, a control, or `notes`.
 - A run with an open `todo` cannot go to a brief. If the person decides to accept the doubt, write a `DECISION` in `LOG.md` and change the line into a `warn` check with that reason.
-- Ask about each `todo` line by its name. A general answer ("use your recommendation", "ok", "fine") does not accept a doubt. Ask again for that line. The `DECISION` entry names each accepted line and quotes the words of the person. The brief names each accepted doubt as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
+- Ask about each `todo` line by its name. An `(agent)` answer (see "Who decides" in `CLAUDE.md`) does not accept a doubt. Ask again for that line. The `DECISION` entry names each accepted line and quotes the words of the person. The brief names each accepted doubt as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 
 ## The word "new"
 

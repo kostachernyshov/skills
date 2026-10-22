@@ -4,14 +4,15 @@ Skills for Claude Code (and other agents that read SKILL.md) for one path: from 
 
 This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`). This repository covers the layers around the method. Each skill is one role with one clear action:
 
-- understand the task before the work: who gets the benefit, how, and why it can work (`grill-me`, `grilling`),
+- understand the task before the work: who gets the benefit, how, and why it can work (`grill-me`, `grill-with-plan`, `grilling`),
 - fix the threshold and the controls before the data (`planner`),
+- start the analysis only from an accepted plan, in a clean context (`analyze`),
 - check each result before you state it (`checker`),
 - keep the project memory and order without manual notes (`setup-project`, `curator`),
 - write the brief in a fresh context and judge it from the files only (`editor`, `judge`, `reviewer`),
 - give the person a short deck and a signed release (`designer`, `publisher`).
 
-The person is responsible for the result. The person acts at three points: the answers in grilling, the approval of the plan, and the signature of the release.
+The person is responsible for the result. The person acts at three points: the answers in grilling, the approval of the plan, and the signature of the release. Each decision line shows who made it: `(person)` or `(agent)`.
 
 Scope of version 1: processed tabular data (expression tables, clinical tables, mutation calls, survival). No raw data.
 
@@ -26,15 +27,17 @@ Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the co
 | `ask-kosta` | person | Map of the flow. Tells the next skill. |
 | `setup-project` | person | Makes the project layout and two service files. |
 | `grill-me` | person | Starts `grilling`. |
-| `grilling` | agent | Interview in rounds until the solution model of the project and the task of the run are clear. Checks the project rules. |
-| `planner` | person | Writes the plan in the first run: threshold, positive, negative, and robustness controls. The person approves it. |
+| `grill-with-plan` | person | `grilling`, then `planner`. Ends when the person approves the plan. Each new run starts here. |
+| `grilling` | agent | Interview in rounds until the solution model of the project and the task of the run are clear. Marks each decision `(person)` or `(agent)`. Checks the project rules. |
+| `planner` | agent | Writes the plan: threshold, positive, negative, and robustness controls. The person approves it. If more than half of the decisions came from the agent, the person must say "start anyway". Does not run the analysis. |
+| `analyze` | person | Runs the accepted plan, best in a new session: environment, code, figures, checks, then `editor`. Stops without an accepted plan. |
 | `checker` | agent | Checks and controls before each result. Doubts become `todo`. "New" only after a literature search. Stops after 3 failed repairs. |
 | `curator` | hook + agent | A script builds the State in `CLAUDE.md` from `run.yaml` after each answer and lists files out of place. Keeps the project rules. |
-| `editor` | person | A fresh subagent writes the one-page brief from the files. Then calls `judge` and `reviewer`. |
-| `judge` | agent | A fresh subagent answers 6 yes/no questions from the files only. One "no" is a veto. |
+| `editor` | agent | A fresh subagent writes the one-page brief from the files. Then calls `judge` and `reviewer`. |
+| `judge` | agent | A fresh subagent answers 7 yes/no questions from the files only. One "no" is a veto. It always runs. It checks the reason of an override. |
 | `designer` | person | 4 to 6 slides from the brief for the decision meeting. Calls `reviewer`. |
 | `reviewer` | agent | Two review rounds of the deck or the brief with the eyes of the reader. |
-| `publisher` | person | Freezes a release. Only without a veto, and only after the person signs. |
+| `publisher` | person | Freezes a release. Only with a judge pass or a valid override, and only after the person signs. |
 
 "Person" skills have `disable-model-invocation: true`. Type `/name` to start them. "Agent" skills start by themselves when the situation fits. A person skill can call an agent skill, never another person skill.
 

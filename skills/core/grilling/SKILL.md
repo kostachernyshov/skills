@@ -14,10 +14,12 @@ Grilling works on two levels:
 
 Each new run starts with grilling. The skill "planner" does not make a run without a grilling entry for that run.
 
+Follow the sections "Who decides" and "Chat style" in `CLAUDE.md`. Mark each answer `(person)` or `(agent)`. Number the questions through the whole session.
+
 ## Process
 
 1. Read what exists: the request, the data files, `CLAUDE.md` (the solution model, the project rules, the State), `LOG.md` (grilling entries, `post-hoc`, `deviation`, and `RULE` entries), and the `result` and `notes` of each `run.yaml`. Find facts yourself. Do not ask the person for a fact that the files can show.
-2. Find the id of the next run: `R01`, or the highest run number + 1.
+2. Find the id of the next run: the newest run without a `plan accepted` entry in `LOG.md`, or the highest run number + 1.
 3. Make sure that the solution model is ready:
    - If `CLAUDE.md` has no solution model, or the model is `draft`, build it first. See "Solution model" below. The model questions are the first rounds.
    - If the model is confirmed, show it to the person in 3 to 5 lines. Ask one question: "Is the solution model still valid? yes / change". If the answer is "change", ask only about the parts that changed.
@@ -31,7 +33,7 @@ Each new run starts with grilling. The skill "planner" does not make a run witho
    - options on short lines,
    - your recommended option, marked,
    - one line: why the answer changes the analysis.
-7. Read the answers. The word "yes" accepts all recommendations. Compare each answer with the project rules (see "Project rules"). Remove answered questions from the frontier. Add new questions that the answers open.
+7. Read the answers. The word "yes" accepts all recommendations as `(person)`. A choice that the person gives to you is `(agent)`. Compare each answer with the project rules (see "Project rules"). Remove answered questions from the frontier. Add new questions that the answers open.
 8. Do step 6 again until the frontier is empty.
 9. If the solution model is new or changed, write it in `CLAUDE.md` and add one `DECISION model` entry to `LOG.md` (see "Solution model").
 10. Write the task of the run in `LOG.md` as one `DECISION` entry with these lines, in this order:
@@ -39,20 +41,21 @@ Each new run starts with grilling. The skill "planner" does not make a run witho
 ```
 ## <YYYY-MM-DD> · DECISION grilling
 run: <RNN, the run that the planner will make>
-question: <one sentence>
-decision: <what changes with the answer>; owner: <who decides>; reader: <who reads>
-method: <which data, which comparison, which result ends this run>
-plausibility: <why this run can answer the question: mechanism, prior, controls>
+question: <one sentence> (person | agent)
+decision: <what changes with the answer>; owner: <who decides>; reader: <who reads> (person | agent)
+method: <which data, which comparison, which result ends this run> (person | agent)
+plausibility: <why this run can answer the question: mechanism, prior, controls> (person | agent)
 inputs: <earlier runs that this run uses, or: none>
-cost-of-error: <which error costs more>
-population: <who is in scope>
-reference: <the reference test or variable, if any>
-success: <threshold for "yes">, on <assay or platform where the decision applies> (set by person | assumed)
+cost-of-error: <which error costs more> (person | agent)
+population: <who is in scope> (person | agent)
+reference: <the reference test or variable, if any> (person | agent)
+success: <threshold for "yes">, on <assay or platform where the decision applies> (person | agent)
 prior: <result, reference> (strong | weak | none found)
 rules: <RULE ids that apply to this run, or: none>
 sources: <URLs or references used; blocked sources>
-assumed: <one line per choice made without the person>
+context: <N> of 8 (agent)
 ```
+   `context` counts the 8 lines with a `(person | agent)` mark. If more than 4 are `(agent)`, tell the person: "<N> of 8 decisions came from me, not from you. The planner will ask before it starts." Ask again about these lines if the person is available.
    The question rounds stay in the chat. Do not save them in a file. If `LOG.md` does not exist, tell the person to run `/setup-project` first.
 
 ## Solution model
@@ -79,8 +82,8 @@ Rules for the model:
 
 - Ask for the useful action first. Without it, the project is not ready.
 - If the person cannot name who gets the benefit, do not leave the person alone with the question. Propose 2 to 4 options from the context: the request, the data, the expected patient group, or the general logic of the task. Give one line per option: why you think so. The person chooses an option or writes their own.
-- Never mark the useful action `assumed`. Only the person can choose it.
-- You may propose the method and the plausibility. The person confirms each part. The word "yes" to a round with your proposal confirms it.
+- The model has no `(agent)` part. Only the person chooses the useful action.
+- You may propose the method and the plausibility. The person confirms each part. The word "yes" to a round with your proposal confirms it. A choice that the person gives to you does not confirm it.
 - The model is not ready if it does not answer "why" (useful action) or "how" (method). A vague part is not ready. Ask again.
 - If the person is not available, write `Confirmed: draft - not confirmed`. Stop. Tell the person that the model needs their answer. The planner does not start on a draft model.
 - Each change of the model gets one entry in `LOG.md`:
@@ -120,9 +123,9 @@ reason: <the words of the person>
 ## Rules
 
 - The person makes decisions. You find facts.
-- Always ask for the success threshold: the number that makes the answer "yes". If the person cannot give one, recommend one and mark it `assumed`. The brief must show it.
-- When an answer is vague or does not answer the question, restate it as a rule and ask for "yes". If the person is not available, use your rule and mark it `assumed`. This does not apply to the useful action.
-- When the person is not available, use the recommended option. Write one `assumed:` line for each such choice in the `DECISION` entry. Continue. This does not apply to the useful action.
+- Always ask for the success threshold: the number that makes the answer "yes". If the person cannot give one, recommend one and mark it `(agent)`. The brief must show it.
+- When an answer is vague or does not answer the question, restate it as a rule and ask for "yes".
+- When the person does not choose, or is not available, use the recommended option and mark the line `(agent)`. Continue. This does not apply to the solution model.
 - Stop when the frontier is empty. Do not ask questions that do not change the analysis.
 
 ## Done when
@@ -133,4 +136,4 @@ reason: <the words of the person>
 - One sentence states the decision that the answer serves and who makes it.
 - The published prior is named, or the entry says `prior: none found`.
 - Each project rule that conflicts with an answer has a `follow` answer or a `DECISION deviation` entry.
-- Each blocking topic has an answer or an `assumed:` line.
+- Each of the 8 decision lines has `(person)` or `(agent)`, and the entry has the `context` line.

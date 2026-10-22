@@ -15,8 +15,8 @@ import re
 import sys
 
 
-KNOWN = {"ask-kosta", "setup-project", "grill-me", "grilling", "planner", "checker", "curator",
-         "editor", "judge", "designer", "reviewer", "publisher"}
+KNOWN = {"ask-kosta", "setup-project", "grill-me", "grill-with-plan", "grilling", "planner", "analyze", "checker",
+         "curator", "editor", "judge", "designer", "reviewer", "publisher"}
 SKILL_FILE = re.compile(r"(?:/skills/(?:[a-z-]+/)?|[\s;'\"])([a-z-]+)/((?:SKILL|[A-Z]+)\.md|scripts/[\w.]+|RUN\.yaml|templates)")
 
 
