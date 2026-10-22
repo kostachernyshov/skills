@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Tests: round 8 for 0.8.0 (`tests/results/round-8.md`). New scenarios `s10-vague-model` and `s11-two-runs-rule`. `run_scenario.py` reads an optional `flow.json` and the persona text for a second run. New `harness/check_rules.py`.
+- Tests: misuse tests. `tests/misuse/*.json` hold the errors of the person per step. `tests/harness/run_misuse.py` runs them, with `--resume` after a usage limit. Results of round 1 on 0.7.1: `tests/results/misuse-1.md`.
 
 ## 0.8.0 (2026-10-21)
 Solution model and project rules. Decision by Kosta, without a test failure: `decisions/2026-10-21-model-and-rules.md` in the project files. Closes #2 and #3.
