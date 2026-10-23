@@ -81,7 +81,7 @@ Write it between the markers in `CLAUDE.md`. Only this skill writes this block. 
 Rules for the model:
 
 - Ask for the useful action first. Without it, the project is not ready.
-- If the person cannot name who gets the benefit, do not leave the person alone with the question. Propose 2 to 4 options from the context: the request, the data, the expected patient group, or the general logic of the task. Give one line per option: why you think so. The person chooses an option or writes their own.
+- If the person cannot name who gets the benefit, do not leave the person alone with the question. Propose 2 to 4 options from the context: the request, the data, the expected patient group, or the general logic of the task. Give one line per option: why you think so. Do not mark an option as recommended. A "yes" must not choose the useful action for the person. The person chooses an option or writes their own.
 - The model has no `(agent)` part. Only the person chooses the useful action.
 - You may propose the method and the plausibility. The person confirms each part. The word "yes" to a round with your proposal confirms it. A choice that the person gives to you does not confirm it.
 - The model is not ready if it does not answer "why" (useful action) or "how" (method). A vague part is not ready. Ask again.
@@ -123,7 +123,7 @@ reason: <the words of the person>
 ## Rules
 
 - The person makes decisions. You find facts.
-- Always ask for the success threshold: the number that makes the answer "yes". If the person cannot give one, recommend one and mark it `(agent)`. The brief must show it.
+- Always ask for the success threshold: the number that makes the answer "yes". If the person cannot give one, recommend one and mark it `(agent)`. The report must show it.
 - When an answer is vague or does not answer the question, restate it as a rule and ask for "yes".
 - When the person does not choose, or is not available, use the recommended option and mark the line `(agent)`. Continue. This does not apply to the solution model.
 - Stop when the frontier is empty. Do not ask questions that do not change the analysis.

@@ -13,17 +13,17 @@
 | consistency | All numbers on the slide come from the same patient group, or the slide says which group each number is from. | Numbers from different groups or models sit side by side without labels ("n=451" in the figure, "420 patients" in the text). |
 | decision | (Decision slide only.) Options, the recommended option, cost of error, and next steps with an owner are visible at once. | The reader cannot say what to do next. |
 
-## Brief criteria
+## Report criteria
 
 Score each criterion 2 (good), 1 (weak), or 0 (fails), as for slides.
 
-- One page in `brief.pdf`. The answer is the line after the question.
+- One page in `report.pdf`. The answer is the line after the question.
 - Each number from the analysis has its source bracket.
 - Each section has its job: Evidence has numbers, Limits has warnings, Options has cost of error, Next steps has owners.
 - No word that the reader does not know. No file or column names in the text, except the source brackets.
 
 ## Deck-level checks
 
-- The deck title and slide 2 give the same answer as the brief.
+- The deck title and slide 2 give the same answer as the report.
 - The story order: question → answer → evidence → limits → decision.
 - The deck can be presented in 10 minutes: 4 to 6 slides plus the title slide.

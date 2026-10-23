@@ -31,14 +31,14 @@ scratch/       # temporary files, not in git
    Ask the person: "Give your first name, last name, and role. They go into LOG.md, the release signature, and the final report for the client." Write the answer in the `Person:` line of `CLAUDE.md`. Do not take the name from the account or the e-mail address.
 5. Make `AGENTS.md` so that other agents read the same rules. Try a symlink to `CLAUDE.md`. If the symlink fails, write one line in `AGENTS.md`: `Read CLAUDE.md. It has all project rules.`
 6. Move each input file into `data/`. If the files came in another folder (for example `incoming/`), move them and delete the empty folder. Do not change the content of input files.
-7. Record each input file in the `Data` table of `CLAUDE.md`. Source status: `verified` if you checked the source, `named by client` if the client named it and you could not check it, `not known` if nobody knows, `derived from <source>` for a file you made from another source (for example a table extracted from a paper or a package).
+7. Record each input file in the `Data` table of `CLAUDE.md`. Write the md5 checksum of each file. Source status: `verified` if you checked the source, `public, not checked` for a public file with a likely source that you could not check (name the likely source), `named by client` if the client named it and you could not check it, `not known` if nobody knows, `derived from <source>` for a file you made from another source (for example a table extracted from a paper or a package).
 8. Run `git init` if the folder is not a git repository. Make the first commit.
 9. Call the Skill tool with "curator". Apply its rules from now on. Run its script once with `--add-sections`. It adds the sections "Who decides" and "Chat style" and builds the State block.
 
 ## Done when
 
 - The layout exists and is in the first commit.
-- `CLAUDE.md` names each input file and its source.
+- `CLAUDE.md` names each input file, its source, and its md5 checksum.
 - `CLAUDE.md` has the `Person:` line with the name and the role that the person gave. No project file has an e-mail address.
 - The State block exists in `CLAUDE.md`.
 - `CLAUDE.md` has the section `Solution model` (draft), the section `Project rules` (empty), and the sections `Who decides` and `Chat style`.

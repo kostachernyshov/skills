@@ -1,3 +1,0 @@
-interface:
-  display_name: "Judge"
-  short_description: "Check in a fresh context if a brief can be trusted"

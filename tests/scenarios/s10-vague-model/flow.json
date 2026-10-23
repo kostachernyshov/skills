@@ -1,7 +1,7 @@
 [
- ["/skills:ask-kosta {opening}", 0],
- ["/skills:setup-project", 1],
- ["/skills:grill-me {opening}", 6],
- ["/skills:planner", 1],
+ ["/kostachernyshov-skills:ask-kosta {opening}", 0],
+ ["/kostachernyshov-skills:setup-project", 1],
+ ["/kostachernyshov-skills:grill-me {opening}", 6],
+ ["/kostachernyshov-skills:planner", 1],
  ["FRICTION", 0]
 ]

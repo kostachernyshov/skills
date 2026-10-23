@@ -8,7 +8,7 @@ Each test round runs a fresh agent on a scenario. Rounds 1-5 used a subagent tha
 2. Give the agent: the path to `skills/`, the path to `persona.md`, the project folder. Do not give it `RUBRIC.md`.
 3. From 0.7.0 the test runs in real Claude Code with the plugin installed (`harness/run_scenario.py`). A driver types the person commands in this order: `/ask-kosta`, `/setup-project`, `/grill-me`, `/planner`, "Run the plan.", `/editor`, `/designer`, `/publisher`. The agent skills and the curator hook start by themselves.
    A scenario can set its own command order in `flow.json` (for example two runs in one project). `harness/check_rules.py` prints the solution model, the project rules, and the turn of each rule write.
-4. A persona model answers the questions of the agent from `persona.md`. A question without an answer gets "use your recommendation". The persona signs a release only without a judge veto.
+4. A persona model answers the questions of the agent from `persona.md`. A question without an answer gets "use your recommendation". The persona signs a release only without a supervisor veto.
 5. At the end the agent reports the skills it used and each point where a skill was unclear or wrong (friction).
 6. `harness/skill_usage.py` makes the table "skill → called → when" from the session logs.
 7. A blind grader (`harness/grade.py`) scores each project copy with `RUBRIC.md`. It does not know the run number or the version.
@@ -16,7 +16,7 @@ Each test round runs a fresh agent on a scenario. Rounds 1-5 used a subagent tha
 
 ## Misuse tests
 
-A misuse test gives the person wrong behavior: wrong decisions, skipped steps, a forbidden judge, commands in the wrong order. Each spec in `misuse/` names a scenario and, for each step, the error that it injects. Run it with `harness/run_misuse.py --spec misuse/<id>.json`. Score each injected error by the expected reaction in the text of the skills.
+A misuse test gives the person wrong behavior: wrong decisions, skipped steps, a forbidden supervisor, commands in the wrong order. Each spec in `misuse/` names a scenario and, for each step, the error that it injects. Run it with `harness/run_misuse.py --spec misuse/<id>.json`. Score each injected error by the expected reaction in the text of the skills.
 
 ## Scenarios
 

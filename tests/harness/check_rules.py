@@ -53,7 +53,7 @@ def main(run):
         vd = re.search(r"^verdict:.*$", y, re.M)
         print(f"\n## {path}\n" + (st.group(0) if st else "status: ?") + "\n" + (vd.group(0) if vd else "verdict: none"))
         print("rules block:\n" + (rm.group(0).strip() if rm else "MISSING"))
-    print("\n## judge answers to Q6 (from the logs)")
+    print("\n## supervisor answers to Q6 (from the logs)")
     for path in sorted(glob.glob(os.path.join(log, "turn-*.jsonl"))):
         for q6 in sorted(set(re.findall(r"Q6: (?:yes|no)[^\\\n\"]{0,160}", open(path).read()))):
             print(os.path.basename(path) + ": " + q6)

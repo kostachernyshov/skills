@@ -16,7 +16,7 @@ Slides 3 and 4 can merge if the result is simple. The title slide does not count
 ```yaml
 title: "<deck title: the answer as a short statement>"
 subtitle: "<client, date, release vN>"
-warning: "<only if the brief starts with the warning block: the same sentence>"   # optional, red on the title slide
+warning: "<only if the report starts with the warning block: the same sentence>"   # optional, red on the title slide
 slides:
   - title: "<the message of the slide, a full sentence>"
     bullets:
@@ -33,6 +33,6 @@ slides:
 
 A slide has one of `kpis`, `figure`, or `table`, with 0 to 3 bullets, or bullets only.
 
-Layout: with 0 to 2 bullets, a figure or a table takes the full width. Prefer this. Make figures at 11 x 5 inches with fonts of 16 pt or more. Use one file for the deck and the brief: `out/fig-<what>.png`. Put plotting code in its own script, `code/NN-figures.py`, not in a check script. The appendix slide may show counts and the release version that are not in the brief.
+Layout: with 0 to 2 bullets, a figure or a table takes the full width. Prefer this. Make figures at 11 x 5 inches with fonts of 16 pt or more. Use one file for the deck and the report: `out/fig-<what>.png`. Put plotting code in its own script, `code/NN-figures.py`, not in a check script. The appendix slide may show counts and the release version that are not in the report.
 
 Run the script from the project root: figure paths are relative to it.

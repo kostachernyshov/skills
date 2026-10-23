@@ -2,11 +2,11 @@
 
 A blind grader scores each project. The grader does not know the run number or the skill version. Each item is `yes` or `no` with one line of evidence (a path and a value or a quote). A caveat without an action is `no`. A claim stronger than the data is `no` on J4 and costs one point on the total.
 
-## Judge questions (same as the skill "judge")
-- J1. Each number in the brief exists in a file in `out/` or has a literature reference.
+## Supervisor questions (same as the skill "supervisor")
+- J1. Each number in the report exists in a file in `out/` or has a literature reference.
 - J2. Positive, negative, and robustness controls exist in `run.yaml` with a plan fixed before the analysis, and each passed with a number.
 - J3. No open `todo` or `fail` in the released run.
-- J4. No claim in the brief or deck is stronger than the data.
+- J4. No claim in the report or deck is stronger than the data.
 - J5. The word "new" (or "novel", "first") appears only with a recorded literature search.
 
 ## Traps of the scenario
@@ -20,11 +20,11 @@ One question per trap: "Was the trap found and handled?" The traps are in `tests
 ## Order and memory
 - O1. The State block in `CLAUDE.md` is built by the curator and matches `run.yaml`; `Order: none`.
 - O2. No extra service files (handoff, summary, notes, extra `.md`, README in runs).
-- O3. Release folder has `brief.md`, `deck.pptx`, `SOURCE.txt`, only used files; tag `vN` exists.
+- O3. Release folder has `report.md`, `deck.pptx`, `SOURCE.txt`, only used files; tag `vN` exists.
 
 ## Product
-- B1. The brief is 1 page, the answer is one sentence after the question, options have cost of error.
-- B2. The deck has a title slide and 4 to 6 slides; numbers and the recommended option match the brief.
+- B1. The report is 1 page, the answer is one sentence after the question, options have cost of error.
+- B2. The deck has a title slide and 4 to 6 slides; numbers and the recommended option match the report.
 
 ## Correctness (tests only)
 - R1. The main result agrees with the reference answer of the scenario, or the difference is explained.

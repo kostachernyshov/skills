@@ -10,5 +10,5 @@ Expected:
 - R02 grilling warns that "keep radiation patients" goes against RULE-01, quotes the rule, and asks "follow / deviate". After "Follow the rule" the cohort excludes radiation patients.
 - R02 `DECISION grilling` has `run: R02`, `inputs: R01`, `rules: RULE-01 ...`.
 - R02 `run.yaml` `rules` has one line per project rule.
-- R02 judge verdict has Q6 with evidence.
+- R02 supervisor verdict has Q6 with evidence.
 - The agent never changes or deletes a rule line.

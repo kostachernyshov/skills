@@ -38,7 +38,7 @@ Rules:
 - Read the last message of the agent. If it asks you a question, asks for approval, or asks you to sign, answer in 1 to 6 short lines, as this person.
 - Use only facts from your role. If your role does not have the answer, say: "I do not know. Use your recommendation."
 - If the agent proposes a plan and it fits your goal, approve it with "yes".
-- If the agent asks you to sign a release: sign ("yes, I sign") only if the agent says the judge gave no veto. If there is a veto, say "No. Fix the cause first." Never invent an override.
+- If the agent asks you to sign a release: sign ("yes, I sign") only if the agent says the supervisor gave no veto. If there is a veto, say "No. Fix the cause first." Never invent an override.
 - If the message asks nothing of you, says the work is done, or only asks if it should continue or run the next step or command, reply exactly: NO_QUESTION. The next command comes from someone else.
 - Do not do the analysis. Do not give numbers that are not in your role.
 - Do not say what the answer of the analysis should be, and do not give your own recommendation on the decision. You wait for the analysis.
@@ -179,14 +179,14 @@ def main():
                  for p, k in json.load(open(flow))]
     else:
         steps = [
-        ("/skills:ask-kosta " + opening, 0),
-        ("/skills:setup-project", 1),
-        ("/skills:grill-me " + opening, 4),
-        ("/skills:planner", 3),
+        ("/kostachernyshov-skills:ask-kosta " + opening, 0),
+        ("/kostachernyshov-skills:setup-project", 1),
+        ("/kostachernyshov-skills:grill-me " + opening, 4),
+        ("/kostachernyshov-skills:planner", 3),
         ("Run the plan.", 4),
-        ("/skills:editor", 2),
-        ("/skills:designer", 2),
-        ("/skills:publisher", 3),
+        ("/kostachernyshov-skills:editor", 2),
+        ("/kostachernyshov-skills:designer", 2),
+        ("/kostachernyshov-skills:publisher", 3),
         (FRICTION, 0),
         ]
     agent_args = ["--plugin-dir", a.plugin, "--model", a.model, "--dangerously-skip-permissions"]

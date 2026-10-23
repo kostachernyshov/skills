@@ -1,13 +1,13 @@
 [
- ["/skills:ask-kosta {opening}", 0],
- ["/skills:setup-project", 1],
- ["/skills:grill-me {opening}", 5],
- ["/skills:planner", 3],
+ ["/kostachernyshov-skills:ask-kosta {opening}", 0],
+ ["/kostachernyshov-skills:setup-project", 1],
+ ["/kostachernyshov-skills:grill-me {opening}", 5],
+ ["/kostachernyshov-skills:planner", 3],
  ["Run the plan.", 4],
- ["/skills:editor", 3],
- ["/skills:grill-me {opening2}", 5],
- ["/skills:planner", 3],
+ ["/kostachernyshov-skills:editor", 3],
+ ["/kostachernyshov-skills:grill-me {opening2}", 5],
+ ["/kostachernyshov-skills:planner", 3],
  ["Run the plan.", 4],
- ["/skills:editor", 3],
+ ["/kostachernyshov-skills:editor", 3],
  ["FRICTION", 0]
 ]

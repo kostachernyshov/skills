@@ -7,17 +7,17 @@
   "description": "Bioinformatics decision skills as an installable Claude Code plugin.",
   "plugins": [
     {
-      "name": "skills",
+      "name": "kostachernyshov-skills",
       "source": "./",
-      "description": "Skills for the path from a bioinformatics question to a decision: grilling, a plan with controls, checks, a brief judged in a fresh context, a deck, and a signed release.",
+      "description": "Skills for the path from a bioinformatics question to a decision: grilling, a plan with controls, checks, a report checked by a supervisor in a fresh context, a deck, and a signed release.",
       "category": "science",
       "keywords": [
         "bioinformatics",
         "skills",
         "grilling",
         "checks",
-        "judge",
-        "decision-brief"
+        "supervisor",
+        "decision-report"
       ]
     }
   ]

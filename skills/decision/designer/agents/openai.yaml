@@ -1,5 +1,5 @@
 interface:
   display_name: "Designer"
-  short_description: "Make a short decision deck from the brief"
+  short_description: "Make a short decision deck from the report"
 policy:
   allow_implicit_invocation: false
