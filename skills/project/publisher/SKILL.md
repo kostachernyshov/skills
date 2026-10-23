@@ -22,7 +22,7 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
    - With a reason, write `## <YYYY-MM-DD> · DECISION override: veto Q<n> <run>` in `LOG.md`, with the words of the person.
    - Call the Skill tool with "editor". The brief names the override as a limit, and the judge checks the reason.
    - Never override a veto yourself.
-4. Show the person what goes out in 4 to 6 lines: version, runs, the Answer line of each brief, the judge verdict, each override. Ask: "Sign release vN? yes / no". Without "yes" from the person, stop. An `(agent)` answer is not a signature.
+4. Show the person what goes out in 4 to 6 lines: version, runs, the Answer line of each brief, the judge verdict, each override. Then say in one line what the person takes responsibility for: "With your signature you are responsible for these answers and limits before the client." Ask: "Sign release vN? yes / no". Stop and wait. Only a "yes" in a reply to this summary is a signature. A request that names a release ("release v2", "yes, write the brief and release") is a command, not a signature. An `(agent)` answer is not a signature.
 5. Commit all work. Record this commit hash: it is the source of the release.
 6. Make `releases/vN-<YYYY-MM-DD>/`. N is the last release number + 1.
 7. Copy into it, in one flat folder, only:
@@ -43,4 +43,5 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 - Each released run has a `verdict` that starts with `pass` (also `pass - override`) and matches the brief.
 - The copy of each brief in the release ends with the line `Checked by the judge: <verdict>`.
 - The `RELEASE` entry in `LOG.md` has `signed:` with the name of the person.
+- The "yes" of the signature came in a later message than the summary.
 - The tag `vN` exists.

@@ -27,7 +27,7 @@ This skill does the analysis of one run from the files only: the plan in `run.ya
 3. **Input checks.** Call the Skill tool with "checker" and run the input checks. A `fail` stops the work.
 4. **Code.** Write the analysis code in `code/` of the run. Run it. Each script writes each number that it computes to a table in `out/`.
 5. **Figures.** Draw the main figure that `done_when` names, and the other figures that the reader needs: `out/fig-<what>.png`. Put the plotting code in its own script in `code/`. Look at each figure before you continue.
-6. **Controls and result checks.** Call the Skill tool with "checker" for the three controls, the result checks, and the `todo` list. A `fail`, an open `todo`, or a post-hoc change stops the work. Ask the person as the checker says. Then set `status: candidate` and fill `result`.
+6. **Controls and result checks.** Call the Skill tool with "checker" for the three controls, the result checks, and the `todo` list. A `fail` (except a `fail` with `override`), an open `todo`, or a post-hoc change stops the work. Ask the person as the checker says. Then set `status: candidate` and fill `result`.
 7. **Brief.** Call the Skill tool with "editor". It writes the brief in a fresh context and calls the judge and the reviewer.
 8. **Report.** Tell the person: the Answer line of the brief, the verdict (✅ pass or ⛔ veto with the question), and the next step (`/designer`, `/publisher`, or the fix of a veto). Write the `Next step` line in the State block of `CLAUDE.md`.
 

@@ -17,8 +17,8 @@ The project memory is computed, not written. The source of truth is `run.yaml` i
 
 The block between `<!-- curator:begin -->` and `<!-- curator:end -->` in `CLAUDE.md`:
 
-- **Known**: each run where all checks and controls are `pass`, `warn`, or `n/a`, with its `result`.
-- **Open**: each check or control with `todo` or `fail`, each line in the `todo` list of a run, each judge veto, each brief without a verdict, each verdict whose checksum does not match `out/brief.md`, and each `run.yaml` that does not parse.
+- **Known**: each run where all checks and controls are `pass`, `warn`, `n/a`, or `fail` with `override`, with its `result`.
+- **Open**: each check or control with `todo` or `fail` (without `override`), each line in the `todo` list of a run, each judge veto, each brief without a verdict, each verdict whose checksum does not match `out/brief.md`, and each `run.yaml` that does not parse.
 - **Order**: each file that is not in its place (see the table below).
 - **Sections**: only when `CLAUDE.md` has no section "Who decides" or "Chat style" (a project made before version 0.9.0). Ask the person: "Add the sections <names> to CLAUDE.md? yes / no". After "yes", run the script with `--add-sections`. After "no", add the line `<!-- sections: declined -->` at the end of `CLAUDE.md`. Then the script does not ask again.
 - **Next step**: one line. You write this line. The script keeps it. It is the only line in the block that you change.

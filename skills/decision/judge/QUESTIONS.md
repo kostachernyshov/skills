@@ -16,12 +16,12 @@ Answer each question with `yes` or `no` and one line of evidence (a file name an
 
 ## Overrides
 
-Read each `DECISION override: veto Q<n> <run>` entry in `LOG.md` for this run. If your answer to Q<n> is `no` for the defect that the entry names, check the reason:
+Read each `DECISION override: veto Q<n> <run>` entry in `LOG.md` for this run. The entry can come from the plan (a control that the person removed) or after a veto. If an answer is `no` only for the defect that the entry names (in Q<n> or in another question), check the reason:
 
-- The reason names the defect and says why the defect does not change the decision of the reader.
+- The reason names the defect and says why the defect does not change the decision of the reader. For a removed control, the reason says why the control has no meaning for this question.
 - The brief names the override in "Confidence and limits".
 
-If both are true, answer `yes - override <date>: <defect>` for that question. A deadline, "no time", "I take responsibility", or "I decided" is not a reason: the answer stays `no`. An override never changes Q7.
+If both are true, answer `yes - override <date>: <defect>` for each such question. Do not give a veto that sends the work back. A deadline, "no time", "I take responsibility", or "I decided" is not a reason: the answer stays `no`. An override never changes Q7.
 
 ## Output
 

@@ -88,6 +88,9 @@ def run_items(run):
         for key, value in block.items():
             n += 1
             st = status_of(value)
+            text = value.get("result", "") if isinstance(value, dict) else value
+            if st == "fail" and "override" in str(text):
+                continue  # accepted by the person in a DECISION override entry
             if st in OPEN_STATUS:
                 items.append(f"{rid} {group}.{key}: {st}")
                 all_ok = False

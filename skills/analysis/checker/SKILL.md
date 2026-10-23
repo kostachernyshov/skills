@@ -21,6 +21,8 @@ Do not state a result until its checks and controls are done. A check that fails
 | `n/a` | The check does not apply to these data. | Write the reason. |
 | `todo` | Not done yet. | The result cannot go to a brief. |
 
+A `fail` that ends with `override <date>` does not stop the work. The person accepted it in a `DECISION override` entry in `LOG.md` (for example a control removed at the plan). The brief names it as a limit.
+
 Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a number>"`. Write each control result under `controls.<name>.result` in the same form. Change the value in place.
 
 ## Steps
