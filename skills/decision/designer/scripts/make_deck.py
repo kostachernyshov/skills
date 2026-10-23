@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build a 16:9 deck from deck.yaml. Usage: make_deck.py deck.yaml out/deck.pptx
 
+Top keys: title, subtitle, warning (optional: red text on the title slide), slides.
 Slide keys: title (required), bullets, figure, table, highlight_row, kpis, note.
 Layout is chosen from the content:
 - kpis only (with optional bullets): 2-3 big numbers across the slide.
@@ -20,6 +21,7 @@ MUTED = RGBColor(0x5A, 0x68, 0x76)
 ACCENT = RGBColor(0x0F, 0x7F, 0x86)
 SOFT = RGBColor(0xE6, 0xF2, 0xF3)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
+RED = RGBColor(0xC0, 0x1C, 0x1C)
 W, H = Inches(13.333), Inches(7.5)
 M = Inches(0.6)
 TOP = Inches(1.9)
@@ -110,6 +112,8 @@ def main(spec_path, out_path):
     n = title_lines(spec["title"], 12.1, 40)
     box(s, M, Inches(2.0), cw, Inches(0.75 * n), spec["title"], 40, bold=True)
     box(s, M, Inches(2.0) + Inches(0.75 * n) + Inches(0.4), cw, Inches(0.8), spec.get("subtitle", ""), 24, MUTED)
+    if spec.get("warning"):
+        box(s, M, Inches(0.5), cw, Inches(1.2), spec["warning"], 22, RED, bold=True)
 
     for sl in spec["slides"]:
         s = prs.slides.add_slide(blank)

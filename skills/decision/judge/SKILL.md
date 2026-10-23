@@ -1,6 +1,6 @@
 ---
 name: judge
-description: Decide in a fresh context if a brief can be trusted. A subagent that sees only the files answers 6 fixed yes/no questions. One "no" is a veto. Use after a brief is written or changed, and before a release.
+description: Decide in a fresh context if a brief can be trusted. A subagent that sees only the files answers 7 fixed yes/no questions. One "no" is a veto. Use after a brief is written or changed, and before a release.
 ---
 
 # Judge
@@ -24,10 +24,12 @@ The judge asks "can the reader trust this?". The skill "reviewer" asks "can the 
 ## Rules
 
 - Only this skill writes `verdict`. Never edit the verdict to `pass` by hand.
+- The person cannot turn off the judge. The skills "editor" and "publisher" always run it. Without a verdict there is no release.
+- Only the person can override a veto, with a reason. The judge checks the reason (see "Overrides" in [QUESTIONS.md](QUESTIONS.md)).
 - A change to `brief.md` or to a number in `out/` after the verdict makes the verdict old. Run the judge again. The curator script shows a verdict whose checksum does not match the brief as `Open`.
 - If you cannot start a subagent, write `verdict: "veto - Q0: no fresh context; judge not run"` and tell the person. The skill "publisher" stops on it.
 
 ## Done when
 
-- `run.yaml` has `verdict` with `pass` or `veto`, a date, the reason for a veto, and the checksum of the brief.
+- `run.yaml` has `verdict` with `pass`, `pass - override`, or `veto`, a date, the reason for a veto, and the checksum of the brief.
 - The verdict came from a subagent that did not see the chat.

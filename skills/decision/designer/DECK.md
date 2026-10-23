@@ -3,7 +3,7 @@
 | # | Slide | Content |
 |---|---|---|
 | 1 | Question and decision | Title: a statement, not a question ("You must decide whether ..."). The question in the reader's words. The decision it serves. Who decides. |
-| 2 | Answer | The answer in one sentence as the title. 2 or 3 key numbers as `kpis` (big numbers). If the threshold was assumed, say so. |
+| 2 | Answer | The answer in one sentence as the title. 2 or 3 key numbers as `kpis` (big numbers). If the agent chose the threshold, say so. |
 | 3 | Evidence | One result figure, or one small table. The title states what the figure shows. |
 | 4 | Confidence and limits | What the data can and cannot show. Warnings that can change the decision. |
 | 5 | Decision and next steps | Options table (what happens, cost if wrong, can reverse). Recommended option. Next steps with owner. |
@@ -16,6 +16,7 @@ Slides 3 and 4 can merge if the result is simple. The title slide does not count
 ```yaml
 title: "<deck title: the answer as a short statement>"
 subtitle: "<client, date, release vN>"
+warning: "<only if the brief starts with the warning block: the same sentence>"   # optional, red on the title slide
 slides:
   - title: "<the message of the slide, a full sentence>"
     bullets:

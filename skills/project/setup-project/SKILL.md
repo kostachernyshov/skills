@@ -32,11 +32,11 @@ scratch/       # temporary files, not in git
 6. Move each input file into `data/`. If the files came in another folder (for example `incoming/`), move them and delete the empty folder. Do not change the content of input files.
 7. Record each input file in the `Data` table of `CLAUDE.md`. Source status: `verified` if you checked the source, `named by client` if the client named it and you could not check it, `not known` if nobody knows, `derived from <source>` for a file you made from another source (for example a table extracted from a paper or a package).
 8. Run `git init` if the folder is not a git repository. Make the first commit.
-9. Call the Skill tool with "curator". Apply its rules from now on. Run its script once to build the State block.
+9. Call the Skill tool with "curator". Apply its rules from now on. Run its script once with `--add-sections`. It adds the sections "Who decides" and "Chat style" and builds the State block.
 
 ## Done when
 
 - The layout exists and is in the first commit.
 - `CLAUDE.md` names each input file and its source.
 - The State block exists in `CLAUDE.md`.
-- `CLAUDE.md` has the section `Solution model` (draft) and the section `Project rules` (empty).
+- `CLAUDE.md` has the section `Solution model` (draft), the section `Project rules` (empty), and the sections `Who decides` and `Chat style`.

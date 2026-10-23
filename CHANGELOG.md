@@ -1,6 +1,28 @@
 # Changelog
 
-## Unreleased
+## 0.9.0 (2026-10-22)
+A new flow that protects the decisions of the person. Decision by Kosta after the misuse tests and round 8 (grilling Q1-Q30): `decisions/2026-10-22-flow-v0.9.0.md` in the project files. Closes #8, #9, #11, #12, #13, #15. Part of #19, #25, #38.
+
+What changes for you:
+- `/planner` and `/editor` are no longer commands (`user-invocable: false`). Use `/grill-with-plan` (interview, then plan) and `/analyze <RNN>` (the analysis and the brief). `/grill-me` stays for an interview without a plan.
+- The agent does not start an analysis without an accepted plan, also when you ask in plain text.
+- Each decision line shows `(person)` or `(agent)`. If the agent made more than half of them, you must say "start anyway", and the brief and the title slide show a red warning.
+- The judge always runs. Without a verdict there is no release. An override of a veto needs a reason: the defect and why it does not change the decision. A deadline is not a reason.
+- Questions are numbered Q1, Q2, ... through the session.
+
+Changes:
+- New person skill `grill-with-plan`: calls `grilling`, then `planner`. If a grilling entry for the next run exists, it asks only if the task is still valid.
+- New person skill `analyze`: gate (confirmed model, `plan accepted`, override of the start if needed), needs and run time (asks if the controls take more than 10 minutes), packages in `.venv/` with versions in `run.yaml` `env`, input checks, code, a main figure and other figures, controls, then `editor`.
+- `planner` is an agent skill. It does not run the analysis. It shows the share of `(agent)` decisions; above 4 of 8 it asks "Start anyway?" and writes `DECISION override: start RNN`. The negative control uses 100 shuffles (1000 only near the pass limit). `done_when` names the main figure.
+- `editor` is an agent skill. The person cannot turn off the judge. With `context: forced`, the brief starts with a red warning block (style `Warning` in `reference.docx`).
+- `grilling`: marks the 8 decision lines `(person)` or `(agent)` and writes `context: N of 8 (agent)`. The word `assumed` is gone. The model has no `(agent)` part.
+- `judge`: question 7 (the grilling entry and the accepted plan exist; the Answer answers the question and serves the decision; the warning is there after a forced start). The judge checks the reason of an override: `pass - override Q<n>`.
+- `publisher`: no release without a verdict. An override is a limit of the analysis with a valid reason; the publisher calls `editor` so that the brief names it and the judge checks it. The release copy of the brief ends with `Checked by the judge: <verdict>`, and the terminal shows it.
+- `checker`: step 0 stops an analysis without an accepted plan. An `(agent)` answer does not accept a doubt.
+- `curator`: shared sections "Who decides" and "Chat style" in `scripts/sections.md`. `curate.py --add-sections` adds them; for an older project the State lists them and the agent asks first. A brief without a verdict is Open.
+- `setup-project`: adds the shared sections; `.venv/` in `.gitignore`. `designer`: a red `warning` on the title slide.
+- `ask-kosta`: new flow, a row for an analysis asked in plain text, the list of skills that only the person starts.
+- Tests: no test round for this version yet. The harness still types `/planner` and `/editor`; update it before the next round.
 - Tests: round 8 for 0.8.0 (`tests/results/round-8.md`). New scenarios `s10-vague-model` and `s11-two-runs-rule`. `run_scenario.py` reads an optional `flow.json` and the persona text for a second run. New `harness/check_rules.py`.
 - Tests: misuse tests. `tests/misuse/*.json` hold the errors of the person per step. `tests/harness/run_misuse.py` runs them, with `--resume` after a usage limit. Results of round 1 on 0.7.1: `tests/results/misuse-1.md`.
 

@@ -1,5 +1,3 @@
 interface:
   display_name: "Editor"
   short_description: "Write the one-page brief in a fresh context"
-policy:
-  allow_implicit_invocation: false
