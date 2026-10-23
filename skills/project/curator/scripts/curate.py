@@ -88,6 +88,9 @@ def run_items(run):
         for key, value in block.items():
             n += 1
             st = status_of(value)
+            text = value.get("result", "") if isinstance(value, dict) else value
+            if st == "fail" and re.search(r"override \d{4}-\d{2}-\d{2}\s*$", str(text)):
+                continue  # accepted by the person in a DECISION override entry
             if st in OPEN_STATUS:
                 items.append(f"{rid} {group}.{key}: {st}")
                 all_ok = False
@@ -102,18 +105,21 @@ def run_items(run):
         all_ok = False
     verdict = str(run.get("verdict") or "")
     if verdict.lower().startswith("veto"):
-        items.append(f"{rid} judge {verdict}")
+        items.append(f"{rid} supervisor {verdict}")
         all_ok = False
-    m = re.search(r"brief ([0-9a-f]{8})", verdict)
-    brief = os.path.join(run["_root"], "runs", run["_dir"], "out", "brief.md")
-    if not verdict.strip() and os.path.isfile(brief):
-        items.append(f"{rid} brief has no judge verdict (run the judge; no release without it)")
+    if re.search(r"brief [0-9a-f]{8}", verdict):
+        items.append(f"{rid} supervisor verdict is from before 0.10.0 (brief.md): run the supervisor on report.md")
         all_ok = False
-    if m and os.path.isfile(brief):
-        with open(brief, "rb") as fh:
+    m = re.search(r"report ([0-9a-f]{8})", verdict)
+    report = os.path.join(run["_root"], "runs", run["_dir"], "out", "report.md")
+    if not verdict.strip() and os.path.isfile(report):
+        items.append(f"{rid} report has no supervisor verdict (run the supervisor; no release without it)")
+        all_ok = False
+    if m and os.path.isfile(report):
+        with open(report, "rb") as fh:
             digest = hashlib.sha256(fh.read()).hexdigest()[:8]
         if digest != m.group(1):
-            items.append(f"{rid} judge verdict is old: brief.md changed after it (run the judge again)")
+            items.append(f"{rid} supervisor verdict is old: report.md changed after it (run the supervisor again)")
             all_ok = False
     status = str(run.get("status", "")).strip()
     if status not in RUN_STATUS:
@@ -152,7 +158,7 @@ def order_issues(root):
             dirnames[:] = [d for d in dirnames if not d.startswith(".") and d != "__pycache__"]
             for fn in filenames:
                 rel = os.path.relpath(os.path.join(dirpath, fn), root)
-                if fn.endswith(".md") and rel != f"runs/{name}/out/brief.md":
+                if fn.endswith(".md") and rel != f"runs/{name}/out/report.md":
                     issues.append(f"{rel} (.md file in a run)")
                 elif BAD_NAME.search(fn):
                     issues.append(f"{rel} (name has a version or copy suffix)")
@@ -207,8 +213,8 @@ def build_block(runs, errors, issues, next_step, missing=()):
             result = str(r.get("result") or "").strip() or "(no result written)"
             v = str(r.get("verdict") or "")
             om = re.search(r"override (Q\d+(?:, Q\d+)*)", v)
-            verdict = (status_of(v) + (f" (override {om.group(1)})" if om else "")) if v else "not judged"
-            known.append(f"{rid} ({r.get('status')}, judge: {verdict}): {result}")
+            verdict = (status_of(v) + (f" (override {om.group(1)})" if om else "")) if v else "not checked"
+            known.append(f"{rid} ({r.get('status')}, supervisor: {verdict}): {result}")
     question = ""
     for r in reversed(active):
         if r.get("question"):

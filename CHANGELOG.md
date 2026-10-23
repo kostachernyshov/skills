@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.10.0 (2026-10-23)
+Names, the person, and controls that the person removes. Decision by Kosta (grilling Q1-Q16, 2026-10-23): `decisions/2026-10-23-names-person-controls-v0.10.0.md` in the project files. Closes #7, #12, #14, #16, #17, #22, #36, #42.
+
+What changes for you:
+- The plugin is `kostachernyshov-skills`. Commands are `/kostachernyshov-skills:grill-me` and so on. Install again: `claude plugin install kostachernyshov-skills@kostachernyshov`.
+- The skill `judge` is now `supervisor`. It checks one report against the files (the role of the supervisor in Yoon et al. 2026). A judge that compares several reports is a later role.
+- The "brief" is now the "report": `out/report.md`, `out/report.pdf`, `releases/vN/report.md`, `scripts/report_pdf.sh`, `out/review-report.csv`, and `- report <sha>` in the verdict. In an older project, rename `out/brief.md` to `out/report.md` and run the supervisor again.
+- `/setup-project` asks for your first name, last name, and role, and says where they go. They are in the `Person:` line of `CLAUDE.md`. Skills never write an e-mail address or an account login.
+- A release is signed only by a "yes" in a reply to the release summary. A request such as "release v2" is not a signature.
+- You can remove a control at the plan with a reason (why the control has no meaning for this question). The supervisor then passes the report with `pass - override Q2` and does not send the work back.
+
+Changes:
+- `setup-project`: asks for the name and the role; `Person:` line in the `CLAUDE.md` template; source status `public, not checked`; md5 of each data file; `.gitignore` no longer hides `*.gz` in `data/ref/`.
+- `curator`: "Who decides" says where `<person>` comes from and forbids e-mail addresses; "Chat style": a new session starts at Q1. The script counts a `fail` with `override` as accepted. For an older project, replace the two sections with the text in `scripts/sections.md`.
+- `publisher`: the summary says what the person takes responsibility for; only a "yes" in a later reply signs.
+- `planner`: fits the controls to the type of study (for example clustering); a removed control with a valid reason gets `DECISION override: veto Q2 RNN` at the plan and `fail - removed by the person, override <date>`.
+- `checker`, `analyze`: a `fail` with `override` does not stop the work.
+- `supervisor`: an override entry from the plan counts; it covers the same defect in each question.
+- `grilling`: no recommended mark on the options for the useful action.
+- `editor`: `report_pdf.sh` writes its temporary `.docx` in a temporary folder, not in the run.
+- `analyze`: step 8 is "Summary".
+- Repository: `.gitignore` for Python caches.
+
 ## 0.9.0 (2026-10-22)
 A new flow that protects the decisions of the person. Decision by Kosta after the misuse tests and round 8 (grilling Q1-Q30): `decisions/2026-10-22-flow-v0.9.0.md` in the project files. Closes #8, #9, #11, #12, #13, #15. Part of #19, #25, #38.
 

@@ -19,10 +19,10 @@ from datetime import datetime
 
 PROJECTS = os.path.expanduser("~/.claude/projects")
 GAP = 600
-STAGE_OF = [(r"skills:ask-kosta", "ask-kosta"), (r"skills:setup-project", "setup-project"),
-            (r"skills:grill-me", "grill-me"), (r"skills:planner", "planner"),
-            (r"^Run the plan", "analysis"), (r"skills:editor", "editor"),
-            (r"skills:designer", "designer"), (r"skills:publisher", "publisher"),
+STAGE_OF = [(r"kostachernyshov-skills:ask-kosta", "ask-kosta"), (r"kostachernyshov-skills:setup-project", "setup-project"),
+            (r"kostachernyshov-skills:grill-me", "grill-me"), (r"kostachernyshov-skills:planner", "planner"),
+            (r"^Run the plan", "analysis"), (r"kostachernyshov-skills:editor", "editor"),
+            (r"kostachernyshov-skills:designer", "designer"), (r"kostachernyshov-skills:publisher", "publisher"),
             (r"^The test is over", "friction report")]
 ORDER = [s for _, s in STAGE_OF]
 

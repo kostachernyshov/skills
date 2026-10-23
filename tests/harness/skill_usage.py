@@ -16,7 +16,7 @@ import sys
 
 
 KNOWN = {"ask-kosta", "setup-project", "grill-me", "grill-with-plan", "grilling", "planner", "analyze", "checker",
-         "curator", "editor", "judge", "designer", "reviewer", "publisher"}
+         "curator", "editor", "supervisor", "designer", "reviewer", "publisher"}
 SKILL_FILE = re.compile(r"(?:/skills/(?:[a-z-]+/)?|[\s;'\"])([a-z-]+)/((?:SKILL|[A-Z]+)\.md|scripts/[\w.]+|RUN\.yaml|templates)")
 
 
@@ -60,7 +60,7 @@ def main(log_dir):
     print("| Skill | Called | When (turn, by whom) |")
     print("|---|---|---|")
     names = ["ask-kosta", "setup-project", "grill-me", "grilling", "planner", "checker", "curator",
-             "editor", "judge", "designer", "reviewer", "publisher"]
+             "editor", "supervisor", "designer", "reviewer", "publisher"]
     for name in names + [n for n in calls if n not in names]:
         when = calls.get(name, [])
         counted = collections.Counter(when)

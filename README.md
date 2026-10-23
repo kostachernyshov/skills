@@ -9,7 +9,7 @@ This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`
 - start the analysis only from an accepted plan, in a clean context (`analyze`),
 - check each result before you state it (`checker`),
 - keep the project memory and order without manual notes (`setup-project`, `curator`),
-- write the brief in a fresh context and judge it from the files only (`editor`, `judge`, `reviewer`),
+- write the report in a fresh context and check it from the files only (`editor`, `supervisor`, `reviewer`),
 - give the person a short deck and a signed release (`designer`, `publisher`).
 
 The person is responsible for the result. The person acts at three points: the answers in grilling, the approval of the plan, and the signature of the release. Each decision line shows who made it: `(person)` or `(agent)`.
@@ -18,7 +18,7 @@ Scope of version 1: processed tabular data (expression tables, clinical tables, 
 
 ## Start
 
-Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the commands have the plugin prefix: `/skills:ask-kosta`.
+Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the commands have the plugin prefix: `/kostachernyshov-skills:ask-kosta`.
 
 ## Skills
 
@@ -33,11 +33,11 @@ Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the co
 | `analyze` | person | Runs the accepted plan, best in a new session: environment, code, figures, checks, then `editor`. Stops without an accepted plan. |
 | `checker` | agent | Checks and controls before each result. Doubts become `todo`. "New" only after a literature search. Stops after 3 failed repairs. |
 | `curator` | hook + agent | A script builds the State in `CLAUDE.md` from `run.yaml` after each answer and lists files out of place. Keeps the project rules. |
-| `editor` | agent | A fresh subagent writes the one-page brief from the files. Then calls `judge` and `reviewer`. |
-| `judge` | agent | A fresh subagent answers 7 yes/no questions from the files only. One "no" is a veto. It always runs. It checks the reason of an override. |
-| `designer` | person | 4 to 6 slides from the brief for the decision meeting. Calls `reviewer`. |
-| `reviewer` | agent | Two review rounds of the deck or the brief with the eyes of the reader. |
-| `publisher` | person | Freezes a release. Only with a judge pass or a valid override, and only after the person signs. |
+| `editor` | agent | A fresh subagent writes the one-page report from the files. Then calls `supervisor` and `reviewer`. |
+| `supervisor` | agent | A fresh subagent answers 7 yes/no questions from the files only. One "no" is a veto. It always runs. It checks the reason of an override. |
+| `designer` | person | 4 to 6 slides from the report for the decision meeting. Calls `reviewer`. |
+| `reviewer` | agent | Two review rounds of the deck or the report with the eyes of the reader. |
+| `publisher` | person | Freezes a release. Only with a supervisor pass or a valid override, and only after the person signs. |
 
 "Person" skills have `disable-model-invocation: true`. Type `/name` to start them. "Agent" skills start by themselves when the situation fits. A person skill can call an agent skill, never another person skill.
 
@@ -60,16 +60,16 @@ As a Claude Code plugin (after the repository is public):
 
 ```
 claude plugin marketplace add kostachernyshov/skills
-claude plugin install skills@kostachernyshov
+claude plugin install kostachernyshov-skills@kostachernyshov
 ```
 
-To update: `claude plugin marketplace update kostachernyshov`, then `claude plugin update skills@kostachernyshov`.
+To update: `claude plugin marketplace update kostachernyshov`, then `claude plugin update kostachernyshov-skills@kostachernyshov`.
 
 Codex (not tested yet) uses the same marketplace and reads `agents/openai.yaml` in each skill folder:
 
 ```
 codex plugin marketplace add kostachernyshov/skills
-codex plugin add skills@kostachernyshov
+codex plugin add kostachernyshov-skills@kostachernyshov
 ```
 
 Or copy the skills by hand (the curator hook does not come with this route):

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Supervisor"
+  short_description: "Check in a fresh context if a report can be trusted"

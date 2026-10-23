@@ -16,7 +16,7 @@ The plan says what result ends the analysis and which controls must pass. You wr
    - `samples`: the inclusion rule and the exclusion rule with counts. Write the cohort code in `code/` of this run to get the counts. Do not look at the outcome yet.
    - `method`: the comparison or the model, in one line. Name the package.
    - `prior`: the published result with the reference, or `none found`.
-   - `done_when`: the number or the table that ends the analysis. Name the main figure: the figure that answers the question of the run (`out/fig-<what>.png`). Name the other figures that the reader needs. The brief and the deck use the main figure.
+   - `done_when`: the number or the table that ends the analysis. Name the main figure: the figure that answers the question of the run (`out/fig-<what>.png`). Name the other figures that the reader needs. The report and the deck use the main figure.
    - `rules`: one key per rule in the section `## Project rules` of `CLAUDE.md`. The value says in one line how this run follows the rule. If the person chose to deviate in grilling, the value is `"deviation - LOG.md <date>"`. If the section has no rules, leave `rules: {}`.
    - `checks`: open `CHECKS.md` of the skill "checker". Take every check in the sections for your data types (always "Any table with samples"). Add one key per check. Value `todo`, or `n/a - <reason>`.
 3. Write the three controls in `controls`. Each control has a `plan` and a `result: "todo"`.
@@ -25,11 +25,15 @@ The plan says what result ends the analysis and which controls must pass. You wr
    - **robustness**: the answer at 2 or 3 nearby thresholds, and in each named subgroup that the decision cares about. Name the variants before the data. The result is the list of variants where the answer stays the same and where it changes.
    The positive and the negative control test the method. The robustness control tests the answer. The skill "checker" treats them in different ways.
    If the task is new and no published prior exists, these controls are the main evidence that the analysis works. Say this in `notes`.
+   Fit the controls to the type of study. For an exploratory study without an outcome (for example new subtypes by clustering): positive = known biology separates as expected (for example sex by chrY genes); negative = shuffled data do not give the same clusters; robustness = the same clusters in 80% subsamples.
+   If the person asks to remove a control, say: "⛔ Without the <name> control the supervisor answers no on Q2. Why does this control have no meaning for this question?"
+   - A valid reason says why the control cannot test anything for this question (for example: no known effect exists in these data; the study is exploratory). "No time", "a waste of time", or "I decided" is not a reason. Keep the control and say so.
+   - With a valid reason, add `## <YYYY-MM-DD> · DECISION override: veto Q2 <RNN>` to `LOG.md` with the words of the person. Set the `result` of the control to `"fail - removed by the person, override <YYYY-MM-DD>"`. The supervisor reads the entry at the end and passes the report with `pass - override Q2`. The report names the missing control as a limit.
 4. Check that the data can answer the `success` threshold. Count the cases in the smallest key group. Compute the confidence interval that this count gives at the threshold (for example, 53 positives give a 95% interval of about plus or minus 6 points around 94% sensitivity). If the interval is wider than the margin, write it in `todo` and tell the person: the answer will be "cannot tell" unless the threshold or the data change.
 5. Parse `run.yaml` (see the skill "curator"). Fix errors.
 6. Show the plan to the person in 5 to 8 lines: question, samples, method, success threshold, the three controls, the project rules that apply (one line), and the `context` line ("<N> of 8 decisions came from the agent"). If a plan choice goes against a project rule, say so before the question. Do not ask the grilling questions again.
    - If 4 or fewer of 8 are `(agent)`, ask: "Approve this plan? yes / change".
-   - If more than 4 of 8 are `(agent)`, ask: "<N> of 8 decisions came from me, not from you. Start anyway? yes / more questions". On "more questions", call the Skill tool with "grilling" for these lines. Then fill `run.yaml` again from the new grilling entry (step 2). Then do this step again. On "yes", add `## <YYYY-MM-DD> · DECISION override: start <RNN>` to `LOG.md` with the words of the person. Set `context` in `run.yaml` to `"forced - <N> of 8 (agent)"`. The brief and the deck will show a warning.
+   - If more than 4 of 8 are `(agent)`, ask: "<N> of 8 decisions came from me, not from you. Start anyway? yes / more questions". On "more questions", call the Skill tool with "grilling" for these lines. Then fill `run.yaml` again from the new grilling entry (step 2). Then do this step again. On "yes", add `## <YYYY-MM-DD> · DECISION override: start <RNN>` to `LOG.md` with the words of the person. Set `context` in `run.yaml` to `"forced - <N> of 8 (agent)"`. The report and the deck will show a warning.
 7. Wait for the answer. Do not start the analysis. After "yes", add one `DECISION` entry to `LOG.md`: `plan accepted by <person>`. Commit.
 8. Write the `Next step` line in the State block of `CLAUDE.md`: `/analyze <RNN>`. Tell the person: "Plan <RNN> is accepted. For a clean context, start a new session (/clear) and type /analyze <RNN>."
 
@@ -41,7 +45,7 @@ The plan says what result ends the analysis and which controls must pass. You wr
 ## Done when
 
 - `run.yaml` parses and has all fields of the template.
-- `controls` has a positive, a negative, and a robustness control, each with a pass rule written before the data.
+- `controls` has a positive, a negative, and a robustness control, each with a pass rule written before the data, or with `fail - removed by the person, override <date>` and its `DECISION override` entry.
 - The negative control compares the real result with the shuffled results.
 - `done_when` names one concrete output and the main figure.
 - `LOG.md` has the `plan accepted` entry with the name of the person, and a `DECISION override: start` entry if more than 4 of 8 decisions are `(agent)`.

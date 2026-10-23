@@ -17,8 +17,8 @@ The project memory is computed, not written. The source of truth is `run.yaml` i
 
 The block between `<!-- curator:begin -->` and `<!-- curator:end -->` in `CLAUDE.md`:
 
-- **Known**: each run where all checks and controls are `pass`, `warn`, or `n/a`, with its `result`.
-- **Open**: each check or control with `todo` or `fail`, each line in the `todo` list of a run, each judge veto, each brief without a verdict, each verdict whose checksum does not match `out/brief.md`, and each `run.yaml` that does not parse.
+- **Known**: each run where all checks and controls are `pass`, `warn`, `n/a`, or `fail` with `override`, with its `result`.
+- **Open**: each check or control with `todo` or `fail` (without `override`), each line in the `todo` list of a run, each supervisor veto, each report without a verdict, each verdict whose checksum does not match `out/report.md`, and each `run.yaml` that does not parse.
 - **Order**: each file that is not in its place (see the table below).
 - **Sections**: only when `CLAUDE.md` has no section "Who decides" or "Chat style" (a project made before version 0.9.0). Ask the person: "Add the sections <names> to CLAUDE.md? yes / no". After "yes", run the script with `--add-sections`. After "no", add the line `<!-- sections: declined -->` at the end of `CLAUDE.md`. Then the script does not ask again.
 - **Next step**: one line. You write this line. The script keeps it. It is the only line in the block that you change.
@@ -48,7 +48,7 @@ A project rule keeps a lesson of one run for all later runs. Without it, the sam
 When to propose a rule:
 - after you fix a `fail`,
 - after a `post-hoc` change,
-- after you fix the cause of a judge veto,
+- after you fix the cause of a supervisor veto,
 - after the person accepts a `todo` line by name,
 - when the person says "remember this".
 
@@ -70,7 +70,7 @@ Steps:
 Rules for rules:
 - Never change or delete a project rule. Only the person edits the section, by hand.
 - The curator script does not build or change this section.
-- A run that does not follow a rule needs a `DECISION deviation RULE-NN` entry from grilling. The judge checks it.
+- A run that does not follow a rule needs a `DECISION deviation RULE-NN` entry from grilling. The supervisor checks it.
 
 ## Patient-level tables
 
@@ -93,7 +93,7 @@ A table with one row per patient or per sample can identify people. Name it `<wh
 
 - Handoff files, summary files, notes files, or a README in a run. The State block and `run.yaml` hold this.
 - Copies of a table with a new suffix (`_v2`, `_final`). Start a new run or overwrite the file in the same run.
-- A `.md` file in a run other than `out/brief.md`.
+- A `.md` file in a run other than `out/report.md`.
 
 ## Names
 

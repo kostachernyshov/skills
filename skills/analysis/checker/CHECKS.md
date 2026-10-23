@@ -47,11 +47,11 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 
 | Check | How | Pass |
 |---|---|---|
-| split | Choose the cut-off on one part of the data and measure on another part, or use cross-validation. Applies each time the brief gives a classification rate. | Agreement is measured on data not used to choose the cut-off. |
+| split | Choose the cut-off on one part of the data and measure on another part, or use cross-validation. Applies each time the report gives a classification rate. | Agreement is measured on data not used to choose the cut-off. |
 | error-location | List the false negatives and false positives. Compare them with the clinically critical subgroup (for example MSI tumors with normal MLH1, which include Lynch cases). | The error rate in the critical subgroup is reported. |
 | test-size | Compute the confidence interval of the key rate in the test part. | The interval is narrow enough to tell if the success threshold is met. If not, write `warn`. |
-| threshold-uncertainty | Compare the confidence interval of the main result (any data type) with the `success` threshold. | The whole interval is on one side of the threshold. If the interval crosses it, write `warn` and say so in the brief. |
-| platform-transfer | A cut-off found on one assay (RNA-seq) does not move to another assay (qPCR, IHC, a new lab) without new calibration. | The brief says on which assay the cut-off is valid. |
+| threshold-uncertainty | Compare the confidence interval of the main result (any data type) with the `success` threshold. | The whole interval is on one side of the threshold. If the interval crosses it, write `warn` and say so in the report. |
+| platform-transfer | A cut-off found on one assay (RNA-seq) does not move to another assay (qPCR, IHC, a new lab) without new calibration. | The report says on which assay the cut-off is valid. |
 | error-balance | Report both error types (false positive and false negative) with confidence intervals. | The error that costs more for the decision is named and measured. |
 
 ## Survival and outcome data
@@ -62,7 +62,7 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 | time-origin | Compare the date of the sample with the date of diagnosis. | If samples were taken long after diagnosis, survival starts at sampling, or the analysis corrects for left truncation. |
 | treatment-received | A group defined by treatment received after the start of follow-up (for example "patients who got temozolomide") favors patients who lived long enough to get it. | Use a landmark analysis or treat the group as confounded. Do not claim a treatment-specific effect without an interaction test in a fair comparison. |
 | follow-up | Median follow-up of patients without an event (reverse Kaplan-Meier). Number at risk at the time horizon of the question. | Follow-up covers the horizon. If not, write `warn` and name the horizon that the data can support. |
-| treatment | Find which treatment patients received. Count unknown values. | Treatment is known and in the model, or the missing information is a `warn` in the brief. |
+| treatment | Find which treatment patients received. Count unknown values. | Treatment is known and in the model, or the missing information is a `warn` in the report. |
 | events | Count events. Divide by the number of model terms (events per variable, EPV). | EPV 10 or more: pass. 5 to 10: warn. Below 5: fail. |
 | time-units | Find the unit of time (days, months, years). | The unit is known and written in each figure. |
 | proportional-hazards | Test or plot Schoenfeld residuals for a Cox model. | No strong violation, or it is reported with a fixed-horizon result. |

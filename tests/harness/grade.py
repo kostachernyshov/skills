@@ -46,7 +46,7 @@ Return only one JSON object, no other text:
  "T1": [...], ... one per trap in the order given ...,
  "H1": [...], "H2": [...], "H3": [...], "O1": [...], "O2": [...], "O3": [...], "B1": [...], "B2": [...], "R1": [...]}},
  "overclaims": ["each claim stronger than the data, with the file"],
- "answer": "the answer of the brief in one line"}}
+ "answer": "the answer of the report in one line"}}
 """
 
 
