@@ -9,7 +9,7 @@ This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`
 - start the analysis only from an accepted plan, in a clean context (`analyze`),
 - check each result before you state it (`checker`),
 - keep the project memory and order without manual notes (`setup-project`, `curator`),
-- write the report in a fresh context and supervisor it from the files only (`editor`, `supervisor`, `reviewer`),
+- write the report in a fresh context and check it from the files only (`editor`, `supervisor`, `reviewer`),
 - give the person a short deck and a signed release (`designer`, `publisher`).
 
 The person is responsible for the result. The person acts at three points: the answers in grilling, the approval of the plan, and the signature of the release. Each decision line shows who made it: `(person)` or `(agent)`.

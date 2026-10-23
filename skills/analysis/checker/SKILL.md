@@ -31,12 +31,12 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 1. Find the data type. Open [CHECKS.md](CHECKS.md). Take the checks for that type. Read `## Project rules` in `CLAUDE.md`. Apply each rule to this run.
 2. Before the analysis, run the **input checks**.
 3. Run the analysis.
-4. Run the three **controls** from the plan: positive, negative (shuffled labels), robustness. Use the rules that the plan fixed. Do not change a pass rule after you see the result.
+4. Run the three **controls** from the plan: positive, negative (shuffled labels), robustness. Do not run a control whose result is `fail - removed by the person, override <date>`. Do not change that value. Use the rules that the plan fixed. Do not change a pass rule after you see the result.
    - A `fail` of the positive or the negative control means the method does not work. Stop. Find the cause. A change of the rule after the result is post-hoc.
    - The robustness control reports the answer, it does not block it. If the answer is the same in all variants: `pass`. If the answer changes in a variant: `warn - answer changes when <variant>`. Then the answer is "not robust" or "only when <condition>", and the report must say so in the Answer line. This is a valid result for the person.
 5. Run the **result checks**. One of them is `prior`: compare the main result with the `prior` field. Write agrees, partly agrees, or disagrees, with the two numbers side by side. If the prior uses a different scale (for example a high-vs-low class HR against your per-SD HR), first compute your result on the prior's scale. If the prior measures a different thing, write `warn - not comparable - <reason>`. If no prior exists, write `n/a - no prior; controls are the evidence`.
 6. If the main result is near the `success` threshold, compute the answer at 2 or 3 nearby thresholds. Save the table. The report uses it.
-7. For each `fail`: stop and tell the person what failed and what you propose. After the fix, call the Skill tool with "curator" and follow "Project rules" to propose a rule.
+7. For each `fail` without `override <date>`: stop and tell the person what failed and what you propose. After the fix, call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 
 ## Doubts become todo
 

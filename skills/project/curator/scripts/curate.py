@@ -89,7 +89,7 @@ def run_items(run):
             n += 1
             st = status_of(value)
             text = value.get("result", "") if isinstance(value, dict) else value
-            if st == "fail" and "override" in str(text):
+            if st == "fail" and re.search(r"override \d{4}-\d{2}-\d{2}\s*$", str(text)):
                 continue  # accepted by the person in a DECISION override entry
             if st in OPEN_STATUS:
                 items.append(f"{rid} {group}.{key}: {st}")
@@ -106,6 +106,9 @@ def run_items(run):
     verdict = str(run.get("verdict") or "")
     if verdict.lower().startswith("veto"):
         items.append(f"{rid} supervisor {verdict}")
+        all_ok = False
+    if re.search(r"brief [0-9a-f]{8}", verdict):
+        items.append(f"{rid} supervisor verdict is from before 0.10.0 (brief.md): run the supervisor on report.md")
         all_ok = False
     m = re.search(r"report ([0-9a-f]{8})", verdict)
     report = os.path.join(run["_root"], "runs", run["_dir"], "out", "report.md")

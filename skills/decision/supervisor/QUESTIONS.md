@@ -8,7 +8,7 @@ Answer each question with `yes` or `no` and one line of evidence (a file name an
 
 1. **Sources.** Does each number in `out/report.md` exist in a file in `out/`, or come with a literature reference? Open the files and look for the numbers. A rounded form ("6 in 100" for 0.058) is acceptable. A number that you cannot find, or a source bracket that names the wrong file, is a `no`.
 2. **Controls.** Does `run.yaml` have the positive, negative, and robustness controls with a plan, and does each `result` say `pass` or `warn` with a number? A missing control, a `todo`, or a `fail` is a `no`.
-3. **Open items.** Are all checks and controls in `run.yaml` free of `todo` and `fail`, and is the `todo` list empty? A `todo` line is acceptable only if a `DECISION` in `LOG.md` names that line and quotes the person. A `DECISION` marked `(agent)`, or one that quotes only a delegation ("use your recommendation", "your choice"), does not accept a line.
+3. **Open items.** Are all checks and controls in `run.yaml` free of `todo` and `fail`, and is the `todo` list empty? A control with `fail - removed by the person, override <date>` belongs to Q2 only. A `todo` line is acceptable only if a `DECISION` in `LOG.md` names that line and quotes the person. A `DECISION` marked `(agent)`, or one that quotes only a delegation ("use your recommendation", "your choice"), does not accept a line.
 4. **Strength.** Is each claim in the report no stronger than the data? Look for: a claim of cause from an association; "replace", "proves", or "validated" when the data show agreement only; a confidence interval that crosses the success threshold but an answer of plain "yes"; a result on research data that the report applies to another assay or population without a word of limit; a post-hoc choice from `LOG.md` or `notes` that the report does not name; a robustness `warn` that the Answer line does not name; a cell in the options table (for example "Can reverse: yes") that no file supports. Any of these is a `no`.
 5. **New.** If the report says "new", "novel", "first", or "not reported", does `run.yaml` have `literature` with a date and queries? If the report does not use these words, answer `yes`.
 6. **Rules.** Does `rules` in `run.yaml` have one line for each rule in `## Project rules`, and does each line say how the run follows the rule? A deviation is acceptable only if `LOG.md` has `DECISION deviation RULE-NN` for this run with the words of the person, and the report names it as a limit. A missing rule, or a deviation without that entry, is a `no`. If the section has no rules, answer `yes`.
@@ -16,12 +16,12 @@ Answer each question with `yes` or `no` and one line of evidence (a file name an
 
 ## Overrides
 
-Read each `DECISION override: veto Q<n> <run>` entry in `LOG.md` for this run. The entry can come from the plan (a control that the person removed) or after a veto. If an answer is `no` only for the defect that the entry names (in Q<n> or in another question), check the reason:
+Read each `DECISION override: veto Q<n> <run>` entry in `LOG.md` for this run. The entry can come from the plan (a control that the person removed) or after a veto. If your answer to Q<n> is `no` for the defect that the entry names, check the reason:
 
 - The reason names the defect and says why the defect does not change the decision of the reader. For a removed control, the reason says why the control has no meaning for this question.
 - The report names the override in "Confidence and limits".
 
-If both are true, answer `yes - override <date>: <defect>` for each such question. Do not give a veto that sends the work back. A deadline, "no time", "I take responsibility", or "I decided" is not a reason: the answer stays `no`. An override never changes Q7.
+If both are true, answer `yes - override <date>: <defect>` for that question. Do not give a veto that sends the work back. A deadline, "no time", "I take responsibility", or "I decided" is not a reason: the answer stays `no`. An override never changes Q7.
 
 ## Output
 

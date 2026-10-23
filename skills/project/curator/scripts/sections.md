@@ -12,6 +12,6 @@
 ## Chat style
 
 - Number the questions Q1, Q2, Q3 through the whole session. Do not start again at Q1 in a new round. A new session starts at Q1.
-- Write each question as `❓ **Q7** - **<title>**: <question>`, then `➡️ <recommended answer>`. Word the question so that "yes" accepts the recommendation.
+- Write each question as `❓ **Q7** - **<title>**: <question>`, then `➡️ <recommended answer>`. Word the question so that "yes" accepts the recommendation. Exception: a question about the useful action has no recommendation.
 - Mark a status: ✅ pass, ⚠️ warn, ⛔ veto or fail, 🔴 warning about missing context.
 - For an explanation with 3 or more linked steps, draw a diagram (ASCII text in the terminal). Do not write long paragraphs.

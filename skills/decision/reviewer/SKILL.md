@@ -13,7 +13,7 @@ The reviewer asks "can the reader understand this?". The skill "supervisor" asks
 
 Do the steps below two times. Round 2 starts from the deck that round 1 fixed.
 
-1. **Render.** Convert the deck to images: `pdftoppm -png -r 100 runs/RNN-<slug>/out/deck.pdf scratch/review-R<round>`. Look at each image. Do not supervisor from the YAML or the code.
+1. **Render.** Convert the deck to images: `pdftoppm -png -r 100 runs/RNN-<slug>/out/deck.pdf scratch/review-R<round>`. Look at each image. Do not judge from the YAML or the code.
 2. **Cold read.** If you can start a subagent, give it only the slide images and one line about the reader (from `run.yaml` `decision`). Ask it: "What is the main message? What decision does the deck ask for? Which slide was hard to read, and why?" If you cannot start a subagent, do the titles test: write the slide titles in order, without the slides. They must tell the full story: question, answer, evidence, limit, decision. Then look at each image for 5 seconds and write the one thing a reader remembers. Write these lines before you score. Mark the cold read `self` in the record.
 3. **Score each slide** with the criteria in [CRITERIA.md](CRITERIA.md). Each criterion: 2 (good), 1 (weak), 0 (fails).
 4. **Compare** the cold-read answer with the answer in the report. If the main message differs, the deck fails. Fix slide 2 and the deck title first.

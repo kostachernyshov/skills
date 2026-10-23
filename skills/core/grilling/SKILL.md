@@ -31,7 +31,7 @@ Follow the sections "Who decides" and "Chat style" in `CLAUDE.md`. Mark each ans
 5. Make the **frontier**: the list of open questions that block the run. Use the topics in [TOPICS.md](TOPICS.md). Add each contradiction that you find (see "Contradictions").
 6. Ask one round: 3 to 6 questions. Give each question:
    - options on short lines,
-   - your recommended option, marked,
+   - your recommended option, marked (not for the useful action, see "Solution model"),
    - one line: why the answer changes the analysis.
 7. Read the answers. The word "yes" accepts all recommendations as `(person)`. A choice that the person gives to you is `(agent)`. Compare each answer with the project rules (see "Project rules"). Remove answered questions from the frontier. Add new questions that the answers open.
 8. Do step 6 again until the frontier is empty.
