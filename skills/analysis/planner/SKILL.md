@@ -47,7 +47,7 @@ The plan says what result ends the analysis and which controls must pass. You wr
 
 - `run.yaml` parses and has all fields of the template.
 - `controls` has a positive, a negative, and a robustness control, each with a pass rule written before the data, or with `fail - removed by the person, override <date>` and its `DECISION override` entry.
-- The negative control compares the real result with the shuffled results.
+- The pass rule of the negative control names the null value of the statistic.
 - `done_when` names one concrete output and the main figure.
 - `LOG.md` has the `plan accepted` entry with the name of the person, and a `DECISION override: start` entry if more than 4 of 8 decisions are `(agent)`.
 - `LOG.md` has a `DECISION grilling` entry for this run, and the solution model in `CLAUDE.md` is confirmed.

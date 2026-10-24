@@ -104,7 +104,7 @@ def main():
                     json.dump(transcript, fh, indent=1, ensure_ascii=False)
                 return 2
             if answer.startswith("NO_QUESTION"):
-                if step["prompt"].startswith(ANALYZE) and not candidate_count(a.project) and tries < loops:
+                if step["inject"] == "run" and not candidate_count(a.project) and tries < loops:
                     prompt = "Continue until the plan is done and the run is a candidate."
                     continue
                 break

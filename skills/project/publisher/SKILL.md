@@ -30,7 +30,7 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
    - `report.md` and `report.pdf` from the run (if `report.md` does not exist, tell the person to run `/analyze`),
    - `deck.pptx` and `deck.pdf` from the run (if they do not exist, tell the person to run `/designer`),
    - each figure and table that the report names.
-   Add one last line to the copy of `report.md`: `Checked by the supervisor: <verdict>.` If the person chose "keep as it is" in step 2, add to the same line: ` Changed after the check by <person>: <files>.` Then call the Skill tool with "editor" to render this copy to `report.pdf`. If the PDF has more than 1 page, tell the person. The report in the run does not change.
+   Add one last line to the copy of `report.md`: `Checked by the supervisor: <verdict>.` If the person chose "keep as it is" in step 2, add to the same line: ` Changed after the check: <files>. Kept by <person>.` Then call the Skill tool with "editor" to render this copy to `report.pdf`. If the PDF has more than 1 page, tell the person. The report in the run does not change.
    Do not copy code, intermediate tables, or `*.private.*` files. For 2 or more variants, add the run id to each file name.
 8. Write `SOURCE.txt`: for each variant, the run id, the source commit from step 5, the verdict, and each input file with its md5 checksum. Add two lines: "The tag vN marks the release commit. The source commit is the analysis state before it." and "The checksums in `checked` of run.yaml are of the files in the run. The release copy of report.md has one more line: Checked by the supervisor."
 9. Set `status: shipped` in each chosen `run.yaml`. For each other run with `status: candidate`, ask the person: `superseded`, `dropped`, or keep.
@@ -42,7 +42,7 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 
 - `releases/vN-<date>/` has `report.md`, `deck.pptx`, `SOURCE.txt`, and only the files the report and the deck use.
 - Each released run has a `verdict` that starts with `pass` (also `pass - override`).
-- The copy of each report in the release ends with the line `Checked by the supervisor: <verdict>.`, and it names each file that changed after the check.
+- The copy of each report in the release ends with the line `Checked by the supervisor: <verdict>.`, and it names each file that changed after the check and the person who kept it.
 - The `RELEASE` entry in `LOG.md` has `signed:` with the name of the person.
 - The "yes" of the signature came in a later message than the summary.
 - The tag `vN` exists.

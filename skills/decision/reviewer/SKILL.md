@@ -24,6 +24,8 @@ The same process works for the deck (`out/deck.pdf`) and for the report (`out/re
 
 After the report changes, check the deck against it again.
 
+If you change a file that `checked` in `run.yaml` names (for example a figure of the report), call the Skill tool with "supervisor" after the review. The agent does not leave its own change without a check.
+
 ## Done when
 
 - `review-deck.csv` (and `review-report.csv` for a report) has 2 rounds.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Record which files the supervisor saw: report.md and each file in out/ that the report names.
+"""Record which files the supervisor saw: each file in out/, except the deck, the reviews, and report.pdf.
 
 Usage:
   stamp.py runs/RNN-<slug>
@@ -20,14 +20,12 @@ def digest(path):
         return hashlib.sha256(fh.read()).hexdigest()[:8]
 
 
-def named_files(out):
-    with open(os.path.join(out, "report.md")) as fh:
-        text = fh.read()
-    names = ["report.md"]
-    for name in sorted(os.listdir(out)):
-        if name != "report.md" and os.path.isfile(os.path.join(out, name)) and name in text:
-            names.append(name)
-    return names
+SKIP = re.compile(r"^(deck\.|review-|report\.pdf$|\.)")
+
+
+def tracked_files(out):
+    # The deck and the reviews come after the check; report.pdf is made from report.md.
+    return [n for n in sorted(os.listdir(out)) if os.path.isfile(os.path.join(out, n)) and not SKIP.match(n)]
 
 
 def main():
@@ -39,12 +37,13 @@ def main():
     if not os.path.isfile(os.path.join(out, "report.md")) or not os.path.isfile(ry):
         print(f"stamp: {run} has no run.yaml or out/report.md")
         return 1
-    checked = {n: digest(os.path.join(out, n)) for n in named_files(out)}
+    checked = {n: digest(os.path.join(out, n)) for n in tracked_files(out)}
     line = "checked: " + json.dumps(checked)
     with open(ry) as fh:
         text = fh.read()
-    if re.search(r"^checked:.*$", text, re.M):
-        text = re.sub(r"^checked:.*$", lambda _: line, text, count=1, flags=re.M)
+    old = re.compile(r"^checked:.*\n?(?:[ \t]+.*\n?)*", re.M)  # a flow or a block mapping
+    if old.search(text):
+        text = old.sub(lambda _: line + "\n", text, count=1)
     elif re.search(r"^verdict:.*$", text, re.M):
         text = re.sub(r"^(verdict:.*)$", lambda m: m.group(1) + "\n" + line, text, count=1, flags=re.M)
     else:

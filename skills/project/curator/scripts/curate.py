@@ -113,8 +113,10 @@ def run_items(run):
         all_ok = False
     checked = run.get("checked")
     if verdict.strip() and not (isinstance(checked, dict) and checked):
-        items.append(f"{rid} supervisor verdict has no checked files (from before 0.11.0, or not from the supervisor): run the supervisor again")
-        all_ok = False
+        # A shipped run is frozen: an old verdict there needs no new check.
+        if str(run.get("status", "")).strip() != "shipped":
+            items.append(f"{rid} supervisor verdict has no checked files (from before 0.11.0, or not from the supervisor): run the supervisor again")
+            all_ok = False
     elif verdict.strip():
         changed = []
         for name, old in checked.items():

@@ -44,7 +44,7 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 - A limit that the `Limits` line of the solution model or the plan already names is known. It is not a doubt. Do not add it to `todo`. The report names it as a limit.
 - To close a `todo`, do the work. Then delete the line and put the evidence in a check, a control, or `notes`.
 - A run with an open `todo` cannot go to a report. The person can accept a doubt. Ask about each `todo` line by its name. An `(agent)` answer (see "Who decides" in `CLAUDE.md`) does not accept a doubt. Ask again for that line.
-- When the person accepts a line, add `## <YYYY-MM-DD> · DECISION override: veto Q3 <RNN>` to `LOG.md`: the line and the words of the person. Then change the line into a check: `"warn - <doubt>; accepted, LOG.md <YYYY-MM-DD>"`. The report names it as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
+- To accept a line, the person says why the doubt does not change the decision. "No time" or "I decided" is not a reason. Then add `## <YYYY-MM-DD> · DECISION override: veto Q3 <RNN>` to `LOG.md`: the line and the reason in the words of the person. Then change the line into a check: `"warn - <doubt>; accepted, LOG.md <YYYY-MM-DD>"`. The report names it as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 
 ## The word "new"
 
