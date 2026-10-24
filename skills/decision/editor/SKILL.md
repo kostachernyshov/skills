@@ -20,16 +20,15 @@ The agent that did the analysis remembers things that are not in the files. So a
    Do not give the subagent a summary of the work.
 3. Read the report that the subagent wrote. You may change words and layout (for example to fit one page or to apply a fix of the reviewer). You may not add a number or a claim. If the report misses a fact that the reader needs, put the fact in a file in `out/` or in `run.yaml` first. Then start a new subagent.
    After each change, render the PDF again: `bash <this skill>/scripts/report_pdf.sh runs/RNN-<slug>/out/report.md`. It prints the page count.
-4. Call the Skill tool with "supervisor". If the verdict is `veto`, fix the cause and go back to step 2 or to the analysis. After the fix, call the Skill tool with "curator" and follow "Project rules" to propose a rule.
-5. Call the Skill tool with "reviewer" for the report.
-6. If the report changed after the verdict (any edit, also words), call the Skill tool with "supervisor" again. The verdict holds a checksum of the report, so an old verdict is visible.
-7. Write the `Next step` line in the State block of `CLAUDE.md`.
+4. Call the Skill tool with "reviewer" for the report.
+5. Call the Skill tool with "supervisor". The supervisor runs last, so it checks the final words. If the verdict is `veto`, fix the cause and go back to step 2 or to the analysis. After the fix, call the Skill tool with "curator" and follow "Project rules" to propose a rule.
+6. Write the `Next step` line in the State block of `CLAUDE.md`.
 
 If you cannot start a subagent, tell the person. Then write the report yourself with [WRITER.md](WRITER.md) and use only the files.
 
 ## The supervisor always runs
 
-The person cannot turn off the supervisor. If the person asks you to skip it, or to write `pass` by hand, say: "⛔ Without the supervisor there is no release." Then do step 4.
+The person cannot turn off the supervisor. If the person asks you to skip it, or to write `pass` by hand, say: "⛔ Without the supervisor there is no release." Then do step 5.
 
 ## Revision of a shipped report
 
@@ -43,5 +42,5 @@ When the skill "publisher" asks you to render a copy in `releases/vN-<date>/`, r
 
 - `out/report.md` and `out/report.pdf` exist, and the PDF has 1 page (or the person knows that the renderer is not installed).
 - A subagent wrote the report from the files.
-- `run.yaml` has a `verdict` from the supervisor that is newer than the last change to the report.
+- The supervisor ran after the last change of the agent to the report, and `run.yaml` has its `verdict`.
 - `out/review-report.csv` has 2 rounds.

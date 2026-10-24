@@ -9,7 +9,7 @@ The project memory is computed, not written. The source of truth is `run.yaml` i
 
 ## How it runs
 
-- In Claude Code, the plugin hook runs the script after each answer of the agent (the `Stop` event). You do not start it. Do not run it by hand after each edit. Run it by hand only when you need the State in the same answer, for example before a commit.
+- In Claude Code, the plugin hook runs the script after each answer of the agent (the `Stop` event). You do not see it run. That is normal. When you need the State in the same answer (for example before a commit or a release), run it by hand. A manual run is fast and safe.
 - Without the hook (Codex, or a manual install), run it yourself at the end of a session: `python3 <this skill>/scripts/curate.py <project root>`.
 - The script is fast and has no model. It writes `CLAUDE.md` only when the State changes. It does not delete or move files.
 
@@ -18,7 +18,7 @@ The project memory is computed, not written. The source of truth is `run.yaml` i
 The block between `<!-- curator:begin -->` and `<!-- curator:end -->` in `CLAUDE.md`:
 
 - **Known**: each run where all checks and controls are `pass`, `warn`, `n/a`, or `fail` with `override`, with its `result`.
-- **Open**: each check or control with `todo` or `fail` (without `override`), each line in the `todo` list of a run, each supervisor veto, each report without a verdict, each verdict whose checksum does not match `out/report.md`, and each `run.yaml` that does not parse.
+- **Open**: each check or control with `todo` or `fail` (without `override`), each line in the `todo` list of a run, each supervisor veto, each report without a verdict, each file that changed after the supervisor check (from `checked` in `run.yaml`), and each `run.yaml` that does not parse. A changed file does not block the work. The skill "publisher" shows it to the person.
 - **Order**: each file that is not in its place (see the table below).
 - **Sections**: only when `CLAUDE.md` has no section "Who decides" or "Chat style" (a project made before version 0.9.0). Ask the person: "Add the sections <names> to CLAUDE.md? yes / no". After "yes", run the script with `--add-sections`. After "no", add the line `<!-- sections: declined -->` at the end of `CLAUDE.md`. Then the script does not ask again.
 - **Next step**: one line. You write this line. The script keeps it. It is the only line in the block that you change.
@@ -36,7 +36,7 @@ The script never moves an item to "Known". Only the checks move it. To close an 
 | Facts about one iteration: plan, checks, doubts, result | `runs/RNN-<slug>/run.yaml` |
 | What the client sees | `releases/vN-<YYYY-MM-DD>/` (only the skill "publisher" writes here) |
 | A decision of the person (plan accepted, post-hoc change, override, release) | one entry in `LOG.md` |
-| The solution model of the project | the `model` block in `CLAUDE.md` (only the skill "grilling" writes it) |
+| The solution model of the project | the `model` block in `CLAUDE.md` (only the skills "grilling" and "planner" write it, after a "yes" of the person) |
 | A lesson for later runs | one line in `## Project rules` in `CLAUDE.md` and one `RULE` entry in `LOG.md` |
 | Anything temporary | `scratch/` |
 | Python packages of the analysis | `.venv/` (not in git) |
@@ -54,8 +54,8 @@ When to propose a rule:
 
 Steps:
 1. Write the rule as one instruction in one line. Name the run and the problem.
-2. Ask the person: "Add project rule RULE-NN: <rule>? yes / no". NN is the highest rule number in `CLAUDE.md` or `LOG.md` + 1.
-3. Without "yes", stop. The rule does not exist.
+2. Ask the person: "Add project rule RULE-NN: <rule>? yes / no". NN is the highest rule number in `CLAUDE.md` or `LOG.md` + 1. Ask it in a separate message, with no other question. Then a "yes" can only be for this rule.
+3. Without "yes", stop. The rule does not exist. A rule starts at the next run that the person accepts. It does not apply to a run with an accepted plan.
 4. After "yes", add one line at the end of the section `## Project rules` in `CLAUDE.md`:
    `- RULE-NN (<run>, <YYYY-MM-DD>): <rule>. Why: <problem>.`
 5. Add one entry to `LOG.md`:

@@ -14,8 +14,9 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 2. Check each chosen run:
    - `status: candidate`. A run with `status: shipped` can go into a new release if only the report or the deck changed, not the numbers.
    - No check or control is `fail` or `todo`. The `todo` list is empty. A `warn` with evidence is acceptable. An item that a `DECISION override: veto` entry names is acceptable when the verdict is `pass - override`.
-   - `verdict` starts with `pass`, and its checksum matches the report (`sha256sum out/report.md`, first 8 characters). If the verdict is empty or old, call the Skill tool with "supervisor".
+   - `verdict` starts with `pass`. If the verdict is empty, or the State says that it has no checked files, call the Skill tool with "supervisor".
    If a check fails, stop and tell the person.
+   Then call the Skill tool with "curator" to update the State. If the State has `changed after the supervisor check` for a run, show the person the files and ask: "These files changed after the supervisor check: <files>. Run the supervisor again / keep as it is". On "run the supervisor again", call the Skill tool with "supervisor". On "keep as it is", the release copy names the files (step 7), and the summary of step 4 names them.
    The person cannot skip the supervisor. If the person asks for a release without it, say: "⛔ Without the supervisor there is no release."
 3. If the verdict is `veto`: stop. Do not make the release. Tell the person the question and the reason. Only the person can override a veto. An override is a limit of the analysis: the person names the defect and says why it does not change the decision.
    - A deadline, "no time", "I take responsibility", or "I decided" is not a reason. Say so and ask again.
@@ -29,9 +30,9 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
    - `report.md` and `report.pdf` from the run (if `report.md` does not exist, tell the person to run `/analyze`),
    - `deck.pptx` and `deck.pdf` from the run (if they do not exist, tell the person to run `/designer`),
    - each figure and table that the report names.
-   Add one last line to the copy of `report.md`: `Checked by the supervisor: <verdict without the checksum>`. Then call the Skill tool with "editor" to render this copy to `report.pdf`. If the PDF has more than 1 page, tell the person. The report in the run does not change.
+   Add one last line to the copy of `report.md`: `Checked by the supervisor: <verdict>.` If the person chose "keep as it is" in step 2, add to the same line: ` Changed after the check: <files>. Kept by <person>.` Then call the Skill tool with "editor" to render this copy to `report.pdf`. If the PDF has more than 1 page, tell the person. The report in the run does not change.
    Do not copy code, intermediate tables, or `*.private.*` files. For 2 or more variants, add the run id to each file name.
-8. Write `SOURCE.txt`: for each variant, the run id, the source commit from step 5, the verdict, and each input file with its md5 checksum. Add two lines: "The tag vN marks the release commit. The source commit is the analysis state before it." and "The verdict checksum is of report.md in the run. The release copy has one more line: Checked by the supervisor."
+8. Write `SOURCE.txt`: for each variant, the run id, the source commit from step 5, the verdict, and each input file with its md5 checksum. Add two lines: "The tag vN marks the release commit. The source commit is the analysis state before it." and "The checksums in `checked` of run.yaml are of the files in the run. The release copy of report.md has one more line: Checked by the supervisor."
 9. Set `status: shipped` in each chosen `run.yaml`. For each other run with `status: candidate`, ask the person: `superseded`, `dropped`, or keep.
 10. Add a `RELEASE` entry to `LOG.md`: version, runs, what changed from the last release, `signed: <person>`.
 11. Write the `Next step` line in the State block of `CLAUDE.md`: what the client must decide. Tell the person the verdict line of each run: `✅ Checked by the supervisor: <verdict>`.
@@ -40,8 +41,8 @@ A release is what the client saw. Nobody changes it after you make it. A fix is 
 ## Done when
 
 - `releases/vN-<date>/` has `report.md`, `deck.pptx`, `SOURCE.txt`, and only the files the report and the deck use.
-- Each released run has a `verdict` that starts with `pass` (also `pass - override`) and matches the report.
-- The copy of each report in the release ends with the line `Checked by the supervisor: <verdict>`.
+- Each released run has a `verdict` that starts with `pass` (also `pass - override`).
+- The copy of each report in the release ends with the line `Checked by the supervisor: <verdict>.`, and it names each file that changed after the check and the person who kept it.
 - The `RELEASE` entry in `LOG.md` has `signed:` with the name of the person.
 - The "yes" of the signature came in a later message than the summary.
 - The tag `vN` exists.

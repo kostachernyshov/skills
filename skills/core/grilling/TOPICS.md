@@ -15,7 +15,7 @@ Use these topics to build the frontier. Skip a topic when the data or the files 
 | Reference test | Which test is the truth for a classifier? Is it in the data? If not, what can the data show instead? |
 | Measurement transfer | On which assay, lab, or platform will the decision be used? Results on research data do not transfer by themselves. |
 | Design | Is there a batch, a site, a time effect? Are samples paired? |
-| Controls | Which result must appear if the data is correct (positive control)? |
+| Controls | Which known effect must appear if the data is correct? It must not be the predictor, and it must not be computed from the predictor. The planner fixes the control. |
 | Prior knowledge | Which published result must we reproduce or compare with? |
 | Public or private | Is the asset under discussion (signature, method, data) already published? What does a license add? |
 | Same variable twice | Two columns can record the same thing (two ER fields, two dates). Which one is the reference? |

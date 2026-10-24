@@ -20,17 +20,18 @@ controls:             # fixed before the data are analysed. result: "status - ev
     plan: "<a known effect that must appear in these data, not the predictor under test>"
     result: "todo"
   negative:
-    plan: "<the same analysis with shuffled outcome labels, 100 times; the pass rule of the planner>"
+    plan: "<the same analysis with shuffled outcome labels, 100 times; pass: the median shuffled effect is at the null value (<HR 1 | AUC 0.5 | kappa 0 | difference 0>)>"
     result: "todo"
   robustness:
     plan: "<nearby thresholds and named subgroups; the answer must not flip>"
     result: "todo"
 env: {}              # written by the skill "analyze": package: version
-rules: {}             # RULE-NN: "<how this run follows the rule>" or "deviation - LOG.md <date>"
+rules: {}             # the rules that exist when the plan is accepted. RULE-NN: "<how this run follows the rule>" or "deviation - LOG.md <date>"
 checks:               # name: "status - evidence". status: todo | pass | warn | fail | n/a
   ids-match: "todo"
 todo: []              # each doubt as one line: "not checked", "maybe", "possibly new"
 literature: null      # before the word "new": {date: "YYYY-MM-DD", queries: ["..."], found: "<what exists>"}
 result: "<one sentence, empty while open>"
-verdict: null         # written by the skill "supervisor" only: "pass - <date>" or "veto - Q<n>: <reason>"
+verdict: null         # written by the skill "supervisor" only: "pass - <date>" or "veto - Q<n>: <reason>; Q<m>: <reason> - <date>"
+checked: {}           # written by the supervisor script: each file that the supervisor saw, with its checksum
 notes: "<why this run exists; post-hoc changes; reasons for warn checks; why it was dropped>"

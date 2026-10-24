@@ -18,6 +18,10 @@ Follow the sections "Who decides" and "Chat style" in `CLAUDE.md`. Mark each ans
 
 ## Process
 
+The order is fixed: (1) the useful action, (2) the search of published work, (3) the questions about the run. Do not ask a question about the run before the search.
+
+If grilling already runs in this session (for example the person types `/grill-me` again), continue from the current question. Do not start again.
+
 1. Read what exists: the request, the data files, `CLAUDE.md` (the solution model, the project rules, the State), `LOG.md` (grilling entries, `post-hoc`, `deviation`, and `RULE` entries), and the `result` and `notes` of each `run.yaml`. Find facts yourself. Do not ask the person for a fact that the files can show.
 2. Find the id of the next run: the newest run without a `plan accepted` entry in `LOG.md`, or the highest run number + 1.
 3. Make sure that the solution model is ready:
@@ -29,7 +33,7 @@ Follow the sections "Who decides" and "Chat style" in `CLAUDE.md`. Mark each ans
    A public fact can change the decision. Put it in the next round.
    If a site blocks access, try another source: the publisher page, an institutional repository PDF, a preprint server, or the abstract. Record the blocked source. Mark a prior from an abstract only as `weak`.
 5. Make the **frontier**: the list of open questions that block the run. Use the topics in [TOPICS.md](TOPICS.md). Add each contradiction that you find (see "Contradictions").
-6. Ask one round: 3 to 6 questions. Give each question:
+6. Ask one round: 6 questions or fewer. The model check and each "Follow RULE-NN?" question count in this limit. Give each question:
    - options on short lines,
    - your recommended option, marked (not for the useful action, see "Solution model"),
    - one line: why the answer changes the analysis.
@@ -64,15 +68,17 @@ The solution model is a short explanation of the project. It has three parts:
 
 - **Useful action**: who gets the benefit and which decision or action changes. Examples: a narrow group of patients, a team in a pharma company that ordered the project, the bioinformatician and their own business.
 - **Method**: which data, which comparison, and which result ends the work.
-- **Plausibility**: why the method can work. Give the biological mechanism or the published prior, the controls, and the known limits.
+- **Plausibility**: why the method can work. Give the biological mechanism or the published prior, and the known limits.
 
-Write it between the markers in `CLAUDE.md`. Only this skill writes this block. The curator script does not change it.
+The model is for the whole project. Do not write the details of one run in it: a control, a threshold, or the gene of one run. These go in `run.yaml`.
+
+Write it between the markers in `CLAUDE.md`. Only this skill and the skill "planner" write this block, after a "yes" of the person. The curator script does not change it.
 
 ```
 <!-- model:begin -->
 - Useful action: <who gets the benefit; which decision or action changes>
 - Method: <which data; which comparison; which result ends the work>
-- Plausibility: <mechanism or prior; controls; known limits>
+- Plausibility: <mechanism or prior; known limits>
 - Limits: <what the project cannot answer>
 - Confirmed: <person> <YYYY-MM-DD>
 <!-- model:end -->
@@ -103,7 +109,7 @@ Look for contradictions and vague statements in each round. Each one becomes a q
 - the data and the method,
 - the resources: time, money, and the due date.
 
-Also check the model against what the data can show. Example: 12 cases in the smallest group cannot support a threshold of 95% sensitivity.
+Also check the model against what the data can show. Example: 12 cases in the smallest group cannot support a threshold of 95% sensitivity. You may count group sizes and events. Do not look at the link between the predictor and the outcome.
 
 ## Project rules
 

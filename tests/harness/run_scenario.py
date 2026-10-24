@@ -22,6 +22,9 @@ import time
 CLAUDE = os.environ.get("CLAUDE_BIN", "claude")
 TURN_TIMEOUT = 3600
 LIMIT = "You've hit your session limit"
+CUT = "\n\n(Your last turn was cut by a usage limit. Continue from where you stopped.)"
+ANALYZE = "/kostachernyshov-skills:analyze"
+REPEAT = "(The test paused. Repeat your last message to the person, in one message.)"
 
 FRICTION = (
     "The test is over. Do not change any file now. Report in plain text with these headings:\n"
@@ -95,13 +98,31 @@ def read_log(log_path):
     return result, session
 
 
-def persona_answer(persona, message, model, log_dir, n):
+def persona_answer(system_prompt, message, model, log_dir, n, run=None):
+    """Return the reply of the persona, or None when the persona model hit the usage limit.
+
+    The limit text must never reach the agent as an answer of the person."""
     prompt = "The agent wrote:\n\n<<<\n" + message[-6000:] + "\n>>>\n\nYour reply:"
-    args = ["--model", model, "--tools", "", "--system-prompt", PERSONA_RULES + persona,
+    args = ["--model", model, "--tools", "", "--system-prompt", system_prompt,
             "--setting-sources", "", "--max-turns", "1"]
-    res, _, _ = run_claude(args, log_dir, os.path.join(log_dir, f"persona-{n:02d}.jsonl"), prompt)
-    text = (res or {}).get("result") or "I do not know. Use your recommendation."
-    return text.strip()
+    res, _, _ = (run or run_claude)(args, log_dir, os.path.join(log_dir, f"persona-{n:02d}.jsonl"), prompt)
+    text = ((res or {}).get("result") or "I do not know. Use your recommendation.").strip()
+    return None if text.startswith(LIMIT) else text
+
+
+def persona_limit_entry(n, step):
+    """Transcript entry for a persona limit. --resume starts there and asks the agent to repeat its message."""
+    return {"turn": n + 1, "step": step, "prompt": REPEAT, "reply": LIMIT + " (persona)", "persona_limit": True}
+
+
+def resume_point(old):
+    """Return (kept transcript, start step, start prompt) for --resume."""
+    bad = [t for t in old if t["reply"].startswith(LIMIT) or t["reply"] == "(no result)"]
+    if not bad:
+        return old, (old[-1]["step"] + 1 if old else 0), None
+    first = bad[0]
+    prompt = REPEAT if first.get("persona_limit") else first["prompt"] + CUT
+    return [t for t in old if t["turn"] < first["turn"]], first["step"], prompt
 
 
 def truncate_session(project, session):
@@ -155,9 +176,7 @@ def main():
     start_step, start_prompt, session, n, transcript = 0, None, None, 0, []
     if a.resume:
         old = json.load(open(os.path.join(a.log, "transcript.json")))
-        bad = [t for t in old if t["reply"].startswith(LIMIT) or t["reply"] == "(no result)"]
-        transcript = [t for t in old if t["turn"] < bad[0]["turn"]] if bad else old
-        start_step, start_prompt = (bad[0]["step"], bad[0]["prompt"] + "\n\n(Your last turn was cut by a usage limit. Continue from where you stopped.)") if bad else (len(old), None)
+        transcript, start_step, start_prompt = resume_point(old)
         n = transcript[-1]["turn"] if transcript else 0
         for t in reversed(transcript):
             _, sid = read_log(os.path.join(a.log, f"turn-{t['turn']:02d}.jsonl"))
@@ -181,10 +200,8 @@ def main():
         steps = [
         ("/kostachernyshov-skills:ask-kosta " + opening, 0),
         ("/kostachernyshov-skills:setup-project", 1),
-        ("/kostachernyshov-skills:grill-me " + opening, 4),
-        ("/kostachernyshov-skills:planner", 3),
-        ("Run the plan.", 4),
-        ("/kostachernyshov-skills:editor", 2),
+        ("/kostachernyshov-skills:grill-with-plan " + opening, 7),
+        (ANALYZE, 6),
         ("/kostachernyshov-skills:designer", 2),
         ("/kostachernyshov-skills:publisher", 3),
         (FRICTION, 0),
@@ -220,10 +237,16 @@ def main():
             if tries >= loops:
                 break
             tries += 1
-            answer = persona_answer(persona, text, a.persona_model, a.log, n)
-            if answer.strip().startswith("NO_QUESTION"):
-                runs_so_far = sum(1 for p, _ in steps[: i + 1] if p == "Run the plan.")
-                if steps[i][0] == "Run the plan." and candidate_count(a.project) < runs_so_far and tries < loops:
+            answer = persona_answer(PERSONA_RULES + persona, text, a.persona_model, a.log, n)
+            if answer is None:
+                print(f"persona usage limit after turn {n}; stop. Run again with --resume.", flush=True)
+                transcript.append(persona_limit_entry(n, i))
+                with open(os.path.join(a.log, "transcript.json"), "w") as fh:
+                    json.dump(transcript, fh, indent=1)
+                return 2
+            if answer.startswith("NO_QUESTION"):
+                runs_so_far = sum(1 for p, _ in steps[: i + 1] if p.startswith(ANALYZE))
+                if steps[i][0].startswith(ANALYZE) and candidate_count(a.project) < runs_so_far and tries < loops:
                     prompt = "Continue until the plan is done and the run is a candidate."
                     continue
                 break

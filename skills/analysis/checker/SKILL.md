@@ -41,9 +41,10 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 ## Doubts become todo
 
 - When you write or think "not checked", "possibly", "probably", "maybe", "unclear", or "probably new", add one line to the `todo` list in `run.yaml`. A doubt that is only in the chat is lost.
+- A limit that the `Limits` line of the solution model or the plan already names is known. It is not a doubt. Do not add it to `todo`. The report names it as a limit.
 - To close a `todo`, do the work. Then delete the line and put the evidence in a check, a control, or `notes`.
-- A run with an open `todo` cannot go to a report. If the person decides to accept the doubt, write a `DECISION` in `LOG.md` and change the line into a `warn` check with that reason.
-- Ask about each `todo` line by its name. An `(agent)` answer (see "Who decides" in `CLAUDE.md`) does not accept a doubt. Ask again for that line. The `DECISION` entry names each accepted line and quotes the words of the person. The report names each accepted doubt as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
+- A run with an open `todo` cannot go to a report. The person can accept a doubt. Ask about each `todo` line by its name. An `(agent)` answer (see "Who decides" in `CLAUDE.md`) does not accept a doubt. Ask again for that line.
+- To accept a line, the person says why the doubt does not change the decision. "No time" or "I decided" is not a reason. Then add `## <YYYY-MM-DD> · DECISION override: veto Q3 <RNN>` to `LOG.md`: the line and the reason in the words of the person. Then change the line into a check: `"warn - <doubt>; accepted, LOG.md <YYYY-MM-DD>"`. The report names it as a limit. Then call the Skill tool with "curator" and follow "Project rules" to propose a rule.
 
 ## The word "new"
 
@@ -57,11 +58,17 @@ Write each check in `run.yaml` under `checks` as `"<status> - <evidence with a n
 
 ## When the planned method gives an unusable result
 
-The plan can be wrong. Examples: a pre-set cut-off rule gives a cut-off that misclassifies one group; the planned model works but is clearly weaker than the published prior. A change of method after you see the outcome result is post-hoc. A bug fix (wrong label, wrong column) is not post-hoc: fix it in the same run and write one line in `notes`.
-1. Keep the planned result in the run. Set the run `status: dropped` only if nothing in it is usable.
-2. Start a new run with `parent` set to the first run. Put the changed method in the new run. Set the first run to `superseded` when the new run replaces it.
-3. Add a `DECISION` entry to `LOG.md` that starts with `post-hoc:`. Say what changed and why. Write the same line in `notes` of the new run. The report must say that the choice was made after the data were seen. This also applies to a sensitivity analysis or a subgroup that you added after you saw the outcome.
-4. Call the Skill tool with "curator" and follow "Project rules" to propose a rule. The next run must not repeat the problem.
+The plan can be wrong. Examples: a pre-set cut-off rule gives a cut-off that misclassifies one group; the planned model works but is clearly weaker than the published prior. Each change after you see the outcome result is post-hoc. One question decides where it goes: does the main answer now come from a different method, threshold, or control rule than the plan?
+
+| Change after the result | Where | Record |
+|---|---|---|
+| Bug fix (wrong label, wrong column) | Same run | One line in `notes`. If a number of a check or a control changes, tell the person. |
+| Extra variant: a sensitivity analysis, a subgroup, a stratified model. The planned answer stays the main answer. | Same run | `post-hoc:` entry |
+| The main answer comes from a different method, threshold, or control rule | New run with `parent` set to the first run | `post-hoc:` entry |
+
+For a new run: keep the planned result in the first run. Set the first run to `superseded` when the new run replaces it, or `dropped` if nothing in it is usable.
+The `post-hoc:` entry is a `DECISION` entry in `LOG.md` that starts with `post-hoc:`. Say what changed and why. Write the same line in `notes` of the run. The report must say that the choice was made after the data were seen.
+Then call the Skill tool with "curator" and follow "Project rules" to propose a rule. The next run must not repeat the problem.
 
 ## Never
 

@@ -38,7 +38,6 @@ Each check: what to test, how, what result passes. Use `n/a - <reason>` when a c
 
 | Check | How | Pass |
 |---|---|---|
-| positive-control | Find a gene or effect that must appear (for example ESR1 high in ER-positive breast tumors). The control must not be the predictor under test: if ESR1 is the predictor, use PGR, GATA3, or FOXA1. If the data has no such gene (small panel), use a named clinical association with a published effect, for example "grade 3 vs grade 1 predicts metastasis". | The control appears with the expected sign and a clear size. |
 | p-value-distribution | Histogram of raw p-values. Only for many tests. | Flat with a peak near 0. A peak near 1 or a hill in the middle is a fail. |
 | effect-size | Look at the top effects. | Sizes are plausible for the biology (not 20 log2 units). |
 | prior | Compare with the published result. | Agrees or the difference is explained. If no prior exists: `n/a`, and the plan controls carry the evidence. |

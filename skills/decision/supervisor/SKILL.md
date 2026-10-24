@@ -17,19 +17,20 @@ The supervisor asks "can the reader trust this?". The skill "reviewer" asks "can
    > You are a supervisor. Read the file `<this skill>/QUESTIONS.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, `LOG.md`, and the section `## Project rules` in `CLAUDE.md`. Do not read `code/`, the chat, or any other file.
 
    Do not give the subagent a summary of the work. Do not tell it what you expect.
-3. Copy the verdict line that the subagent returns into `run.yaml` as the value of `verdict`. Do not change the words. Add the checksum of the report at the end: ` - report <first 8 characters of sha256sum out/report.md>`. Parse `run.yaml` after the edit.
-4. If the verdict is `veto`: tell the person the question number and the reason. Fix the cause in the analysis or in the report. Then start a new subagent. Do not send the old supervisor your answer.
-5. After 3 vetoes on the same question, stop. Ask the person what to do.
+3. Copy the verdict line that the subagent returns into `run.yaml` as the value of `verdict`. Do not change the words. Then record the files that the supervisor saw: `python3 <this skill>/scripts/stamp.py runs/RNN-<slug>`. It writes `checked` in `run.yaml`: each file in `out/` with a checksum, except the deck, the reviews, and `report.pdf`. Parse `run.yaml` after the edit.
+4. If the verdict is `veto`: tell the person each question with `no` and its reason. Fix all the causes in the analysis or in the report. Then start a new subagent. Do not send the old supervisor your answer.
+5. After 3 vetoes for the same run, stop. Ask the person what to do.
 
 ## Rules
 
 - Only this skill writes `verdict`. Never edit the verdict to `pass` by hand.
 - The person cannot turn off the supervisor. The skills "editor" and "publisher" always run it. Without a verdict there is no release.
 - Only the person can override a veto, with a reason. The supervisor checks the reason (see "Overrides" in [QUESTIONS.md](QUESTIONS.md)).
-- A change to `report.md` or to a number in `out/` after the verdict makes the verdict old. Run the supervisor again. The curator script shows a verdict whose checksum does not match the report as `Open`.
+- The supervisor checks the work of the agent. After the verdict, the person can change the report, the figures, and the deck. This does not block the work. The curator script shows each changed file as `changed after the supervisor check`. The skill "publisher" shows these files to the person before the signature.
 - If you cannot start a subagent, write `verdict: "veto - Q0: no fresh context; supervisor not run"` and tell the person. The skill "publisher" stops on it.
 
 ## Done when
 
-- `run.yaml` has `verdict` with `pass`, `pass - override`, or `veto`, a date, the reason for a veto, and the checksum of the report.
+- `run.yaml` has `verdict` with `pass`, `pass - override`, or `veto`, a date, and the reason for each `no`.
+- `run.yaml` has `checked` with `report.md` and the tables and figures in `out/`.
 - The verdict came from a subagent that did not see the chat.

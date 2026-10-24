@@ -22,10 +22,10 @@
 - <Each warning from the checks.>
 
 ## Options
-| Option | What happens | Cost if wrong | Can reverse |
-|---|---|---|---|
-| A | | | yes / no |
-| B | | | yes / no |
+| Option | What happens | Cost if wrong |
+|---|---|---|
+| A | | |
+| B | | |
 
 <Recommended option and one line why. The reader decides.>
 
