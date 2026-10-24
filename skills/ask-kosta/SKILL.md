@@ -33,6 +33,7 @@ Only the person starts these skills: `/setup-project`, `/grill-me`, `/grill-with
 | A new run: a new data type, a new question, or a merge of earlier runs | `/grill-with-plan`. Grilling asks if the solution model is still valid. |
 | The question changed | `/grill-with-plan` for a new run |
 | A report must change (words, layout) | Ask the agent to rewrite the report ("editor"). The supervisor runs again. |
+| You changed the report, a figure, or the deck yourself | Nothing. `/publisher` shows the files that changed after the supervisor check. You choose: run the supervisor again, or keep them and sign. |
 | A lesson must hold for later runs | Ask the agent to add a project rule ("curator"). Only you edit or delete rules, by hand in `CLAUDE.md`. |
 | The work session ends | Nothing. The curator hook updates the State. Without the hook, ask the agent to run "curator". |
 

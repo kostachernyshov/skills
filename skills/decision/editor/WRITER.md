@@ -10,18 +10,18 @@ Read only: `run.yaml` of the run, the files in `out/` of the run, and `LOG.md`. 
 
 1. Read `question`, `decision`, `success`, `success_source`, `context`, `controls`, `checks`, `result`, and `notes` in `run.yaml`. Read the `DECISION` entries in `LOG.md`.
    If `context` starts with `forced`, the report starts with the warning block of [TEMPLATE.md](TEMPLATE.md), above the title. Fill in the numbers from `context`.
-2. Write the report with [TEMPLATE.md](TEMPLATE.md). Keep the text to 300 words or fewer. Tables, figure captions, and source brackets do not count. Embed the main figure that `done_when` names, at half width: `![<what it shows>](fig-<what>.png){width=50%}`. Use a figure that exists in `out/`.
+2. Write the report with [TEMPLATE.md](TEMPLATE.md). Keep the text to 300 words or fewer. Tables, figure captions, and source brackets do not count. Embed the main figure that `done_when` names, at the full width of the text: `![<what it shows>](fig-<what>.png)`. Use a figure that exists in `out/`. Do not make the figure smaller to fit the page. Cut text.
 3. Use the words of the reader, not the words of the method. Write "patients with ER-negative tumors", not "ER=0 stratum".
-4. Give each option a cost of error and say if the decision can be reversed. Give each next step an owner. If the files name no owner, write `to be named by <who decides>`. Do not invent owners. If there is no date, write the event in the When column ("before the study").
+4. Give each option a cost of error. Give each next step an owner: the person who makes the decision (`decision` in `run.yaml`), unless the files name another owner. Do not invent owners. If there is no date, write the event in the When column ("before the study").
 5. If `success_source` is `agent` (in older runs: `assumed`), write the threshold in the Answer line ("No, at the threshold of 95% specificity that the agent chose"). Add one line in Evidence: how the answer changes at nearby thresholds.
-6. In "Confidence and limits": name each `warn` that can change the decision; name each post-hoc choice from `LOG.md` or `notes`; name each `DECISION override` from `LOG.md` as a limit: the defect and why it does not change the decision, in the words of the entry. Add one line: "Other technical warnings: see run.yaml."
+6. In "Confidence and limits": name each `warn` that can change the decision; name each post-hoc choice from `LOG.md` or `notes`; name each `DECISION override` from `LOG.md` as a limit: the defect and why it does not change the decision, in the words of the entry.
 7. Save the report as `runs/RNN-<slug>/out/report.md`. Refer to figures and tables by file name only (`fig-km.png`), not by path.
 8. Render it from the project root: `bash <this skill>/scripts/report_pdf.sh runs/RNN-<slug>/out/report.md`. It writes `out/report.pdf` (A4) and prints the page count. If the count is more than 1, cut text, not font size. The script needs `pandoc` and LibreOffice. If they are not installed, say so and use the word limit only.
 9. Return one line: the Answer sentence and the word count.
 
 ## Numbers
 
-- Each number from the analysis must exist in a table or a figure in `out/`. Give the file name in brackets. For another run, add the run id: `[R01: cv-performance.csv]`.
+- Each number from the analysis must exist in a table or a figure in `out/`, or in `run.yaml` (for example the counts in `samples`). Give the file name in brackets: `[run.yaml]` for a number from `run.yaml`. For another run, add the run id: `[R01: cv-performance.csv]`.
 - A plain-language form of a number ("6 in 100") is allowed if the source number is in a table.
 - A number from a paper needs the reference, not a table.
 - If a number that the reader needs is not in the files, do not write it. Say in your answer which number is missing.

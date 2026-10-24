@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.11.0 (2026-10-24)
+Fewer contradictions between the skills, and fewer loops. Decision by Kosta (2026-10-24): `decisions/2026-10-24-issues-v0.11.0.md` in the project files. Closes #18, #19, #20, #21, #23, #24, #25, #26, #27, #28, #29, #30, #31, #32, #33, #34, #35, #37, #38, #39, #40.
+
+What changes for you:
+- The supervisor checks the work of the agent. After its check you can change the report, the figures, and the deck. Nothing blocks you. `/publisher` shows the files that changed after the check and asks: run the supervisor again, or keep them. The release copy names the kept files.
+- A veto names each question with "no", not only the first. The supervisor runs once, after the reviewer.
+- A project rule starts at the next run. It does not apply to the run that it came from. The agent asks "Add RULE-NN?" in a separate message.
+- The solution model in `CLAUDE.md` is for the whole project. The details of one run (a control, a threshold, a gene) go only in `run.yaml`. The planner can change the model after your "yes".
+- To accept a doubt, the agent writes the existing `DECISION override: veto Q3 RNN` entry. A limit that the model or the plan already names is not a doubt.
+- The report has no "Can reverse" column and no "see run.yaml" line. The owner of a next step is the person who decides. The main figure uses the full width of the page.
+
+Changes:
+- `supervisor`: `scripts/stamp.py` writes `checked` (each file that the supervisor saw, with a checksum) in `run.yaml`; it replaces `- report <sha>` in the verdict. Q1 accepts a number from `run.yaml`. Q3 accepts a doubt only with a `DECISION override: veto Q3` entry. Q6 checks only the rules that existed when the plan was accepted. Stop after 3 vetoes of one report.
+- `curator`: the script shows `changed after the supervisor check: <files>` (not a block), and a verdict from before 0.11.0. A manual run of the script is allowed. The rule question is a separate message.
+- `publisher`: shows the changed files before the signature; the release copy names the files that the person kept.
+- `editor`: order is report, reviewer, supervisor. `WRITER.md` and `TEMPLATE.md`: no "Can reverse", no "see run.yaml", owner from `decision`, numbers from `run.yaml` with `[run.yaml]`, figure at full width.
+- `reviewer`: one process for the deck and the report; report criteria with 2/0 definitions; CSV column `part`; the score is the score before the fix; the cold read uses only the images and names the part.
+- `planner`: "do not look at the outcome" means the link between the predictor and the outcome; group sizes and event counts are allowed. Negative control: the median shuffled effect is at the null value of the statistic, independent of the answer; a rule for descriptive questions. Positive control examples moved here from `CHECKS.md`. `rules` holds the rules at plan acceptance. A path to change the model.
+- `checker`: one table for changes after the result (bug fix, extra variant, new method). Known limits are not `todo`. The check `positive-control` is removed (the plan control covers it).
+- `grilling`: one fixed order (useful action, search, run questions); continue a running grilling; 6 questions or fewer per round, all questions count; no run details in the model.
+- `analyze`, `designer`: figures at 11 x 5 inches, fonts of 16 pt or more, one file for the report and the deck.
+- `ask-kosta`: a row for changes that the person makes.
+- Tests: the harness stops on a persona usage limit and resumes with a repeat of the last message (`test_harness.py`); default steps, `flow.json` files, and misuse specs use `/grill-with-plan` and `/analyze`; `tests/README.md` has a cost rule.
+
 ## 0.10.0 (2026-10-23)
 Names, the person, and controls that the person removes. Decision by Kosta (grilling Q1-Q16, 2026-10-23): `decisions/2026-10-23-names-person-controls-v0.10.0.md` in the project files. Closes #7, #12, #14, #16, #17, #22, #36, #42.
 

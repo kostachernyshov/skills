@@ -6,13 +6,22 @@ Each test round runs a fresh agent on a scenario. Rounds 1-5 used a subagent tha
 
 1. Make an empty project folder outside this repository. Copy the data into it.
 2. Give the agent: the path to `skills/`, the path to `persona.md`, the project folder. Do not give it `RUBRIC.md`.
-3. From 0.7.0 the test runs in real Claude Code with the plugin installed (`harness/run_scenario.py`). A driver types the person commands in this order: `/ask-kosta`, `/setup-project`, `/grill-me`, `/planner`, "Run the plan.", `/editor`, `/designer`, `/publisher`. The agent skills and the curator hook start by themselves.
+3. From 0.7.0 the test runs in real Claude Code with the plugin installed (`harness/run_scenario.py`). A driver types the person commands in this order: `/ask-kosta`, `/setup-project`, `/grill-with-plan`, `/analyze`, `/designer`, `/publisher`. The agent skills and the curator hook start by themselves.
    A scenario can set its own command order in `flow.json` (for example two runs in one project). `harness/check_rules.py` prints the solution model, the project rules, and the turn of each rule write.
 4. A persona model answers the questions of the agent from `persona.md`. A question without an answer gets "use your recommendation". The persona signs a release only without a supervisor veto.
 5. At the end the agent reports the skills it used and each point where a skill was unclear or wrong (friction).
 6. `harness/skill_usage.py` makes the table "skill → called → when" from the session logs.
 7. A blind grader (`harness/grade.py`) scores each project copy with `RUBRIC.md`. It does not know the run number or the version.
-8. Run 3 replicates per scenario on one version. Report min–max per item. A change to a skill is accepted only if the gain is larger than the spread.
+8. Report min–max per item over the replicates. A change to a skill is accepted only if the gain is larger than the spread.
+
+## Cost
+
+A full round costs about 60 M tokens. Use the smallest test that can show the failure.
+
+- For a fix: 1 short run of the scenario that showed the failure. If the fix is in grilling or the planner, stop after the plan (`--stop-after`, or a `flow.json` like s10).
+- Before the release of a version: a full round with 2 replicates per scenario.
+- Write the budget of the round (tokens or USD) in the results file before the start. `harness/cost.py` gives the real cost after the round.
+- If the agent or the persona hits a usage limit, the harness stops. Run it again with `--resume`.
 
 ## Misuse tests
 

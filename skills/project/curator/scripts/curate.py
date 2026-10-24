@@ -2,7 +2,7 @@
 """Build the State block in CLAUDE.md from runs/*/run.yaml and list files out of place.
 
 Usage:
-  curate.py [project_root]                  # manual run; prints the block
+  curate.py [project_root]                  # manual run; writes the block in CLAUDE.md and prints it
   curate.py --hook                          # Claude Code Stop hook; reads the hook JSON on stdin
   curate.py --add-sections [project_root]   # add the shared sections of sections.md that CLAUDE.md does not have
 
@@ -107,20 +107,27 @@ def run_items(run):
     if verdict.lower().startswith("veto"):
         items.append(f"{rid} supervisor {verdict}")
         all_ok = False
-    if re.search(r"brief [0-9a-f]{8}", verdict):
-        items.append(f"{rid} supervisor verdict is from before 0.10.0 (brief.md): run the supervisor on report.md")
-        all_ok = False
-    m = re.search(r"report ([0-9a-f]{8})", verdict)
-    report = os.path.join(run["_root"], "runs", run["_dir"], "out", "report.md")
-    if not verdict.strip() and os.path.isfile(report):
+    out = os.path.join(run["_root"], "runs", run["_dir"], "out")
+    if not verdict.strip() and os.path.isfile(os.path.join(out, "report.md")):
         items.append(f"{rid} report has no supervisor verdict (run the supervisor; no release without it)")
         all_ok = False
-    if m and os.path.isfile(report):
-        with open(report, "rb") as fh:
-            digest = hashlib.sha256(fh.read()).hexdigest()[:8]
-        if digest != m.group(1):
-            items.append(f"{rid} supervisor verdict is old: report.md changed after it (run the supervisor again)")
-            all_ok = False
+    checked = run.get("checked")
+    if verdict.strip() and not (isinstance(checked, dict) and checked):
+        items.append(f"{rid} supervisor verdict has no checked files (from before 0.11.0, or not from the supervisor): run the supervisor again")
+        all_ok = False
+    elif verdict.strip():
+        changed = []
+        for name, old in checked.items():
+            path = os.path.join(out, str(name))
+            if not os.path.isfile(path):
+                changed.append(f"{name} (removed)")
+                continue
+            with open(path, "rb") as fh:
+                if hashlib.sha256(fh.read()).hexdigest()[:8] != str(old):
+                    changed.append(str(name))
+        if changed:
+            # Not a block: the person may change files after the check. The publisher shows them.
+            items.append(f"{rid} changed after the supervisor check: {', '.join(changed)} (the publisher asks the person)")
     status = str(run.get("status", "")).strip()
     if status not in RUN_STATUS:
         items.append(f"{rid} status '{status}' is not valid")

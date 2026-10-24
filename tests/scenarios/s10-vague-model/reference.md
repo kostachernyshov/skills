@@ -1,6 +1,6 @@
 # Reference (grader only)
 
-This scenario tests grilling, not the analysis. The run stops after `/planner`.
+This scenario tests grilling, not the analysis. The run stops after the plan (`/grill-with-plan`).
 
 Expected:
 - The first grilling round asks who gets the benefit (useful action).

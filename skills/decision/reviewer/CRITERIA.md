@@ -15,12 +15,14 @@
 
 ## Report criteria
 
-Score each criterion 2 (good), 1 (weak), or 0 (fails), as for slides.
-
-- One page in `report.pdf`. The answer is the line after the question.
-- Each number from the analysis has its source bracket.
-- Each section has its job: Evidence has numbers, Limits has warnings, Options has cost of error, Next steps has owners.
-- No word that the reader does not know. No file or column names in the text, except the source brackets.
+| Criterion | 2 (good) | 0 (fails) |
+|---|---|---|
+| answer | The Answer line comes directly after the question. It is one sentence: yes, no, or a number with its range. | The answer is missing, late, or needs the Evidence section to understand. |
+| page | `report.pdf` has 1 page. | 2 pages or more. |
+| sources | Each number from the analysis has its source bracket. | A number has no bracket. |
+| sections | Evidence has numbers, Confidence and limits has the warnings, Options has the cost of error, Next steps has an owner for each step. | A section is empty or does another job. |
+| figure | The figure uses the full width of the text. Its text is readable on the printed page. The figure shows the message of the answer. | The figure text is too small to read, or the figure does not support the answer. |
+| words | The words of the reader. No file or column names in the text, except the source brackets. Each abbreviation is explained or removed. | Jargon, column names, code names. |
 
 ## Deck-level checks
 

@@ -17,7 +17,8 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from run_scenario import FRICTION, LIMIT, candidate_exists, read_log, run_claude, truncate_session  # noqa: E402
+from run_scenario import (ANALYZE, FRICTION, LIMIT, candidate_count, persona_answer,  # noqa: E402
+                          persona_limit_entry, read_log, resume_point, run_claude, truncate_session)
 
 RULES = """You play a person in a test. Stay in the role below. You talk to an analysis agent.
 
@@ -30,14 +31,6 @@ Rules:
 
 Your role:
 """
-
-
-def persona_answer(rules, message, model, log_dir, n):
-    prompt = "The agent wrote:\n\n<<<\n" + message[-6000:] + "\n>>>\n\nYour reply:"
-    args = ["--model", model, "--tools", "", "--system-prompt", rules,
-            "--setting-sources", "", "--max-turns", "1"]
-    res, _, _ = run_claude(args, log_dir, os.path.join(log_dir, f"persona-{n:02d}.jsonl"), prompt)
-    return ((res or {}).get("result") or "I do not know. Use your recommendation.").strip()
 
 
 def main():
@@ -60,17 +53,14 @@ def main():
     session, n, transcript, start_step, start_prompt = None, 0, [], 0, None
     if a.resume:
         old = json.load(open(os.path.join(a.log, "transcript.json")))
-        bad = [t for t in old if t["reply"].startswith(LIMIT)]
-        transcript = [t for t in old if not bad or t["turn"] < bad[0]["turn"]]
-        n = transcript[-1]["turn"]
+        transcript, start_step, start_prompt = resume_point(old)
+        n = transcript[-1]["turn"] if transcript else 0
         for t in reversed(transcript):
             _, session = read_log(os.path.join(a.log, f"turn-{t['turn']:02d}.jsonl"))
             if session:
                 break
-        truncate_session(a.project, session)
-        if bad:
-            start_step = bad[0]["step"]
-            start_prompt = bad[0]["prompt"] + "\n\n(Your last turn was cut by a usage limit. Continue from where you stopped.)"
+        if session:
+            truncate_session(a.project, session)
         print(f"resume at step {start_step}, turn {n + 1}, session {session}", flush=True)
     else:
         os.makedirs(os.path.join(a.project, "incoming"), exist_ok=True)
@@ -107,8 +97,14 @@ def main():
                 break
             tries += 1
             answer = persona_answer(rules, text, a.persona_model, a.log, n)
+            if answer is None:
+                print(f"persona usage limit after turn {n}; stop. Run again with --resume.", flush=True)
+                transcript.append(persona_limit_entry(n, i))
+                with open(os.path.join(a.log, "transcript.json"), "w") as fh:
+                    json.dump(transcript, fh, indent=1, ensure_ascii=False)
+                return 2
             if answer.startswith("NO_QUESTION"):
-                if step["prompt"] == "Run the plan." and not candidate_exists(a.project) and tries < loops:
+                if step["prompt"].startswith(ANALYZE) and not candidate_count(a.project) and tries < loops:
                     prompt = "Continue until the plan is done and the run is a candidate."
                     continue
                 break
