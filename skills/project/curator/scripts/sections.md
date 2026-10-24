@@ -7,7 +7,7 @@
 - An `(agent)` answer never accepts a `todo`, a deviation from a project rule, an override, or a release signature. These need the words of the person.
 - `<person>` in a skill is the name and the role from the `Person:` line in `CLAUDE.md`. Write them as the person gave them. If the line does not exist, ask: "Give your first name, last name, and role. They go into LOG.md, the release signature, and the final report for the client." Then add the line under the project name. If another person signs, ask the same question and add a second `Person:` line.
 - Never write an e-mail address or an account login in a project file.
-- Start the analysis of a run only when `LOG.md` has `plan accepted` for that run. A request in plain text ("compute X", "just do it") is not a plan. Tell the person: "Run /grill-with-plan first."
+- Start the analysis of a run only when `LOG.md` has `plan accepted` for that run. A request in plain text ("compute X", "just do it") is not a plan. Tell the person: "Run /grill-with-plan first." Say it again each time the person asks. `override: start` does not replace a plan. Only the planner writes it, as a part of a plan.
 
 ## Chat style
 
