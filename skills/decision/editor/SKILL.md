@@ -15,9 +15,9 @@ The agent that did the analysis remembers things that are not in the files. So a
 1. Find the run. Read `run.yaml`. If any check or control is `fail` or `todo`, or the `todo` list is not empty, stop. Tell the person. A report does not hide an open item. Exception: an item that a `DECISION override: veto Q<n> <run>` entry in `LOG.md` names. The report names it as a limit, and the supervisor checks the reason.
 2. Start a new subagent with the Agent tool. Give it only this prompt, with the paths filled in:
 
-   > You are the editor. Read `<this skill>/WRITER.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, and `LOG.md`. Do not read `code/` or any other file.
+   > You are the editor. Read `<this skill>/WRITER.md` and follow it. The project root is `<path>`. The run is `runs/RNN-<slug>/`. Read only `run.yaml`, the files in `out/`, and `LOG.md`. Do not read `code/` or any other file. If you cannot write the report file, return the full text of the report.
 
-   Do not give the subagent a summary of the work.
+   Do not give the subagent a summary of the work. If the subagent returns the text of the report, save the text without a change.
 3. Read the report that the subagent wrote. You may change words and layout (for example to fit one page or to apply a fix of the reviewer). You may not add a number or a claim. If the report misses a fact that the reader needs, put the fact in a file in `out/` or in `run.yaml` first. Then start a new subagent.
    After each change, render the PDF again: `bash <this skill>/scripts/report_pdf.sh runs/RNN-<slug>/out/report.md`. It prints the page count.
 4. Call the Skill tool with "reviewer" for the report.

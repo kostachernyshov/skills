@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.11.1 (2026-10-24)
+Small fixes after the check of 0.11.0 (`tests/results/check-0.11.0.md`). New issues: #47, #48, #49, #50.
+
+What changes for you:
+- The release copy of the report says "Report checked by the supervisor". The summary before the signature says that the supervisor does not check the deck.
+
+Changes:
+- `curator` ("Who decides") and the `LOG.md` template: `override: start` does not replace a plan; only the planner writes it. The agent says "Run /grill-with-plan first" each time the person asks. An existing project keeps its old section; copy the new line from `scripts/sections.md`.
+- `planner`: a too-wide interval at the threshold is a known limit in `notes`, not a `todo`.
+- `reviewer`: a self cold read has its own record line.
+- `editor`: if the subagent cannot write the file, it returns the text, and the agent saves it without a change.
+- Tests: scenario `s12-kirc-angio`.
+
 ## 0.11.0 (2026-10-24)
 Fewer contradictions between the skills, and fewer loops. Decision by Kosta (2026-10-24): `decisions/2026-10-24-issues-v0.11.0.md` in the project files. Closes #18, #19, #20, #21, #23, #24, #25, #26, #27, #28, #29, #30, #31, #32, #33, #34, #35, #37, #38, #39, #40.
 
