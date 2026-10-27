@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.13.1 (2026-10-27)
+The README animation follows the real flow. Requested and accepted by Kosta (storyboard version 4) in the thread "Animation of how the skills work".
+
+What changes for you:
+- `docs/media/how-it-works.webp` (960x540, 75 s, 0.85 MB): the client asks you; the first station is `/grill-me`; grilling is a chat (the questions of the agent with a red "?", then your answers); the runs have names, run "biological description" and run "predict outcomes", without R01 and R02; each run has plan, analysis, report, and supervisor; the plan of the second run comes before its analysis; the survival curves are in the report; slides and video are optional; the last station is the release that you sign.
+- `promo/how-it-works/`: new scenes in `road.py`, `animation.yaml`, `story.md`, and `voiceover.md` (16 scenes).
+
 ## 0.13.0 (2026-10-27)
 A large task is split into runs. A README for people. Small fixes after the check of 0.11.0. Decision by Kosta (grilling, 2026-10-27). Closes #47, #48, #50, #57, #58.
 
