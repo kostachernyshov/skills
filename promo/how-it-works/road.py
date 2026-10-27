@@ -175,7 +175,7 @@ def actor(img, ox, name, anim, wx, wy, t, flip=False, scale=2):
 
 # ---------------------------------------------------------------- cards and stamps
 
-def card(img, x, y, w, title, lines, t, t0=0.3, cps=30, h=None):
+def card(img, x, y, w, title, lines, t, t0=0.3, cps=60, h=None):
     """A card with a dark header. lines: [(text, color)]. The text types letter by letter."""
     if t < t0:
         return
@@ -192,7 +192,7 @@ def card(img, x, y, w, title, lines, t, t0=0.3, cps=30, h=None):
     return h
 
 
-def typed_until(lines, t0=0.3, cps=30):
+def typed_until(lines, t0=0.3, cps=60):
     return t0 + 0.2 + sum(len(s) for s, _ in lines) / cps
 
 
@@ -210,9 +210,13 @@ def stamp(img, x, y, label, col, t, t0):
 
 # ---------------------------------------------------------------- scene parts
 
+DUR = {}                                # scene id -> length in seconds (filled by draw)
+
+
 def cam_x(sc, t):
+    """The camera moves at an even speed for the whole scene: no stop in the middle of the road."""
     a, b = sc["cam"]
-    return lerp(a, b, ease(seg(t, 0.0, float(sc.get("move", 1.2)))))
+    return lerp(a, b, seg(t, 0.0, DUR.get(sc["id"], 5.0)))
 
 
 def lit_upto(key):
@@ -224,16 +228,22 @@ def lit_upto(key):
     return out
 
 
-def part_title(img, t, sc, ctx):
+def faint_world(img, cam):
+    """The whole road in light grey, behind the title."""
+    ox = cam - W // 2
     d = ImageDraw.Draw(img)
-    _line(d, [(20, 222), (460, 222)], 0, ROAD, 7)
-    for i, x in enumerate(range(40, 470, 55)):
-        ui.box(d, x - 8, 214, x + 8, 230, fill=PAPER, border=LGREY, inner=None)
-    y = int(lerp(-60, 46, ease(seg(t, 0, 0.6))))
-    title_text(img, W // 2, y, "KOSTA CHERNYSHOV", 4, XBLUE, NAVY, back=LGREY)
-    title_text(img, W // 2, y + 40, "SKILLS", 4, XBLUE, NAVY, back=LGREY)
-    if t > 0.7:
-        text(img, W // 2, 150, "squeeze analysis", DGREY, scale=2, align="c")
+    for a, b in EDGES:
+        _line(d, edge_points(a, b), ox, LGREY, 5)
+    for key in ORDER:
+        x, y = ST[key][:2]
+        if -20 < x - ox < W + 20:
+            ui.box(d, x - ox - 12, y - 12, x - ox + 12, y + 12, fill=PAPER, border=LGREY, inner=None)
+
+
+def part_title(img, t, sc, ctx):
+    faint_world(img, sc.get("cam", [150])[0])
+    title_text(img, W // 2, 40, "KOSTA CHERNYSHOV SKILLS", 3, XBLUE, NAVY, back=LGREY)
+    text(img, W // 2, 74, "squeeze analysis", DGREY, scale=2, align="c")
 
 
 def part_ask(img, t, sc, ctx):
@@ -265,7 +275,7 @@ def part_grill(img, t, sc, ctx):
     lines = [("Q1 WHO ACTS ON THE ANSWER?", DGREY), ("   TRIAL TEAM     (PERSON)", NAVY),
              ("Q2 WHY CAN IT WORK?", DGREY), ("   T CELLS KILL   (PERSON)", NAVY),
              ("Q3 WHAT IS ENOUGH?", DGREY), ("   A CLEAR PICTURE (AGENT)", DGREY)]
-    card(img, 222, 8, 250, "GRILLING", lines, t, t0=0.6, cps=34)
+    card(img, 222, 8, 250, "GRILLING", lines, t, t0=0.6)
 
 
 def part_split(img, t, sc, ctx):
@@ -283,12 +293,12 @@ def part_split(img, t, sc, ctx):
 def part_plan(img, t, sc, ctx):
     lines = [("DONE: A FIXED GENE PANEL", INK), ("+ KNOWN T-CELL GENES", XBLUE), ("- SHUFFLED LABELS", BROWN),
              ("~ OTHER CUTOFFS", INK), ("ACCEPT THE PLAN? YES", LAV)]
-    t_yes = typed_until(lines, 0.8, 34)
+    t_yes = typed_until(lines, 0.8)
     ox = world(img, cam_x(sc, t), lit={"ask", "grill", "split", "plan1"}, hot="plan1", locked=True,
                pulse=t > t_yes and int(t * 3) % 2 == 0)
     px = ST["plan1"][0]
     actor(img, ox, "person", "cheer" if t > t_yes else "idle", px - 40, R1_Y - 46, t)
-    card(img, 258, 118, 214, "PLAN R01", lines, t, t0=0.8, cps=34)
+    card(img, 258, 118, 214, "PLAN R01", lines, t, t0=0.8)
 
 
 def part_r01(img, t, sc, ctx):
@@ -377,7 +387,7 @@ def part_check(img, t, sc, ctx):
     actor(img, ox, "supervisor", "alert" if t_no < t < t_fix else "idle", cx + 44, R2_Y - 46, t, flip=True)
     lines = [("Q1-Q5  YES", XBLUE), ("Q6     NO: CAUSE, NOT LINK", BROWN if t > t_no else PAPER),
              ("Q7     YES", XBLUE if t > t_no else PAPER)]
-    card(img, 10, 8, 232, "SUPERVISOR: YES OR NO", lines, t, t0=0.4, cps=40)
+    card(img, 10, 8, 232, "SUPERVISOR: YES OR NO", lines, t, t0=0.4)
     if t < t_pass:
         stamp(img, 316, 22, "VETO", BROWN, t, t_veto)
     if t > t_fix:
@@ -385,13 +395,13 @@ def part_check(img, t, sc, ctx):
         ui.box(d, 252, 66, 472, 100, fill=PAPER, border=NAVY, inner=None)
         text(img, 258, 68, "FIX:", DGREY)
         s = "LINKED, NOT PROVEN."
-        text(img, 258, 83, s[:int((t - t_fix) * 30)], NAVY)
+        text(img, 258, 83, s[:int((t - t_fix) * 60)], NAVY)
     stamp(img, 316, 22, "PASS", XBLUE, t, t_pass)
 
 
 def part_sign(img, t, sc, ctx):
     lines = [("ANSWER, VERDICT, LIMITS", INK), ("SIGN RELEASE V1?  YES", LAV), ("RELEASES/V1  FROZEN", DGREY)]
-    t_yes = typed_until(lines[:2], 0.6, 30)
+    t_yes = typed_until(lines[:2], 0.6)
     ox = world(img, cam_x(sc, t), lit=lit_upto("sign"), hot="sign", grow=ease(seg(t, 0, 1.2)),
                pulse=t > t_yes and int(t * 3) % 2 == 0)
     sx = ST["sign"][0]
@@ -481,45 +491,56 @@ def part_parallel(img, t, sc, ctx):
         text(img, 423, 14, "ACCEPT", LAV, align="c")
 
 
+def _map(p):
+    """World point -> point on the small map of the summary."""
+    return 24 + (p[0] - 60) * 0.33, 110 + (p[1] - MAIN_Y) * 0.9
+
+
 def part_summary(img, t, sc, ctx):
+    """The whole road at once, then one clear step for the viewer."""
     d = ImageDraw.Draw(img)
-    text(img, W // 2, 6, "FROM A QUESTION TO A DECISION", NAVY, align="c")
-    row1 = [("ASK", "bulb", False), ("GRILL", "?", True), ("PLAN", "datasheet", True), ("DESCRIBE", "computer", False),
-            ("OUTCOME", "computer", False)]
-    row2 = [("REPORT", "file_doc", False), ("SUPERVISOR", "check_card", False), ("SIGN", "folder", True),
-            ("SHOW", "deck", False)]
-    y1, y2 = 66, 148
-    xs1 = [44, 140, 236, 332, 428]
-    xs2 = [428, 320, 212, 104]
-    d.line([(xs1[0], y1), (xs1[-1], y1)], fill=C(ROAD), width=7)
-    d.line([(xs1[0], y1), (xs1[-1], y1)], fill=C(ROAD_ON), width=3)
-    d.line([(xs1[-1], y1), (xs2[0], y2)], fill=C(ROAD_ON), width=3)
-    d.line([(xs2[0], y2), (xs2[-1], y2)], fill=C(ROAD), width=7)
-    d.line([(xs2[0], y2), (xs2[-1], y2)], fill=C(ROAD_ON), width=3)
-    pts = _bez((xs2[1] - 2, y2 - 14), (xs2[1] + 6, y2 - 62), (xs2[0] - 6, y2 - 62), (xs2[0] + 2, y2 - 15))
-    _line(d, pts, 0, ORANGE, 2)
-    d.polygon([(xs2[0] - 2, y2 - 21), (xs2[0] + 6, y2 - 21), (xs2[0] + 2, y2 - 15)], fill=C(ORANGE))
-    text(img, (xs2[0] + xs2[1]) // 2, y2 - 38, "VETO, FIX", BROWN, align="c")
-    for (lab, icon, you), x, y in [(r, x, y1) for r, x in zip(row1, xs1)] + [(r, x, y2) for r, x in zip(row2, xs2)]:
-        ui.box(d, x - 12, y - 12, x + 12, y + 12, fill=PAPER, border=NAVY, inner=None)
+    text(img, W // 2, 8, "FROM A QUESTION TO A DECISION", NAVY, align="c")
+    for a, b in EDGES:
+        pts = [_map(q) for q in edge_points(a, b)]
+        _line(d, pts, 0, ROAD, 6)
+        _line(d, pts, 0, ROAD_ON, 2)
+    rx, ry = ST["rep1"][:2]
+    px, py = ST["plan2"][:2]
+    _dashed(d, [_map(q) for q in _bez((rx + 14, ry + 6), (rx + 70, ry + 40), (px - 60, py - 60), (px - 6, py - 16))],
+            0, DGREY)
+    cx, cy = _map(ST["check"][:2])
+    qx = _map(ST["rep2"][:2])[0]
+    _line(d, _bez((cx - 3, cy - 11), (cx - 10, cy - 40), (qx + 10, cy - 40), (qx + 3, cy - 12)), 0, ORANGE, 2)
+    d.polygon([(qx - 1, cy - 17), (qx + 7, cy - 17), (qx + 3, cy - 12)], fill=C(ORANGE))
+    text(img, (cx + qx) / 2, cy - 58, "VETO", BROWN, align="c")
+    for key in ORDER:
+        x, y = (int(v) for v in _map(ST[key][:2]))
+        _, _, _, icon, you = ST[key]
+        ui.box(d, x - 11, y - 11, x + 11, y + 11, fill=PAPER, border=NAVY, inner=None)
         if icon == "?":
             text(img, x, y - 8, "?", NAVY, align="c")
+        elif icon == "fork":
+            d.line([(x - 6, y), (x - 1, y)], fill=C(NAVY), width=2)
+            d.line([(x - 1, y), (x + 5, y - 5)], fill=C(NAVY), width=2)
+            d.line([(x - 1, y), (x + 5, y + 5)], fill=C(NAVY), width=2)
         else:
             S.draw(img, icon, "idle", 0, x, y)
         if you:
-            diamond(d, x + 12, y - 12, YOU, r=4)
-        text(img, x, y + 14, lab, INK, align="c")
-    for lab, x in (("R01", xs1[3]), ("R02", xs1[4])):
-        text(img, x, y1 - 32, lab, NAVY, align="c")
-    diamond(d, 16, 196, YOU, r=4)
-    text(img, 26, 188, "= YOU DECIDE", DGREY)
-    if t > 0.8:
-        ui.caption(img, "TYPE /ASK-KOSTA", y=212)
-        text(img, W // 2, 248, "GITHUB.COM/KOSTACHERNYSHOV/SKILLS", DGREY, align="c")
+            diamond(d, x + 11, y - 11, YOU, r=4)
+    for lab, key in (("R01", "ana1"), ("R02", "ana2")):
+        x, y = _map(ST[key][:2])
+        text(img, x, y - 30 if key == "ana1" else y + 14, lab, NAVY, align="c")
+    ui.caption(img, "TYPE /ASK-KOSTA", y=176)
+    text(img, W // 2, 216, "GITHUB.COM/KOSTACHERNYSHOV/SKILLS", DGREY, align="c")
+    diamond(d, W // 2 - 52, 252, YOU, r=4)
+    text(img, W // 2 - 42, 244, "= YOU DECIDE", DGREY)
 
 
 PARTS = {k[5:]: v for k, v in globals().items() if k.startswith("part_")}
 
 
 def draw(img, t, sc, ctx):
+    if not DUR:
+        for s, (a, b) in zip(ctx["plan"]["scenes"], story.durations(ctx["plan"])):
+            DUR[s["id"]] = b - a
     PARTS[sc["part"]](img, t, sc, ctx)
