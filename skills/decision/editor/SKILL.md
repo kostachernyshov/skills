@@ -36,7 +36,7 @@ If the numbers do not change (words, layout, figure style), change `out/report.m
 
 ## Render a release copy
 
-When the skill "publisher" asks you to render a copy in `releases/vN-<date>/`, run `bash <this skill>/scripts/report_pdf.sh <that report.md>`. Do nothing else.
+When the skill "publisher" asks you to render a copy in `releases/vN-<date>/` or in `scratch/release-preview/`, run `bash <this skill>/scripts/report_pdf.sh <that report.md>`. Do nothing else.
 
 ## Done when
 
