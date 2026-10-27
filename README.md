@@ -38,6 +38,7 @@ Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the co
 | `designer` | person | 4 to 6 slides from the report for the decision meeting. Calls `reviewer`. |
 | `reviewer` | agent | Two review rounds of the deck or the report with the eyes of the reader. |
 | `publisher` | person | Freezes a release. Only with a supervisor pass or a valid override, and only after the person signs. |
+| `animate` | person | Experimental (`skills/in-progress/`). A pixel-art video of 20 to 45 s from the accepted report: question, design, result, limit. Numbers come only from the result files. Checks the colors for color vision deficiency. |
 
 "Person" skills have `disable-model-invocation: true`. Type `/name` to start them. "Agent" skills start by themselves when the situation fits. A person skill can call an agent skill, never another person skill.
 

@@ -1,7 +1,7 @@
 {
   "name": "kostachernyshov-skills",
-  "version": "0.11.1",
-  "description": "Skills for the path from a bioinformatics question to a decision: grilling with a plan, an analysis that starts only from an accepted plan, checks, a report checked by a supervisor in a fresh context, a deck, and a signed release.",
+  "version": "0.12.0",
+  "description": "Skills for the path from a bioinformatics question to a decision: grilling with a plan, an analysis that starts only from an accepted plan, checks, a report checked by a supervisor in a fresh context, a deck, and a signed release, and an experimental pixel-art animation of the result.",
   "author": {
     "name": "Kosta",
     "url": "https://github.com/kostachernyshov"
@@ -14,7 +14,8 @@
     "checks",
     "supervisor",
     "decision-report",
-    "reproducibility"
+    "reproducibility",
+    "animation"
   ],
   "skills": [
     "./skills/analysis/analyze",
@@ -28,6 +29,7 @@
     "./skills/decision/editor",
     "./skills/decision/reviewer",
     "./skills/decision/supervisor",
+    "./skills/in-progress/animate",
     "./skills/project/curator",
     "./skills/project/publisher",
     "./skills/project/setup-project"
