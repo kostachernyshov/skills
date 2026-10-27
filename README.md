@@ -2,6 +2,8 @@
 
 Skills for Claude Code and Codex that take a bioinformatics project from the question of a client to a decision that the client can trust.
 
+![How the skills work: from the question to the release](docs/media/how-it-works.webp)
+
 You have a question ("Does this gene score predict survival?", "Can we skip this test in smokers?") and processed tables: expression, clinical data, mutation calls, survival. The skills make the agent ask you the right questions first, fix a plan with a success threshold and controls before it looks at the outcome, check each result, and write a one-page report that a fresh agent checks against the files. You approve the plan and sign the release. The agent does the routine work.
 
 It is for heads of bioinformatics, bioinformaticians, and the wet-lab and clinical researchers who work with them. It does not teach methods and does not process raw data (see [UPSTREAM.md](UPSTREAM.md)).
@@ -88,9 +90,9 @@ Public data: TCGA SKCM from UCSC Xena (test scenario [`tests/scenarios/s5-skcm-i
 
 ## Animation (experimental)
 
-![Pixel-art animation of the SKCM demo run](docs/media/animate-skcm-demo.gif)
+The animation at the top of this page was made with the skill `/animate` (sources in [`promo/how-it-works`](promo/how-it-works)).
 
-After `/analyze`, type `/animate` to get a 20 to 45 s pixel-art video of the run: the question, the design, the result, and the limit. Each number on screen comes from a result file. See [`skills/in-progress/animate`](skills/in-progress/animate/SKILL.md).
+After `/analyze`, type `/animate` to get a 20 to 45 s pixel-art video of the run: the question, the design, the result, and the limit. Each number on screen comes from a result file. See [`skills/in-progress/animate`](skills/in-progress/animate/SKILL.md) and the demo on TCGA SKCM in [`examples/skcm-demo`](skills/in-progress/animate/examples/skcm-demo/README.md).
 
 ## More
 

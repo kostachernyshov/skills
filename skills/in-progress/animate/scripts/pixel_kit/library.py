@@ -247,6 +247,29 @@ def build():
     register("folder", one(OF.folder()), "prop")
     register("computer", {"idle": anim([F(OF.computer())], fps=1), "off": anim([F(OF.computer(False))], fps=1)}, "prop")
     register("check_card", one(OF.check_card()), "prop")
+    yo = lambda **k: OF.person(**k)
+    register("person", {
+        "idle": anim([F(yo()), F(yo(), 0, -1)], fps=2),
+        "blink": anim([F(yo(blink=True))], fps=1),
+        "cheer": anim([F(yo(arms="up")), F(yo(arms="up"), 0, -1)], fps=6),
+        "point": anim([F(yo(arms="point")), F(yo(arms="point"), 0, -1)], fps=2),
+    }, "people")
+    ag = lambda **k: OF.agent(**k)
+    register("agent", {
+        "idle": anim([F(ag()), F(ag(), 0, -1)], fps=2),
+        "blink": anim([F(ag(blink=True))], fps=1),
+        "work": anim([F(ag(work=k), 0, -(k % 2)) for k in (1, 2, 3)], fps=6),
+        "alert": anim([F(ag(alert=True))], fps=1),
+    }, "people")
+    sv = lambda **k: OF.supervisor(**k)
+    register("supervisor", {
+        "idle": anim([F(sv()), F(sv(), 0, -1)], fps=2),
+        "blink": anim([F(sv(blink=True))], fps=1),
+        "alert": anim([F(sv(alert=True))], fps=1),
+    }, "people")
+    register("lock", {"idle": anim([F(OF.lock())], fps=1),
+                      "open": anim([F(OF.lock()), F(OF.lock(True))], fps=4, loop=False)}, "prop")
+    register("deck", one(OF.deck()), "prop")
     register("bulb", {"idle": anim([F(OF.bulb())], fps=1), "off": anim([F(OF.bulb(False))], fps=1),
                       "glow": anim([F(OF.bulb()), F(OF.bulb(False))], fps=3)}, "prop")
     # lab and data
