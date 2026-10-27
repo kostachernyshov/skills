@@ -10,7 +10,7 @@ A plugin for Claude Code and Codex: `kostachernyshov-skills`. Its skills take a 
 
 ```
 AGENTS.md              rules for agents (this file)
-README.md              for people: what it is, install, update, example
+README.md              for people: what it is, install, examples, why, all skills
 CHANGELOG.md           one entry for each version
 LICENSE
 .claude-plugin/

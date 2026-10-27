@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.13.3 (2026-10-27)
+A new README. Requested by Kosta (2026-10-27).
+
+What changes for you:
+- Nothing changes in the skills.
+- The README has a new title, the animation, the install for Claude Code in 3 steps, quick examples, five reasons for the skills, and all skills by group with links. `animate` is the last skill of the flow, with the demo GIF on TCGA SKCM (`docs/media/animate-skcm-demo.gif`, 582 KB).
+
+Changes:
+- `README.md`: rewritten. The install for Codex and the manual copy are removed for now. The Mermaid map and the long SKCM walk-through are removed; the animation and the quick examples replace them.
+- `AGENTS.md`: the layout line for `README.md`.
+
 ## 0.13.2 (2026-10-27)
 A smaller repository root and one file of rules for agents. Decision by Kosta (grilling, 2026-10-27).
 
