@@ -1,6 +1,4 @@
-# A skill system for biotech specialists who want to use AI without giving up their standards
-
-Skills for Claude Code that take a bioinformatics project from the question of a client to a decision that the client can trust. The agent does the routine work. You make the decisions.
+# A skill system for biotech specialists who want to make decisions and delegate the routine work to agents
 
 ![How the skills work: from the question to the release](docs/media/how-it-works.webp)
 
@@ -109,6 +107,9 @@ Description, comparison, and prediction in one run mix their thresholds. The coh
 - **[analyze](skills/analysis/analyze/SKILL.md)**: Runs the accepted plan in a clean session: code, checks, figures, and the report.
 - **[designer](skills/decision/designer/SKILL.md)**: 4 to 6 slides from the report for the decision meeting.
 - **[publisher](skills/project/publisher/SKILL.md)**: Freezes a release after your signature. Only with a supervisor pass.
+- **[animate](skills/in-progress/animate/SKILL.md)** (experimental): A pixel-art video of 20 to 45 s from the report. Each number on screen comes from a result file. [Demo on TCGA SKCM](skills/in-progress/animate/examples/skcm-demo/README.md).
+
+  ![Pixel-art animation of the demo run on TCGA SKCM melanoma](docs/media/animate-skcm-demo.gif)
 
 **Agent**
 
@@ -124,12 +125,6 @@ Description, comparison, and prediction in one run mix their thresholds. The coh
 - **[editor](skills/decision/editor/SKILL.md)**: A fresh subagent writes the one-page report from the files only.
 - **[supervisor](skills/decision/supervisor/SKILL.md)**: A fresh subagent answers 7 yes/no questions from the files. One "no" is a veto.
 - **[reviewer](skills/decision/reviewer/SKILL.md)**: Two review rounds of the report or the deck with the eyes of the reader.
-
-### Experimental
-
-**Person**
-
-- **[animate](skills/in-progress/animate/SKILL.md)**: A pixel-art video of 20 to 45 s from the report. Each number on screen comes from a result file. [Demo on TCGA SKCM](skills/in-progress/animate/examples/skcm-demo/README.md).
 
 ## What is not here
 
