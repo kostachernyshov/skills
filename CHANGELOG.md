@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.13.0 (2026-10-27)
+A large task is split into runs. A README for people. Small fixes after the check of 0.11.0. Decision by Kosta (grilling, 2026-10-27). Closes #47, #48, #50, #57, #58.
+
+What changes for you:
+- If your request mixes two types of task (a description of the biological system and work with the outcome), grilling proposes a split into runs. The preferred order: the description without the outcome first. A comparison with the outcome and a prediction usually go in one run. The next runs are in the `later runs` line of the first grilling entry. For the next run, type `/grill-with-plan` again.
+- The rule question ends the message. Type `yes RULE-NN` or `no RULE-NN`. A plain "yes" does not add a rule.
+- Before the signature, `/publisher` renders the release copy of the report. If it has 2 pages, you see it before you sign.
+- The README now says what the package does, how to install and update it, and shows an example and the animation. The full skills table is in `docs/skills.md`.
+
+Changes:
+- `grilling`: new section "Large task" and step 5; optional line `later runs` in the `DECISION grilling` entry. If a later run keeps data as a test set, earlier runs exclude them in `samples`.
+- `analyze`: the summary names `/grill-with-plan` for the next run of a `later runs` line.
+- `ask-kosta`: a row for a large task; reads the `later runs` line.
+- `supervisor` (#47): Q1 checks that each number comes from the row of the same model, group, subset, and variant as the sentence.
+- `curator` (#48): the rule question is the last line of the message; only `yes RULE-NN` adds a rule.
+- `publisher` (#50): new step 4, a preview of the release copy before the summary; the release PDF has the same page count. `editor`: the report keeps space for the supervisor line; it renders the preview.
+- Files (#58): the largest file is 28 KB, the repository is about 600 KB without git history. `SCOPE.md` names `checker/CHECKS.md` (old name `sanity-check`). `tests/results/SUMMARY-ru.md` is removed (summary of 0.6.0, out of date; the round files keep the evidence). `docs/.gitkeep` is replaced by `docs/skills.md` and `docs/media/animate-skcm-demo.gif` (582 KB).
+- `README.md` (#57): rewritten for people: what it is, a Mermaid map, install (tested with `claude plugin marketplace add`), update, an example on TCGA SKCM, the animation.
+
 ## 0.12.0 (2026-10-27)
 New experimental skill `animate`: a short pixel-art video that explains the design and the result of a run. Decision by Kosta (2026-10-27): `decisions/2026-10-27-animate-v0.12.0.md` in the project files.
 

@@ -17,4 +17,4 @@
 4. The curator moves it into a bucket after it passes a test round.
 5. A rejected idea goes into `.out-of-scope/<idea>.md` with the reason.
 
-Pull requests that add checks to `sanity-check/CHECKS.md` or examples to `tests/` are welcome.
+Pull requests that add checks to `skills/analysis/checker/CHECKS.md` or examples to `tests/` are welcome.
