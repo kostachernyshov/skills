@@ -1,7 +1,7 @@
 __pycache__/
 *.pyc
-# generated: demo data and outputs, promo video outputs
+# generated: demo data and outputs, README video outputs
 skills/in-progress/animate/examples/skcm-demo/data/
 skills/in-progress/animate/examples/skcm-demo/runs/*/out/*
 !skills/in-progress/animate/examples/skcm-demo/runs/*/out/report.md
-promo/*/out/
+docs/media/*/out/

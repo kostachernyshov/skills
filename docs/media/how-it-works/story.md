@@ -27,8 +27,8 @@ From the repository root, with the SKCM demo tables in `skills/in-progress/anima
 
 ```
 A="uv run --with pillow --with numpy --with pyyaml python3 skills/in-progress/animate/scripts/animate.py"
-P=promo/how-it-works/animation.yaml
+P=docs/media/how-it-works/animation.yaml
 $A check $P
-$A board $P promo/how-it-works/out/animation-board.png
-$A render $P promo/how-it-works/out/animation.mp4 promo/how-it-works/out/animation.gif
+$A board $P docs/media/how-it-works/out/animation-board.png
+$A render $P docs/media/how-it-works/out/animation.mp4 docs/media/how-it-works/out/animation.gif
 ```
