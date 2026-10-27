@@ -2,6 +2,8 @@
 
 Skills for Claude Code (and other agents that read SKILL.md) for one path: from the question of a client to a decision that the client can trust.
 
+![How the skills work: from the question to the release](docs/media/how-it-works.webp)
+
 This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`). This repository covers the layers around the method. Each skill is one role with one clear action:
 
 - understand the task before the work: who gets the benefit, how, and why it can work (`grill-me`, `grill-with-plan`, `grilling`),
