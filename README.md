@@ -1,116 +1,150 @@
-# Bio decision skills
+# A skill system for biotech specialists who want to use AI without giving up their standards
 
-Skills for Claude Code and Codex that take a bioinformatics project from the question of a client to a decision that the client can trust.
+Skills for Claude Code that take a bioinformatics project from the question of a client to a decision that the client can trust. The agent does the routine work. You make the decisions.
 
 ![How the skills work: from the question to the release](docs/media/how-it-works.webp)
 
-You have a question ("Does this gene score predict survival?", "Can we skip this test in smokers?") and processed tables: expression, clinical data, mutation calls, survival. The skills make the agent ask you the right questions first, fix a plan with a success threshold and controls before it looks at the outcome, check each result, and write a one-page report that a fresh agent checks against the files. You approve the plan and sign the release. The agent does the routine work.
+## Install (1 minute)
 
-It is for heads of bioinformatics, bioinformaticians, and the wet-lab and clinical researchers who work with them. It does not teach methods and does not process raw data (see [What is not here](#what-is-not-here)).
+### 1. Add the marketplace and install the plugin
 
-## How it works
-
-```mermaid
-flowchart LR
-    A["/ask-kosta<br/>where am I?"] --> S["/setup-project<br/>once"]
-    S --> G["/grill-with-plan<br/>you answer, you approve the plan"]
-    G --> Z["/analyze RNN<br/>new session"]
-    Z --> D["/designer<br/>deck"]
-    D --> P["/publisher<br/>you sign"]
-    Z -. next run .-> G
-    Z -. optional .-> V["/animate<br/>short video"]
-
-    subgraph agent["The agent starts these by itself"]
-      direction LR
-      gr[grilling] --- pl[planner] --- ch[checker] --- ed[editor] --- su[supervisor] --- re[reviewer] --- cu[curator]
-    end
-    G -.-> agent
-    Z -.-> agent
-
-    classDef you fill:#fde7c8,stroke:#c77700,color:#222;
-    class G,P you;
-```
-
-You act at three points (orange): the answers in grilling, the approval of the plan, and the signature of the release. Each decision line in the project shows who made it: `(person)` or `(agent)`.
-
-A large task is split into several runs. Each run has its own question, plan, and report. A later run can use the results of earlier runs.
-
-## Install
-
-Claude Code, as a plugin (this also installs the curator hook):
-
-```
+```bash
 claude plugin marketplace add kostachernyshov/skills
 claude plugin install kostachernyshov-skills@kostachernyshov
 ```
 
-Start a new Claude Code session in your project folder and type `/kostachernyshov-skills:ask-kosta`. The plugin adds the prefix `kostachernyshov-skills:` to each command.
+### 2. Open your project folder and start
 
-Codex (not tested yet) reads the same marketplace and `agents/openai.yaml` in each skill folder:
-
-```
-codex plugin marketplace add kostachernyshov/skills
-codex plugin add kostachernyshov-skills@kostachernyshov
-```
-
-Manual copy (no plugin prefix, no curator hook; ask the agent to run the curator when a session ends):
+Start a new Claude Code session in the folder with your data. Type:
 
 ```
-git clone https://github.com/kostachernyshov/skills
-cd skills
-mkdir -p ~/.claude/skills
-for d in skills/ask-kosta skills/{analysis,core,decision,project}/*/; do cp -r "$d" ~/.claude/skills/; done
+/kostachernyshov-skills:ask-kosta
 ```
 
-Claude Code finds a skill only one level below the skills folder, so the loop copies each skill folder, not the bucket folder. It does not copy `skills/in-progress/` or `skills/deprecated/`.
+The plugin adds the prefix `kostachernyshov-skills:` to each command. Below, the commands are short: `/ask-kosta` means `/kostachernyshov-skills:ask-kosta`.
 
-## Update
+### 3. That is all
 
-```
+`/ask-kosta` reads your folder and tells you the next command.
+
+<details>
+<summary><strong>Update</strong></summary>
+
+```bash
 claude plugin marketplace update kostachernyshov
 claude plugin update kostachernyshov-skills@kostachernyshov
 ```
 
-Restart the session after the update. You get an update only when the version in `.claude-plugin/plugin.json` changes. Read what changed in [CHANGELOG.md](CHANGELOG.md): each version starts with "What changes for you". With a manual copy, pull the repository and copy the folders again.
+Restart the session after the update. Read what changed in [CHANGELOG.md](CHANGELOG.md). Each version starts with "What changes for you".
 
-## Example: a T-cell score in melanoma
+</details>
 
-Public data: TCGA SKCM from UCSC Xena (test scenario [`tests/scenarios/s5-skcm-immune`](tests/scenarios/s5-skcm-immune/persona.md)). A biotech wants to print "a high cytotoxic T-cell score predicts longer survival in melanoma" in a brochure.
+## Quick examples
 
-1. Put the tables in an empty folder. Type `/ask-kosta`. It says: start with `/setup-project`.
-2. `/setup-project` makes `CLAUDE.md`, `LOG.md`, `data/`, `runs/`, and `releases/`, and asks your name and role.
-3. `/grill-with-plan` asks in short rounds, each with a recommended option:
-   - Who gets the benefit, and which decision changes? (The brochure claim: strong, weak, or none.)
-   - Which error costs more: a false claim or a too weak claim?
-   - Survival from which time? (Most samples are metastases collected years after diagnosis.)
-   - What number makes the answer "yes"?
-   Then it shows the plan in 5 to 8 lines: samples, method, threshold, and three controls (a known effect, shuffled labels, nearby thresholds and subgroups). You type "yes".
-4. `/clear`, then `/analyze R01`. The agent runs the plan, checks the data and the controls, draws the figures, and writes `runs/R01-<slug>/out/report.md` and `report.pdf`. A fresh supervisor answers 7 yes/no questions from the files only.
-5. `/designer` makes a deck of 4 to 6 slides. `/publisher` shows what goes out and asks you to sign. The release goes to `releases/v1-<date>/` and gets a git tag.
+**"Does this gene score predict survival?"** You have an expression table and a clinical table.
 
-## Animation (experimental)
+```
+/setup-project         once: folders, LOG.md, your name and role
+/grill-with-plan       the agent asks; you answer and approve the plan
+/clear
+/analyze R01           checks, figures, a one-page report
+/designer              4 to 6 slides for the meeting
+/publisher             you sign; the release is frozen
+```
 
-The animation at the top of this page was made with the skill `/animate` (sources in [`docs/media/how-it-works`](docs/media/how-it-works)).
+**"Describe the cohort, compare the responders, and build a predictor."** One request, two types of task. `/grill-with-plan` proposes a split into runs: first the biology without the outcome, then the work with the outcome. Each run gets its own plan and report.
 
-After `/analyze`, type `/animate` to get a 20 to 45 s pixel-art video of the run: the question, the design, the result, and the limit. Each number on screen comes from a result file. See [`skills/in-progress/animate`](skills/in-progress/animate/SKILL.md) and the demo on TCGA SKCM in [`examples/skcm-demo`](skills/in-progress/animate/examples/skcm-demo/README.md).
+**"I do not understand the task yet."** Type `/grill-me`. The agent asks questions until the task is clear. It does not make a plan.
+
+**"Where am I?"** Type `/ask-kosta` at any time.
+
+**"The reader does not read reports."** After `/analyze`, type `/animate` for a short pixel-art video of the run. The video at the top of this page was made with it.
+
+## Why these skills exist
+
+An agent can write the analysis code in minutes. The risk is not the speed. The risk is a fast answer that nobody can trust. These skills fix five failures that we saw in tests on public data.
+
+### 1. The agent answers a question that you did not ask
+
+The agent starts to compute before it knows who gets the benefit and which decision changes.
+
+**The fix:** [`/grill-with-plan`](skills/core/grill-with-plan/SKILL.md). The agent asks you in short rounds, each with a recommended option. First the useful action: who gets the benefit, and how. Then the method, and why it can work. Each decision line shows who made it: `(person)` or `(agent)`.
+
+### 2. The result fits the data
+
+A threshold or a control that you choose after you see the outcome makes almost any result look good.
+
+**The fix:** the [plan](skills/analysis/planner/SKILL.md) fixes the success threshold and three controls before the data: a known effect, shuffled labels, and nearby thresholds and subgroups. [`/analyze`](skills/analysis/analyze/SKILL.md) does not start without your "yes" to the plan.
+
+### 3. A number looks right, but it is wrong
+
+The analyst remembers things that the files do not show. A wrong count or a wrong subgroup goes into the report.
+
+**The fix:** the [checker](skills/analysis/checker/SKILL.md) runs the checks before each result. A fresh agent writes the report from the files only. A second fresh agent, the [supervisor](skills/decision/supervisor/SKILL.md), answers 7 yes/no questions from the files. One "no" stops the release.
+
+### 4. The client cannot use the result
+
+A notebook with 40 figures is not a decision.
+
+**The fix:** a one-page report with the answer, the confidence, and the limits. A short deck with [`/designer`](skills/decision/designer/SKILL.md). [`/publisher`](skills/project/publisher/SKILL.md) freezes what the client saw, after your signature.
+
+### 5. A large task mixes everything
+
+Description, comparison, and prediction in one run mix their thresholds. The cohort is described after someone saw the outcome.
+
+**The fix:** [grilling](skills/core/grilling/SKILL.md) proposes a split into runs. A later run can use the results of earlier runs.
+
+## Reference
+
+**Person** skills start only when you type them. **Agent** skills start by themselves when the task fits. A person skill can call an agent skill, never another person skill. The full table and the project layout are in [docs/skills.md](docs/skills.md).
+
+### Flow
+
+**Person**
+
+- **[ask-kosta](skills/ask-kosta/SKILL.md)**: The map of the flow. Reads the project and tells you the next command.
+- **[setup-project](skills/project/setup-project/SKILL.md)**: Makes the project layout once: `CLAUDE.md`, `LOG.md`, `data/`, `runs/`, `releases/`.
+- **[grill-me](skills/core/grill-me/SKILL.md)**: An interview about a vague task. No plan.
+- **[grill-with-plan](skills/core/grill-with-plan/SKILL.md)**: The interview, then the plan with its threshold and controls. Ends with your approval. Each run starts here.
+- **[analyze](skills/analysis/analyze/SKILL.md)**: Runs the accepted plan in a clean session: code, checks, figures, and the report.
+- **[designer](skills/decision/designer/SKILL.md)**: 4 to 6 slides from the report for the decision meeting.
+- **[publisher](skills/project/publisher/SKILL.md)**: Freezes a release after your signature. Only with a supervisor pass.
+
+**Agent**
+
+- **[grilling](skills/core/grilling/SKILL.md)**: The interview method. Builds the solution model of the project and the task of each run.
+- **[planner](skills/analysis/planner/SKILL.md)**: Writes the plan: the success threshold and the positive, negative, and robustness controls.
+- **[curator](skills/project/curator/SKILL.md)**: Keeps the project memory. A script builds the State from the run files after each answer.
+
+### Trust
+
+**Agent**
+
+- **[checker](skills/analysis/checker/SKILL.md)**: Checks the data and the controls before each result. A doubt becomes a `todo`.
+- **[editor](skills/decision/editor/SKILL.md)**: A fresh subagent writes the one-page report from the files only.
+- **[supervisor](skills/decision/supervisor/SKILL.md)**: A fresh subagent answers 7 yes/no questions from the files. One "no" is a veto.
+- **[reviewer](skills/decision/reviewer/SKILL.md)**: Two review rounds of the report or the deck with the eyes of the reader.
+
+### Experimental
+
+**Person**
+
+- **[animate](skills/in-progress/animate/SKILL.md)**: A pixel-art video of 20 to 45 s from the report. Each number on screen comes from a result file. [Demo on TCGA SKCM](skills/in-progress/animate/examples/skcm-demo/README.md).
 
 ## What is not here
 
-Use these for raw data and for one method. This repository uses their output.
+These skills work on processed tables: expression, clinical data, mutation calls, survival. For raw data and for one method, use these projects:
 
-| Need | Resource |
-|---|---|
-| NGS pipelines (RNA-seq, variant calling, and more) | nf-core (https://nf-co.re), Seqera AI skills |
-| Skills for many tools and databases | K-Dense-AI/scientific-agent-skills |
-| NGS skills (alignment, variants, single-cell, DE) | GPTomics/bioSkills |
-| Life science plugins and MCP servers | anthropics/life-sciences |
-| Databases and literature | mims-harvard/ToolUniverse |
+- NGS pipelines: [nf-core](https://nf-co.re)
+- Skills for many tools and databases: [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills)
+- NGS skills (alignment, variants, single-cell, DE): [GPTomics/bioSkills](https://github.com/GPTomics/bioSkills)
+- Life science plugins and MCP servers: [anthropics/life-sciences](https://github.com/anthropics/life-sciences)
+- Databases and literature: [mims-harvard/ToolUniverse](https://github.com/mims-harvard/ToolUniverse)
 
 ## More
 
-- [All skills and the project layout](docs/skills.md)
-- Scope, glossary, and rules for contributors and their agents: [AGENTS.md](AGENTS.md)
 - [Tests on public data](tests/README.md)
-- Issues and ideas: https://github.com/kostachernyshov/skills/issues
+- [Rules for contributors and their agents](AGENTS.md)
+- [Issues and ideas](https://github.com/kostachernyshov/skills/issues)
 
 License: MIT.
