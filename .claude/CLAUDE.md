@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-`AGENTS.md` is a link to this file. Codex reads the same rules.
+This file is `.claude/CLAUDE.md`, not `CLAUDE.md` at the root. The repository root is also the plugin root. `claude plugin validate --strict` fails if `CLAUDE.md` is at the plugin root. `AGENTS.md` at the root is a link to this file, so Codex reads the same rules.
 
 ## What this repository is
 

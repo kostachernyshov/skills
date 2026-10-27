@@ -1,14 +1,13 @@
 # Changelog
 
 ## 0.13.2 (2026-10-27)
-Rules for agents that change this repository are now at the root, for Claude Code and Codex. Requested by Kosta in the thread "Add CLAUDE.md and AGENTS.md to the repository".
+Rules for agents that change this repository are now for Claude Code and Codex. Requested by Kosta in the thread "Add CLAUDE.md and AGENTS.md to the repository".
 
 What changes for you:
 - Nothing changes in the skills.
-- `CLAUDE.md` at the root has the rules, the commands, and the structure of the repository. `AGENTS.md` is a link to it, so Codex reads the same rules.
+- `.claude/CLAUDE.md` now has the rules, the commands, and the structure of the repository. `AGENTS.md` at the root is a link to it, so Codex reads the same rules. The file stays in `.claude/`: at the root, `claude plugin validate --strict` fails.
 
 Changes:
-- `.claude/CLAUDE.md` is removed. Its rules are in `CLAUDE.md`.
 - New rules: update `docs/skills.md` when a skill changes; use only public data in tests and examples.
 
 ## 0.13.1 (2026-10-27)
