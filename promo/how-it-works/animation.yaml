@@ -1,0 +1,75 @@
+# Promo video "How the skills work". Built with /animate; the scenes are custom (road.py).
+# Run from the repository root. The numbers come from the SKCM demo tables (see story.md).
+title: "How the skills work"
+reader: no-stats
+report: promo/how-it-works/story.md
+voiceover: promo/how-it-works/voiceover.md
+max_s: 120                              # a promo of the whole flow, not one result
+# voice:                                # add when the voice is recorded
+#   audio: promo/how-it-works/voice.wav
+#   transcript: promo/how-it-works/voice.srt
+
+numbers:
+  hr: {file: skills/in-progress/animate/examples/skcm-demo/runs/R01-skcm-cyt/out/cox.tsv, column: HR, where: {term: cyt_high_vs_low}, fmt: "{:.2f}"}
+
+scenes:
+  - {id: S01, type: custom, module: promo/how-it-works/road.py, part: title, claim: L5}
+  - {id: S02, type: custom, module: promo/how-it-works/road.py, part: ask, cam: [240, 240], caption: "ONE BIG ASK", claim: L6}
+  - {id: S03, type: custom, module: promo/how-it-works/road.py, part: grill, cam: [240, 300], fade: false, caption: "QUESTIONS FIRST", claim: L7}
+  - {id: S04, type: custom, module: promo/how-it-works/road.py, part: split, cam: [300, 420], fade: false, caption: "TWO RUNS", claim: L9}
+  - {id: S05, type: custom, module: promo/how-it-works/road.py, part: plan, cam: [420, 520], fade: false, caption: "PLAN BEFORE DATA", claim: L10}
+  - id: S06
+    type: custom
+    module: promo/how-it-works/road.py
+    part: r01
+    cam: [520, 600]
+    fade: false
+    caption: "R01: DESCRIBE"
+    claim: L11
+    chart_title: "T-CELL GENES BY SAMPLE"
+    data:
+      file: skills/in-progress/animate/examples/skcm-demo/runs/R01-skcm-cyt/out/heatmap.tsv
+      feature: gene
+      features: [CD8A, GZMA, PRF1, CXCL9, LAG3, FOXP3]
+      samples: {file: skills/in-progress/animate/examples/skcm-demo/runs/R01-skcm-cyt/out/scores.tsv, id: sample, group: sample_type}
+      groups:
+        - {value: primary, label: "PRIMARY", color: neutral}
+        - {value: metastasis, label: "METASTASIS", color: neutral2}
+  - id: S07
+    type: custom
+    module: promo/how-it-works/road.py
+    part: r02
+    cam: [600, 760]
+    fade: false
+    caption: "R02: OUTCOME"
+    claim: L13
+    key: "HR {hr}"
+    tmax: 20
+    data:
+      file: skills/in-progress/animate/examples/skcm-demo/runs/R01-skcm-cyt/out/scores.tsv
+      time: os_days
+      event: os_event
+      group: group
+      groups:
+        - {value: high, label: "HIGH", color: favorable}
+        - {value: low, label: "LOW", color: unfavorable}
+  - {id: S08, type: custom, module: promo/how-it-works/road.py, part: report, cam: [760, 1000], fade: false, caption: "REPORT FROM FILES", claim: L14}
+  - {id: S09, type: custom, module: promo/how-it-works/road.py, part: check, cam: [1000, 1110], fade: false, caption: "VETO, FIX, PASS", claim: L16}
+  - {id: S10, type: custom, module: promo/how-it-works/road.py, part: sign, cam: [1110, 1230], fade: false, caption: "YOU SIGN", claim: L17}
+  - {id: S11, type: custom, module: promo/how-it-works/road.py, part: show, cam: [1230, 1290], fade: false, caption: "SHOW IT", claim: L18}
+  - id: S12
+    type: custom
+    module: promo/how-it-works/road.py
+    part: runs
+    caption: "MORE RUNS"
+    claim: L19
+    runs: ["R01 DESCRIBE", "R02 SURVIVAL", "R03 THERAPY", "R04 PREDICTOR", "R05 NEW COHORT"]
+  - id: S13
+    type: custom
+    module: promo/how-it-works/road.py
+    part: parallel
+    caption: "TASKS IN PARALLEL"
+    claim: L20
+    accept_at: 6.0
+    tasks: ["MELANOMA: T CELLS", "LUNG: DRUG RESPONSE", "COLON: SUBTYPES"]
+  - {id: S14, type: summary, module: promo/how-it-works/road.py, part: summary, claim: L21}

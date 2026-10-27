@@ -7,6 +7,7 @@ title: "<name of the animation>"
 reader: no-stats                     # no-stats: one key number in a frame; stats: more numbers are allowed
 report: runs/R01-x/out/report.md     # claims point to lines of this file
 voiceover: runs/R01-x/code/voiceover.md
+max_s: 60                            # optional: the longest story before the summary (default 60 s)
 voice:                               # optional: only with a recording
   audio: runs/R01-x/code/voice.wav
   transcript: runs/R01-x/code/voice.srt   # SRT, VTT, Whisper JSON, or "0:12 text" lines
@@ -26,7 +27,7 @@ scenes:
 
 - Without a voice: a scene lasts (words of its voice-over) / 2.5 + 0.8 s, and at least 2.5 s. `dur: 4` sets it by hand.
 - With a voice: `cues: [C03, C04]` puts the start of the scene at the start of its first cue. Get the cue ids from `animate.py cues`. `at: "survival"` starts the chart reveal on that word.
-- The whole video before the summary: 20 to 45 s. More than 60 s fails the check.
+- The whole video before the summary: 20 to 45 s. More than 60 s fails the check. A video of a whole process (not of one result) can set `max_s` in the plan.
 - The summary holds for 10 s (`dur` sets more), with or without a voice. It is not counted in the limit above.
 
 ## Fields of all scenes
@@ -39,6 +40,7 @@ scenes:
 | `caption` | 2 or 3 English words at the bottom. No caption on a heatmap. |
 | `title` | Short heading at the top left (charts, cohort, flow, cast). |
 | `bg` | Background: `paper` (default), `plain`, `tissue`, `epithelium`, `bloodstream`, `lymph_node`, `tme`, `dishes`. |
+| `fade` | `false`: no dissolve into this scene. Use it for one continuous shot, for example a camera that moves along a road. |
 
 A text field can use `{name}` from `numbers`. A typed number fails the check. Names with digits (`CD8A`, `PRF1`, `MHC-I`) are allowed.
 
@@ -92,6 +94,7 @@ The last scene. It must be in each plan, and only once. A graphical abstract tha
 - `key`: the key number (for example `"HR {hr}"`).
 - `text`: the conclusion, 1 or 2 lines of 28 characters or fewer.
 - `title`: default is the title of the plan.
+- `module` (and `function`, default `draw`): a custom function draws the summary, as in a `custom` scene. Then `result` is not needed. Use it when the video shows a process, not one result.
 
 ### custom
 `module` (path to a Python file), `function` (default `draw`). The function gets `(img, t, scene, ctx)`. `ctx["fill"]` puts numbers into text. Use the library: `from pixel_kit import sprites, charts, fx, ui`. A custom scene that is used a second time moves into the library.

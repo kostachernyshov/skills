@@ -2180,5 +2180,159 @@
     "loop": true
    }
   }
+ },
+ "agent": {
+  "file": "agent.png",
+  "group": "people",
+  "cell": [
+   30,
+   30
+  ],
+  "anchor": [
+   15.0,
+   15.0
+  ],
+  "anims": {
+   "idle": {
+    "row": 0,
+    "frames": 2,
+    "fps": 2,
+    "loop": true
+   },
+   "blink": {
+    "row": 1,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "work": {
+    "row": 2,
+    "frames": 3,
+    "fps": 6,
+    "loop": true
+   },
+   "alert": {
+    "row": 3,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "supervisor": {
+  "file": "supervisor.png",
+  "group": "people",
+  "cell": [
+   35,
+   30
+  ],
+  "anchor": [
+   17.5,
+   15.0
+  ],
+  "anims": {
+   "idle": {
+    "row": 0,
+    "frames": 2,
+    "fps": 2,
+    "loop": true
+   },
+   "blink": {
+    "row": 1,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "alert": {
+    "row": 2,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "lock": {
+  "file": "lock.png",
+  "group": "prop",
+  "cell": [
+   21,
+   20
+  ],
+  "anchor": [
+   10.5,
+   10.0
+  ],
+  "anims": {
+   "idle": {
+    "row": 0,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "open": {
+    "row": 1,
+    "frames": 2,
+    "fps": 4,
+    "loop": false
+   }
+  }
+ },
+ "deck": {
+  "file": "deck.png",
+  "group": "prop",
+  "cell": [
+   27,
+   18
+  ],
+  "anchor": [
+   13.5,
+   9.0
+  ],
+  "anims": {
+   "idle": {
+    "row": 0,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   }
+  }
+ },
+ "person": {
+  "file": "person.png",
+  "group": "people",
+  "cell": [
+   28,
+   34
+  ],
+  "anchor": [
+   14.0,
+   17.0
+  ],
+  "anims": {
+   "idle": {
+    "row": 0,
+    "frames": 2,
+    "fps": 2,
+    "loop": true
+   },
+   "blink": {
+    "row": 1,
+    "frames": 1,
+    "fps": 1,
+    "loop": true
+   },
+   "cheer": {
+    "row": 2,
+    "frames": 2,
+    "fps": 6,
+    "loop": true
+   },
+   "point": {
+    "row": 3,
+    "frames": 2,
+    "fps": 2,
+    "loop": true
+   }
+  }
  }
 }

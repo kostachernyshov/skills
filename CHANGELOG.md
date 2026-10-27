@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.13.1 (2026-10-27)
+A promo video of the whole flow, made with `/animate`. Requested and accepted by Kosta (storyboard, voice-over, sprites) in the thread "Animation of how the skills repository works".
+
+What changes for you:
+- `promo/how-it-works/`: a video of about two minutes for the README. One road from the question to the release: grilling, a split into two runs (describe first, then the outcome), plan, analysis, report, supervisor veto and fix, signature, slides and video. Two asides: up to five runs, and several tasks at the same time. Numbers come from the SKCM demo files.
+- The GIF for the README is `docs/media/how-it-works.gif`. Record your voice for the MP4 with `promo/how-it-works/voiceover.md`.
+
+Changes:
+- `animate`: a plan can set `max_s` (a longer video of a process); a scene can set `fade: false` (one continuous shot); a `summary` can have a `module` (a custom final frame). See `SCENES.md`.
+- `pixel_kit`: new sprites `person` (the one who decides), `agent`, `supervisor`, `lock`, `deck` (`STYLE.md`).
+- `.gitignore`: demo data and video outputs.
+
 ## 0.12.0 (2026-10-27)
 New experimental skill `animate`: a short pixel-art video that explains the design and the result of a run. Decision by Kosta (2026-10-27): `decisions/2026-10-27-animate-v0.12.0.md` in the project files.
 

@@ -1,6 +1,6 @@
 {
   "name": "kostachernyshov-skills",
-  "version": "0.12.0",
+  "version": "0.13.1",
   "description": "Skills for the path from a bioinformatics question to a decision: grilling with a plan, an analysis that starts only from an accepted plan, checks, a report checked by a supervisor in a fresh context, a deck, and a signed release, and an experimental pixel-art animation of the result.",
   "author": {
     "name": "Kosta",

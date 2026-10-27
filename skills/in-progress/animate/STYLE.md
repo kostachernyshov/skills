@@ -47,8 +47,9 @@ The cast comes from an oncology and immunology series. Use it only when the stor
 | Immune cells | white body, color rim, firm eyes | `nk`, `killer_t`, `helper_t`, `treg`, `car_t`, `b_cell`, `dendritic`, `macrophage` |
 | Tumor cells | dark plum lumpy body, red rim, angry brows | `tumor`, `tumor_mhc_low`, `tumor_no_mhc`, `tumor_pdl1`, `tumor_stress`, `blast` |
 | Normal body cells | soft colors, dot eyes, no brows | `epithelial`, `stem`, `mutant`, `clone_a`..`clone_d`, `senescent`, `granulocyte` |
-| People | human scale, draw at x2 or x3 | `patient_a`, `patient_b`, `patient_c`, `clinician`, `scientist`, `manager` |
-| Props | lab and data objects | `tube`, `tube_orange`, `plate`, `sequencer`, `datasheet`, `dish`, `mouse_top`, `mouse_side`, `syringe`, `vial_drug`, `pill`, `dna`, `file_doc`, `computer`, `check_card`, `bulb`, ... |
+| People | human scale, draw at x2 or x3 | `patient_a`, `patient_b`, `patient_c`, `clinician`, `scientist`, `manager`, `person` (the one who decides: young, black T-shirt, jeans) |
+| Agents | robot with a screen face, human scale | `agent` (`idle`, `work`, `alert`), `supervisor` (with a magnifier) |
+| Props | lab and data objects | `tube`, `tube_orange`, `plate`, `sequencer`, `datasheet`, `lock`, `deck`, `dish`, `mouse_top`, `mouse_side`, `syringe`, `vial_drug`, `pill`, `dna`, `file_doc`, `computer`, `check_card`, `bulb`, ... |
 | Molecules | 5x5 badges | `badge_mhc`, `badge_pd1`, `badge_pdl1`, `badge_ctla4`, `badge_tcr`, `badge_stress` |
 
 `animate.py sheet <out.png>` draws all sprites. Rules for the cast:

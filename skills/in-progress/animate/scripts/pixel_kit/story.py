@@ -202,7 +202,7 @@ def check(plan):
         if sid in seen:
             out.append(f"{sid}: id is not unique")
         seen.add(sid)
-        if sc.get("type") == "summary":
+        if sc.get("type") == "summary" and not sc.get("module"):
             ids = {r.get("id"): r for r in plan["scenes"]}
             ref = ids.get(sc.get("result"))
             if not ref or ref.get("type") not in SUMMARY_CHARTS:
@@ -254,8 +254,9 @@ def check(plan):
         out.append("only one summary scene is allowed")
     # the summary hold is not counted
     story_end = times[-2][1] if len(times) > 1 and plan["scenes"][-1].get("type") == "summary" else (times[-1][1] if times else 0)
-    if story_end > 60:
-        out.append(f"length before the summary {story_end:.0f} s: keep it at 20-45 s (60 s at most)")
+    limit = float(plan.get("max_s", 60))
+    if story_end > limit:
+        out.append(f"length before the summary {story_end:.0f} s: keep it at 20-45 s ({limit:.0f} s at most)")
     return out
 
 
@@ -625,7 +626,10 @@ def _mini_chart(img, plan, ref, box, ctx):
 
 def p_summary(plan, sc, t, dur, ctx):
     """Graphical abstract at the end: question, design, result, and the takeaway. It appears in about
-    1.5 s and then holds still (SUMMARY_HOLD s), so that the reader can read it."""
+    1.5 s and then holds still (SUMMARY_HOLD s), so that the reader can read it.
+    With "module", a custom function draws the summary (for example a map of a process)."""
+    if sc.get("module"):
+        return p_custom(plan, sc, t, dur, ctx)
     img = bg.plain()
     _heading(img, fill(plan, sc.get("title") or plan.get("title")))
     d = ImageDraw.Draw(img)
@@ -693,7 +697,8 @@ def timeline(plan):
             ctx["reveal_at"] = max(0.0, voice.at(cs, sc["at"]) - a)
         painter = PAINTERS[sc["type"]]
         dur = b - a
-        scenes.append((a, b, lambda t, sc=sc, dur=dur, ctx=ctx, painter=painter: painter(plan, sc, t, dur, ctx)))
+        scenes.append((a, b, lambda t, sc=sc, dur=dur, ctx=ctx, painter=painter: painter(plan, sc, t, dur, ctx),
+                       sc.get("fade", True)))
         key = a + min(dur - 0.3, max(1.2, dur * 0.75))
         marks.append((key, f"{sc['id']} {sc['type']} {a:.1f}-{b:.1f}s"))
     return Timeline(scenes), marks
