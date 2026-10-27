@@ -1,0 +1,5 @@
+interface:
+  display_name: "Animate"
+  short_description: "Pixel-art animation of the design and result of a run"
+policy:
+  allow_implicit_invocation: false

@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.12.0 (2026-10-27)
+New experimental skill `animate`: a short pixel-art video that explains the design and the result of a run. Decision by Kosta (2026-10-27): `decisions/2026-10-27-animate-v0.12.0.md` in the project files.
+
+What changes for you:
+- Type `/animate` after `/analyze`. The agent writes an English voice-over, then a plan `animation.yaml`. You accept the voice-over and the storyboard. Then the agent renders `animation.mp4` (1920x1080) and `animation.gif`.
+- Each number on screen comes from a result file. `animation-numbers.tsv` shows the file, the column, and the row of each number. Each scene points to a line of the report.
+- Blue is the group with the better outcome, orange is the group with the worse outcome. Grey and lavender are for groups without "better" or "worse". `animate.py colors` checks contrast and the colors for deuteranopia and protanopia.
+- A voice is optional. Give a WAV file and a transcript with times (for example from VoiceStudio). The scenes then start on the words.
+- The skill is in `skills/in-progress/`. Do not copy it to a client project yet.
+
+Changes:
+- `skills/in-progress/animate`: `SKILL.md`, `SCENES.md` (plan format and scene types), `STYLE.md` (palette, meaning of colors, contrast, bio cast), `agents/openai.yaml`.
+- `scripts/pixel_kit`: the pixel library from the cancer_wars project, on a light background (`PAPER`), with a 1 px outline on sprites. New: charts (Kaplan-Meier, strip, distribution, heatmap, volcano), `data.py` (numbers from files only), `colorcheck.py` (Machado 2009 simulation, WCAG contrast, Delta E), `story.py` (plan to timeline), a 3x5 mini font, new props (`tube`, `plate`, `sequencer`, `datasheet`) and `clinician`.
+- `scripts/animate.py`: commands `check`, `cues`, `board`, `colors`, `frames`, `animatic`, `render`, `preview`, `sheet`.
+- `examples/skcm-demo`: a demo on public TCGA SKCM data (UCSC Xena): cytolytic score and overall survival.
+- `ask-kosta`, `README.md`: the new skill.
+
 ## 0.11.1 (2026-10-24)
 Small fixes after the check of 0.11.0 (`tests/results/check-0.11.0.md`). New issues: #47, #48, #49, #50.
 

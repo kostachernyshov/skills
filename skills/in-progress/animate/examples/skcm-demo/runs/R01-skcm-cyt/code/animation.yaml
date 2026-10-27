@@ -1,0 +1,136 @@
+title: "Killer T cells and survival in melanoma"
+reader: no-stats
+report: runs/R01-skcm-cyt/out/report.md
+voiceover: runs/R01-skcm-cyt/code/voiceover.md
+# voice:                                   # add when the voice is recorded
+#   audio: runs/R01-skcm-cyt/code/voice.wav
+#   transcript: runs/R01-skcm-cyt/code/voice.srt
+
+numbers:
+  hr: {file: runs/R01-skcm-cyt/out/cox.tsv, column: HR, where: {term: cyt_high_vs_low}, fmt: "{:.2f}"}
+  n_primary: {count: {file: runs/R01-skcm-cyt/out/scores.tsv, where: {sample_type: primary}}}
+  n_meta: {count: {file: runs/R01-skcm-cyt/out/scores.tsv, where: {sample_type: metastasis}}}
+
+scenes:
+  - id: S01
+    type: title
+    title: "KILLER T CELLS"
+    sub: "Survival in melanoma"
+    credit: "TCGA SKCM . public data"
+
+  - id: S02
+    type: question
+    sprite: clinician
+    text: ["MORE T CELLS,", "LONGER LIFE"]
+    caption: "THE QUESTION"
+    claim: L5
+
+  - id: S03
+    type: cast
+    items:
+      - {sprite: killer_t, anim: attack, label: "KILLER T CELL", color: favorable}
+      - {sprite: tumor, label: "MELANOMA CELL", color: unfavorable}
+    caption: "WHO FIGHTS"
+    claim: L10
+
+  - id: S04
+    type: cohort
+    title: "TCGA MELANOMA PATIENTS"
+    groups:
+      - {label: "METASTASIS", n: n_meta, color: neutral2}
+      - {label: "PRIMARY", n: n_primary, color: neutral}
+    caption: "THE PATIENTS"
+    claim: L9
+
+  - id: S05
+    type: flow
+    title: "HOW WE MEASURED"
+    steps:
+      - {sprite: tube_orange, label: "TUMOR"}
+      - {sprite: sequencer, label: "RNA-SEQ"}
+      - {sprite: datasheet, label: "GZMA + PRF1"}
+      - {sprite: killer_t, label: "T-CELL SCORE"}
+    caption: "THE MEASURE"
+    claim: L10
+
+  - id: S06
+    type: distribution
+    title: "T-CELL SCORE"
+    data:
+      file: runs/R01-skcm-cyt/out/scores.tsv
+      value: cyt
+      group: group
+      groups:
+        - {value: high, label: "HIGH", color: favorable}
+        - {value: low, label: "LOW", color: unfavorable}
+    xlabel: "SCORE"
+    caption: "SPLIT AT MEDIAN"
+    claim: L11
+
+  - id: S07
+    type: strip
+    title: "SCORE BY SAMPLE TYPE"
+    data:
+      file: runs/R01-skcm-cyt/out/scores.tsv
+      value: cyt
+      group: sample_type
+      groups:
+        - {value: primary, label: "PRIMARY", color: neutral}
+        - {value: metastasis, label: "METASTASIS", color: neutral2}
+    ylabel: "SCORE"
+    caption: "HIGHER IN METASTASES"
+    claim: L17
+
+  - id: S08
+    type: heatmap
+    title: "T-CELL GENES BY GROUP"
+    data:
+      file: runs/R01-skcm-cyt/out/heatmap.tsv
+      features: [CD8A, CD8B, GZMA, GZMB, PRF1, IFNG, CXCL9, CD274, LAG3, FOXP3, MITF, MLANA]
+      samples: {file: runs/R01-skcm-cyt/out/samples.tsv, id: sample, group: group}
+      groups:
+        - {value: high, label: "HIGH", color: favorable}
+        - {value: low, label: "LOW", color: unfavorable}
+    claim: L16
+
+  - id: S09
+    type: volcano
+    title: "ALL GENES: HIGH VS LOW"
+    data: {file: runs/R01-skcm-cyt/out/de.tsv, fc: log2fc, p: p, label: gene}
+    fc_thr: 1.5
+    p_thr: 1e-20
+    top_n: 4
+    caption: "T-CELL GENES UP"
+    claim: L16
+
+  - id: S10
+    type: km
+    title: "OVERALL SURVIVAL"
+    data:
+      file: runs/R01-skcm-cyt/out/scores.tsv
+      time: os_days
+      event: os_event
+      group: group
+      groups:
+        - {value: high, label: "HIGH", color: favorable}
+        - {value: low, label: "LOW", color: unfavorable}
+    time_scale: 365.25
+    tmax: 20
+    xlabel: "YEARS"
+    key: "HR {hr}"
+    caption: "LONGER SURVIVAL"
+    claim: L14
+
+  - id: S11
+    type: limit
+    title: "LIMIT"
+    text: ["MOST SAMPLES: METASTASES,", "TAKEN YEARS AFTER DIAGNOSIS.", "THE EFFECT CAN LOOK LARGER."]
+    caption: "READ WITH CARE"
+    claim: L19
+
+  - id: S12
+    type: takeaway
+    sprite: check_card
+    text: ["WEAKER CLAIM:", "LINKED, NOT PROVEN"]
+    caption: "OUR ADVICE"
+    claim: L22

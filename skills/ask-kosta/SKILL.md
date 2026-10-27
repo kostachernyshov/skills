@@ -20,7 +20,7 @@ If the skills come as a plugin, each command has the plugin prefix. Write the co
 
 The person is responsible for the result. The bold steps are where the person acts. An agent does not do them for the person.
 
-Only the person starts these skills: `/setup-project`, `/grill-me`, `/grill-with-plan`, `/analyze`, `/designer`, `/publisher`, `/ask-kosta`. The agent cannot start them.
+Only the person starts these skills: `/setup-project`, `/grill-me`, `/grill-with-plan`, `/analyze`, `/designer`, `/publisher`, `/animate`, `/ask-kosta`. The agent cannot start them.
 
 ## Other entries
 
@@ -35,6 +35,7 @@ Only the person starts these skills: `/setup-project`, `/grill-me`, `/grill-with
 | A report must change (words, layout) | Ask the agent to rewrite the report ("editor"). The supervisor runs again. |
 | You changed the report, a figure, or the deck yourself | Nothing. `/publisher` shows the files that changed after the supervisor check. You choose: run the supervisor again, or keep them and sign. |
 | A lesson must hold for later runs | Ask the agent to add a project rule ("curator"). Only you edit or delete rules, by hand in `CLAUDE.md`. |
+| The person wants a short video that explains the design and the result to a reader who does not read reports | `/animate` (experimental). Only after `/analyze` wrote the report. The person accepts the voice-over and the storyboard. |
 | The work session ends | Nothing. The curator hook updates the State. Without the hook, ask the agent to run "curator". |
 
 ## Under the flow (the agent uses them by itself)
