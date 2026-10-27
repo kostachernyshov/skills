@@ -6,7 +6,7 @@ Skills for Claude Code and Codex that take a bioinformatics project from the que
 
 You have a question ("Does this gene score predict survival?", "Can we skip this test in smokers?") and processed tables: expression, clinical data, mutation calls, survival. The skills make the agent ask you the right questions first, fix a plan with a success threshold and controls before it looks at the outcome, check each result, and write a one-page report that a fresh agent checks against the files. You approve the plan and sign the release. The agent does the routine work.
 
-It is for heads of bioinformatics, bioinformaticians, and the wet-lab and clinical researchers who work with them. It does not teach methods and does not process raw data (see [UPSTREAM.md](UPSTREAM.md)).
+It is for heads of bioinformatics, bioinformaticians, and the wet-lab and clinical researchers who work with them. It does not teach methods and does not process raw data (see [What is not here](#what-is-not-here)).
 
 ## How it works
 
@@ -90,15 +90,26 @@ Public data: TCGA SKCM from UCSC Xena (test scenario [`tests/scenarios/s5-skcm-i
 
 ## Animation (experimental)
 
-The animation at the top of this page was made with the skill `/animate` (sources in [`promo/how-it-works`](promo/how-it-works)).
+The animation at the top of this page was made with the skill `/animate` (sources in [`docs/media/how-it-works`](docs/media/how-it-works)).
 
 After `/analyze`, type `/animate` to get a 20 to 45 s pixel-art video of the run: the question, the design, the result, and the limit. Each number on screen comes from a result file. See [`skills/in-progress/animate`](skills/in-progress/animate/SKILL.md) and the demo on TCGA SKCM in [`examples/skcm-demo`](skills/in-progress/animate/examples/skcm-demo/README.md).
+
+## What is not here
+
+Use these for raw data and for one method. This repository uses their output.
+
+| Need | Resource |
+|---|---|
+| NGS pipelines (RNA-seq, variant calling, and more) | nf-core (https://nf-co.re), Seqera AI skills |
+| Skills for many tools and databases | K-Dense-AI/scientific-agent-skills |
+| NGS skills (alignment, variants, single-cell, DE) | GPTomics/bioSkills |
+| Life science plugins and MCP servers | anthropics/life-sciences |
+| Databases and literature | mims-harvard/ToolUniverse |
 
 ## More
 
 - [All skills and the project layout](docs/skills.md)
-- [Scope: what gets into this repository](SCOPE.md)
-- [Glossary](GLOSSARY.md)
+- Scope, glossary, and rules for contributors and their agents: [AGENTS.md](AGENTS.md)
 - [Tests on public data](tests/README.md)
 - Issues and ideas: https://github.com/kostachernyshov/skills/issues
 

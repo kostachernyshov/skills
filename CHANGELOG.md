@@ -1,14 +1,19 @@
 # Changelog
 
 ## 0.13.2 (2026-10-27)
-Rules for agents that change this repository are now for Claude Code and Codex. Requested by Kosta in the thread "Add CLAUDE.md and AGENTS.md to the repository".
+A smaller repository root and one file of rules for agents. Decision by Kosta (grilling, 2026-10-27).
 
 What changes for you:
 - Nothing changes in the skills.
-- `.claude/CLAUDE.md` now has the rules, the commands, and the structure of the repository. `AGENTS.md` at the root is a link to it, so Codex reads the same rules. The file stays in `.claude/`: at the root, `claude plugin validate --strict` fails.
+- `AGENTS.md` at the root has all the rules for agents: layout, commands, communication, scope, skill rules, how to add a skill, issues, release, and the glossary. Claude Code and Codex read it.
+- The README has a new section "What is not here" with the projects for raw data and pipelines.
 
 Changes:
-- New rules: update `docs/skills.md` when a skill changes; use only public data in tests and examples.
+- `.claude/CLAUDE.md` is removed. Its rules are in `AGENTS.md`. A `CLAUDE.md` at the root is not possible: the root is also the plugin root, and `claude plugin validate --strict` fails on it.
+- `SCOPE.md` and `GLOSSARY.md` are in `AGENTS.md`. `UPSTREAM.md` is in the README.
+- `.out-of-scope/` is removed. A rejected idea is an issue closed as "not planned" with the label `out-of-scope`.
+- `promo/how-it-works/` moved to `docs/media/how-it-works/`, next to the video.
+- New rules: chat in ASD-STE100 at 80%, files at 100%; ASCII diagrams for complex concepts; issue format; update `docs/skills.md` when a skill changes; only public data.
 
 ## 0.13.1 (2026-10-27)
 The README animation follows the real flow. Requested and accepted by Kosta (storyboard version 4) in the thread "Animation of how the skills work".
