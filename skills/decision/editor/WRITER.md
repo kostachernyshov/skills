@@ -16,7 +16,7 @@ Read only: `run.yaml` of the run, the files in `out/` of the run, and `LOG.md`. 
 5. If `success_source` is `agent` (in older runs: `assumed`), write the threshold in the Answer line ("No, at the threshold of 95% specificity that the agent chose"). Add one line in Evidence: how the answer changes at nearby thresholds.
 6. In "Confidence and limits": name each `warn` that can change the decision; name each post-hoc choice from `LOG.md` or `notes`; name each `DECISION override` from `LOG.md` as a limit: the defect and why it does not change the decision, in the words of the entry.
 7. Save the report as `runs/RNN-<slug>/out/report.md`. Refer to figures and tables by file name only (`fig-km.png`), not by path.
-8. Render it from the project root: `bash <this skill>/scripts/report_pdf.sh runs/RNN-<slug>/out/report.md`. It writes `out/report.pdf` (A4) and prints the page count. If the count is more than 1, cut text, not font size. The script needs `pandoc` and LibreOffice. If they are not installed, say so and use the word limit only.
+8. Render it from the project root: `bash <this skill>/scripts/report_pdf.sh runs/RNN-<slug>/out/report.md`. It writes `out/report.pdf` (A4) and prints the page count. If the count is more than 1, cut text, not font size. Keep space for one more line at the end of the page: the publisher adds the supervisor line to the release copy. The script needs `pandoc` and LibreOffice. If they are not installed, say so and use the word limit only.
 9. Return one line: the Answer sentence and the word count.
 
 ## Numbers

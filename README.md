@@ -1,86 +1,105 @@
 # Bio decision skills
 
-Skills for Claude Code (and other agents that read SKILL.md) for one path: from the question of a client to a decision that the client can trust.
+Skills for Claude Code and Codex that take a bioinformatics project from the question of a client to a decision that the client can trust.
 
 ![How the skills work: from the question to the release](docs/media/how-it-works.webp)
 
-This repository does not teach methods. Method catalogs exist (see `UPSTREAM.md`). This repository covers the layers around the method. Each skill is one role with one clear action:
+You have a question ("Does this gene score predict survival?", "Can we skip this test in smokers?") and processed tables: expression, clinical data, mutation calls, survival. The skills make the agent ask you the right questions first, fix a plan with a success threshold and controls before it looks at the outcome, check each result, and write a one-page report that a fresh agent checks against the files. You approve the plan and sign the release. The agent does the routine work.
 
-- understand the task before the work: who gets the benefit, how, and why it can work (`grill-me`, `grill-with-plan`, `grilling`),
-- fix the threshold and the controls before the data (`planner`),
-- start the analysis only from an accepted plan, in a clean context (`analyze`),
-- check each result before you state it (`checker`),
-- keep the project memory and order without manual notes (`setup-project`, `curator`),
-- write the report in a fresh context and check it from the files only (`editor`, `supervisor`, `reviewer`),
-- give the person a short deck and a signed release (`designer`, `publisher`).
+It is for heads of bioinformatics, bioinformaticians, and the wet-lab and clinical researchers who work with them. It does not teach methods and does not process raw data (see [UPSTREAM.md](UPSTREAM.md)).
 
-The person is responsible for the result. The person acts at three points: the answers in grilling, the approval of the plan, and the signature of the release. Each decision line shows who made it: `(person)` or `(agent)`.
+## How it works
 
-Scope of version 1: processed tabular data (expression tables, clinical tables, mutation calls, survival). No raw data.
+```mermaid
+flowchart LR
+    A["/ask-kosta<br/>where am I?"] --> S["/setup-project<br/>once"]
+    S --> G["/grill-with-plan<br/>you answer, you approve the plan"]
+    G --> Z["/analyze RNN<br/>new session"]
+    Z --> D["/designer<br/>deck"]
+    D --> P["/publisher<br/>you sign"]
+    Z -. next run .-> G
+    Z -. optional .-> V["/animate<br/>short video"]
 
-## Start
+    subgraph agent["The agent starts these by itself"]
+      direction LR
+      gr[grilling] --- pl[planner] --- ch[checker] --- ed[editor] --- su[supervisor] --- re[reviewer] --- cu[curator]
+    end
+    G -.-> agent
+    Z -.-> agent
 
-Type `/ask-kosta` in a project. It tells you the next skill. As a plugin, the commands have the plugin prefix: `/kostachernyshov-skills:ask-kosta`.
-
-## Skills
-
-| Skill | Who starts it | What it does |
-|---|---|---|
-| `ask-kosta` | person | Map of the flow. Tells the next skill. |
-| `setup-project` | person | Makes the project layout and two service files. |
-| `grill-me` | person | Starts `grilling`. |
-| `grill-with-plan` | person | `grilling`, then `planner`. Ends when the person approves the plan. Each new run starts here. |
-| `grilling` | agent | Interview in rounds until the solution model of the project and the task of the run are clear. Marks each decision `(person)` or `(agent)`. Checks the project rules. |
-| `planner` | agent | Writes the plan: threshold, positive, negative, and robustness controls. The person approves it. If more than half of the decisions came from the agent, the person must say "start anyway". Does not run the analysis. |
-| `analyze` | person | Runs the accepted plan, best in a new session: environment, code, figures, checks, then `editor`. Stops without an accepted plan. |
-| `checker` | agent | Checks and controls before each result. Doubts become `todo`. "New" only after a literature search. Stops after 3 failed repairs. |
-| `curator` | hook + agent | A script builds the State in `CLAUDE.md` from `run.yaml` after each answer and lists files out of place. Keeps the project rules. |
-| `editor` | agent | A fresh subagent writes the one-page report from the files. Then calls `supervisor` and `reviewer`. |
-| `supervisor` | agent | A fresh subagent answers 7 yes/no questions from the files only. One "no" is a veto. It always runs. It checks the reason of an override. |
-| `designer` | person | 4 to 6 slides from the report for the decision meeting. Calls `reviewer`. |
-| `reviewer` | agent | Two review rounds of the deck or the report with the eyes of the reader. |
-| `publisher` | person | Freezes a release. Only with a supervisor pass or a valid override, and only after the person signs. |
-| `animate` | person | Experimental (`skills/in-progress/`). A pixel-art video of 20 to 45 s from the accepted report: question, design, result, limit. Numbers come only from the result files. Checks the colors for color vision deficiency. |
-
-"Person" skills have `disable-model-invocation: true`. Type `/name` to start them. "Agent" skills start by themselves when the situation fits. A person skill can call an agent skill, never another person skill.
-
-The `curator` hook (`hooks/hooks.json`, event `Stop`) works in Claude Code when you install the plugin. With a manual install or in Codex, ask the agent to run the curator script.
-
-## Project layout
-
+    classDef you fill:#fde7c8,stroke:#c77700,color:#222;
+    class G,P you;
 ```
-CLAUDE.md   # agent rules + State (built by the curator script)
-LOG.md      # decisions of the person and releases
-data/       # input, read only
-runs/       # iterations, each with run.yaml (plan, controls, checks, todo, verdict)
-releases/   # what the client saw, never changed
-scratch/    # temporary
-```
+
+You act at three points (orange): the answers in grilling, the approval of the plan, and the signature of the release. Each decision line in the project shows who made it: `(person)` or `(agent)`.
+
+A large task is split into several runs. Each run has its own question, plan, and report. A later run can use the results of earlier runs.
 
 ## Install
 
-As a Claude Code plugin (after the repository is public):
+Claude Code, as a plugin (this also installs the curator hook):
 
 ```
 claude plugin marketplace add kostachernyshov/skills
 claude plugin install kostachernyshov-skills@kostachernyshov
 ```
 
-To update: `claude plugin marketplace update kostachernyshov`, then `claude plugin update kostachernyshov-skills@kostachernyshov`.
+Start a new Claude Code session in your project folder and type `/kostachernyshov-skills:ask-kosta`. The plugin adds the prefix `kostachernyshov-skills:` to each command.
 
-Codex (not tested yet) uses the same marketplace and reads `agents/openai.yaml` in each skill folder:
+Codex (not tested yet) reads the same marketplace and `agents/openai.yaml` in each skill folder:
 
 ```
 codex plugin marketplace add kostachernyshov/skills
 codex plugin add kostachernyshov-skills@kostachernyshov
 ```
 
-Or copy the skills by hand (the curator hook does not come with this route):
-
-Claude Code finds a skill only one level below the skills folder. Copy each skill folder, not the bucket folder:
+Manual copy (no plugin prefix, no curator hook; ask the agent to run the curator when a session ends):
 
 ```
-for d in skills/ask-kosta skills/*/*/; do cp -r "$d" ~/.claude/skills/; done
+git clone https://github.com/kostachernyshov/skills
+cd skills
+mkdir -p ~/.claude/skills
+for d in skills/ask-kosta skills/{analysis,core,decision,project}/*/; do cp -r "$d" ~/.claude/skills/; done
 ```
 
-Do not copy `skills/in-progress/` or `skills/deprecated/`.
+Claude Code finds a skill only one level below the skills folder, so the loop copies each skill folder, not the bucket folder. It does not copy `skills/in-progress/` or `skills/deprecated/`.
+
+## Update
+
+```
+claude plugin marketplace update kostachernyshov
+claude plugin update kostachernyshov-skills@kostachernyshov
+```
+
+Restart the session after the update. You get an update only when the version in `.claude-plugin/plugin.json` changes. Read what changed in [CHANGELOG.md](CHANGELOG.md): each version starts with "What changes for you". With a manual copy, pull the repository and copy the folders again.
+
+## Example: a T-cell score in melanoma
+
+Public data: TCGA SKCM from UCSC Xena (test scenario [`tests/scenarios/s5-skcm-immune`](tests/scenarios/s5-skcm-immune/persona.md)). A biotech wants to print "a high cytotoxic T-cell score predicts longer survival in melanoma" in a brochure.
+
+1. Put the tables in an empty folder. Type `/ask-kosta`. It says: start with `/setup-project`.
+2. `/setup-project` makes `CLAUDE.md`, `LOG.md`, `data/`, `runs/`, and `releases/`, and asks your name and role.
+3. `/grill-with-plan` asks in short rounds, each with a recommended option:
+   - Who gets the benefit, and which decision changes? (The brochure claim: strong, weak, or none.)
+   - Which error costs more: a false claim or a too weak claim?
+   - Survival from which time? (Most samples are metastases collected years after diagnosis.)
+   - What number makes the answer "yes"?
+   Then it shows the plan in 5 to 8 lines: samples, method, threshold, and three controls (a known effect, shuffled labels, nearby thresholds and subgroups). You type "yes".
+4. `/clear`, then `/analyze R01`. The agent runs the plan, checks the data and the controls, draws the figures, and writes `runs/R01-<slug>/out/report.md` and `report.pdf`. A fresh supervisor answers 7 yes/no questions from the files only.
+5. `/designer` makes a deck of 4 to 6 slides. `/publisher` shows what goes out and asks you to sign. The release goes to `releases/v1-<date>/` and gets a git tag.
+
+## Animation (experimental)
+
+The animation at the top of this page was made with the skill `/animate` (sources in [`promo/how-it-works`](promo/how-it-works)).
+
+After `/analyze`, type `/animate` to get a 20 to 45 s pixel-art video of the run: the question, the design, the result, and the limit. Each number on screen comes from a result file. See [`skills/in-progress/animate`](skills/in-progress/animate/SKILL.md) and the demo on TCGA SKCM in [`examples/skcm-demo`](skills/in-progress/animate/examples/skcm-demo/README.md).
+
+## More
+
+- [All skills and the project layout](docs/skills.md)
+- [Scope: what gets into this repository](SCOPE.md)
+- [Glossary](GLOSSARY.md)
+- [Tests on public data](tests/README.md)
+- Issues and ideas: https://github.com/kostachernyshov/skills/issues
+
+License: MIT.

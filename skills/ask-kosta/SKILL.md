@@ -32,6 +32,7 @@ Only the person starts these skills: `/setup-project`, `/grill-me`, `/grill-with
 | The supervisor gave a veto | Fix the cause and ask the agent to rewrite the report. Only the person can override: name the defect and why it does not change the decision. A deadline is not a reason. |
 | A new run: a new data type, a new question, or a merge of earlier runs | `/grill-with-plan`. Grilling asks if the solution model is still valid. |
 | The question changed | `/grill-with-plan` for a new run |
+| A large task: a description of the biology and work with the outcome in one request | `/grill-with-plan`. Grilling proposes a split into runs. The next runs are in the `later runs` line of `LOG.md`. |
 | A report must change (words, layout) | Ask the agent to rewrite the report ("editor"). The supervisor runs again. |
 | You changed the report, a figure, or the deck yourself | Nothing. `/publisher` shows the files that changed after the supervisor check. You choose: run the supervisor again, or keep them and sign. |
 | A lesson must hold for later runs | Ask the agent to add a project rule ("curator"). Only you edit or delete rules, by hand in `CLAUDE.md`. |
@@ -57,6 +58,6 @@ Raw data processing and pipelines. Use these instead:
 
 ## How to answer
 
-1. Look at the project: does `CLAUDE.md` exist? Is the solution model confirmed or `draft`? Does `LOG.md` have a grilling entry and a `plan accepted` entry for the next run? Read the State block. Which runs exist and what status? Is there a verdict? Is there a release?
+1. Look at the project: does `CLAUDE.md` exist? Is the solution model confirmed or `draft`? Does `LOG.md` have a grilling entry and a `plan accepted` entry for the next run? Does a `later runs` line name a run that does not exist yet? Read the State block. Which runs exist and what status? Is there a verdict? Is there a release?
 2. Find the step in the main flow.
 3. Say the next skill in one line and the reason in one line.

@@ -54,8 +54,8 @@ When to propose a rule:
 
 Steps:
 1. Write the rule as one instruction in one line. Name the run and the problem.
-2. Ask the person: "Add project rule RULE-NN: <rule>? yes / no". NN is the highest rule number in `CLAUDE.md` or `LOG.md` + 1. Ask it in a separate message, with no other question. Then a "yes" can only be for this rule.
-3. Without "yes", stop. The rule does not exist. A rule starts at the next run that the person accepts. It does not apply to a run with an accepted plan.
+2. Ask the person: "Add project rule RULE-NN: <rule>? Type: yes RULE-NN / no RULE-NN". NN is the highest rule number in `CLAUDE.md` or `LOG.md` + 1. Put the question as the last line of the message, after an empty line. Accept only an answer that names the rule number. A plain "yes" is an answer to the other parts of the message, not to the rule. Then ask again: "For the rule, type: yes RULE-NN / no RULE-NN".
+3. Without "yes RULE-NN", stop. The rule does not exist. A rule starts at the next run that the person accepts. It does not apply to a run with an accepted plan.
 4. After "yes", add one line at the end of the section `## Project rules` in `CLAUDE.md`:
    `- RULE-NN (<run>, <YYYY-MM-DD>): <rule>. Why: <problem>.`
 5. Add one entry to `LOG.md`:

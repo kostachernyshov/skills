@@ -29,7 +29,7 @@ This skill does the analysis of one run from the files only: the plan in `run.ya
 5. **Figures.** Draw the main figure that `done_when` names, and the other figures that the reader needs: `out/fig-<what>.png`. Draw each figure at 11 x 5 inches with fonts of 16 pt or more. The report (at the full width of the page) and the deck use the same file, and its text stays readable in both. Put the plotting code in its own script in `code/`. Look at each figure before you continue.
 6. **Controls and result checks.** Call the Skill tool with "checker" for the three controls, the result checks, and the `todo` list. A `fail` (except a `fail` with `override`), an open `todo`, or a post-hoc change stops the work. Ask the person as the checker says. Then set `status: candidate` and fill `result`.
 7. **Report.** Call the Skill tool with "editor". It writes the report in a fresh context and calls the supervisor and the reviewer.
-8. **Summary.** Tell the person: the Answer line of the report, the verdict (✅ pass or ⛔ veto with the question), and the next step (`/designer`, `/publisher`, or the fix of a veto). Write the `Next step` line in the State block of `CLAUDE.md`.
+8. **Summary.** Tell the person: the Answer line of the report, the verdict (✅ pass or ⛔ veto with the question), and the next step (`/designer`, `/publisher`, the fix of a veto, or `/grill-with-plan` for the next run of a `later runs` line in `LOG.md`). Write the `Next step` line in the State block of `CLAUDE.md`.
 
 ## Done when
 

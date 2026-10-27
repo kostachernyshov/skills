@@ -32,15 +32,16 @@ If grilling already runs in this session (for example the person types `/grill-m
    - whether the thing under discussion (a signature, a method, a cut-off, a data set) is already public, and on which terms.
    A public fact can change the decision. Put it in the next round.
    If a site blocks access, try another source: the publisher page, an institutional repository PDF, a preprint server, or the abstract. Record the blocked source. Mark a prior from an abstract only as `weak`.
-5. Make the **frontier**: the list of open questions that block the run. Use the topics in [TOPICS.md](TOPICS.md). Add each contradiction that you find (see "Contradictions").
-6. Ask one round: 6 questions or fewer. The model check and each "Follow RULE-NN?" question count in this limit. Give each question:
+5. If the request mixes two types of task, propose a split into runs. See "Large task". Ask it as one question in the first round about the run.
+6. Make the **frontier**: the list of open questions that block the run. Use the topics in [TOPICS.md](TOPICS.md). Add each contradiction that you find (see "Contradictions").
+7. Ask one round: 6 questions or fewer. The model check and each "Follow RULE-NN?" question count in this limit. Give each question:
    - options on short lines,
    - your recommended option, marked (not for the useful action, see "Solution model"),
    - one line: why the answer changes the analysis.
-7. Read the answers. The word "yes" accepts all recommendations as `(person)`. A choice that the person gives to you is `(agent)`. Compare each answer with the project rules (see "Project rules"). Remove answered questions from the frontier. Add new questions that the answers open.
-8. Do step 6 again until the frontier is empty.
-9. If the solution model is new or changed, write it in `CLAUDE.md` and add one `DECISION model` entry to `LOG.md` (see "Solution model").
-10. Write the task of the run in `LOG.md` as one `DECISION` entry with these lines, in this order:
+8. Read the answers. The word "yes" accepts all recommendations as `(person)`. A choice that the person gives to you is `(agent)`. Compare each answer with the project rules (see "Project rules"). Remove answered questions from the frontier. Add new questions that the answers open.
+9. Do step 7 again until the frontier is empty.
+10. If the solution model is new or changed, write it in `CLAUDE.md` and add one `DECISION model` entry to `LOG.md` (see "Solution model").
+11. Write the task of the run in `LOG.md` as one `DECISION` entry with these lines, in this order:
 
 ```
 ## <YYYY-MM-DD> · DECISION grilling
@@ -56,11 +57,22 @@ reference: <the reference test or variable, if any> (person | agent)
 success: <threshold for "yes">, on <assay or platform where the decision applies> (person | agent)
 prior: <result, reference> (strong | weak | none found)
 rules: <RULE ids that apply to this run, or: none>
+later runs: <R02 <task>; R03 <task>, if the person accepted a split; else omit the line>
 sources: <URLs or references used; blocked sources>
 context: <N> of 8 (agent)
 ```
    `context` counts the 8 lines with a `(person | agent)` mark. If more than 4 are `(agent)`, tell the person: "<N> of 8 decisions came from me, not from you. The planner will ask before it starts." Ask again about these lines if the person is available.
    The question rounds stay in the chat. Do not save them in a file. If `LOG.md` does not exist, tell the person to run `/setup-project` first.
+
+## Large task
+
+A request can mix two types of task: a description of the biological system (the cohort, the biology, without the outcome), and work with the outcome (a comparison or a prediction). One run for both mixes the success thresholds. The description is then made after someone saw the outcome.
+
+- Propose the split in one question, with your recommended split. The preferred order: the description without the outcome first, then the work with the outcome. A comparison with the outcome and a prediction usually go in one run.
+- The person can choose another order. Say the risk in one line and continue.
+- If a later run keeps data as a test set, the earlier runs exclude these data in `samples`.
+- After a "yes", write the task of the first run in its `DECISION grilling` entry and the other runs in its `later runs` line.
+- For a later run, start from its task in the `later runs` line. Ask only what is not clear after the earlier runs.
 
 ## Solution model
 
@@ -143,3 +155,4 @@ reason: <the words of the person>
 - The published prior is named, or the entry says `prior: none found`.
 - Each project rule that conflicts with an answer has a `follow` answer or a `DECISION deviation` entry.
 - Each of the 8 decision lines has `(person)` or `(agent)`, and the entry has the `context` line.
+- If the request mixed two types of task, the person answered the split question, and an accepted split is in the `later runs` line.
