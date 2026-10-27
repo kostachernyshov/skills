@@ -1,2 +1,0 @@
-term	HR	CI_low	CI_high	p	logrank_p	n	events	n_high	n_low	median_os_high_years	median_os_low_years	cyt_median
-cyt_high_vs_low	0.521	0.395	0.686	3.7e-06	2.5e-06	453	213	224	229	9.8	4.8	6.893

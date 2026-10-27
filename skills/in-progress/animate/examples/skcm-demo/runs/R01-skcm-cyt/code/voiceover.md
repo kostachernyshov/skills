@@ -36,4 +36,4 @@ High score, longer life. The risk of death was about half.
 But most samples came years after diagnosis. The effect can look larger.
 
 ## S12
-Our advice: a weaker claim. Linked, not proven.
+In short: more killer T cells, longer life. Linked, not proven. Use a weaker claim.

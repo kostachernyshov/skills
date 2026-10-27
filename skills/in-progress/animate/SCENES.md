@@ -26,14 +26,15 @@ scenes:
 
 - Without a voice: a scene lasts (words of its voice-over) / 2.5 + 0.8 s, and at least 2.5 s. `dur: 4` sets it by hand.
 - With a voice: `cues: [C03, C04]` puts the start of the scene at the start of its first cue. Get the cue ids from `animate.py cues`. `at: "survival"` starts the chart reveal on that word.
-- The whole video: 20 to 45 s. More than 60 s fails the check.
+- The whole video before the summary: 20 to 45 s. More than 60 s fails the check.
+- The summary holds for 10 s (`dur` sets more), with or without a voice. It is not counted in the limit above.
 
 ## Fields of all scenes
 
 | Field | Meaning |
 |---|---|
 | `id` | Unique id, the same as in `voiceover.md`. |
-| `type` | One of the types below. |
+| `type` | One of the types below. The last scene is a `summary`. |
 | `claim` | The report line that the scene shows: `L14`, `<file>:<line>`, or `<file.yaml>:<key>`. Not needed for `title`. |
 | `caption` | 2 or 3 English words at the bottom. No caption on a heatmap. |
 | `title` | Short heading at the top left (charts, cohort, flow, cast). |
@@ -82,6 +83,15 @@ Write a color by name: `favorable`, `favorable2`, `favorable3` (blue), `unfavora
 
 ### takeaway
 `sprite` (default `check_card`), `text` (1 to 3 lines), `key`. The answer for the decision.
+
+### summary
+The last scene. It must be in each plan, and only once. A graphical abstract that holds still for 10 s:
+- `question: {sprite, text}`: 1 or 2 lines of 15 characters or fewer.
+- `design: {sprite, text}`: 1 or 2 lines of 15 characters or fewer.
+- `result`: the id of a `km`, `strip`, or `distribution` scene. Its chart is drawn small, with n for each group.
+- `key`: the key number (for example `"HR {hr}"`).
+- `text`: the conclusion, 1 or 2 lines of 28 characters or fewer.
+- `title`: default is the title of the plan.
 
 ### custom
 `module` (path to a Python file), `function` (default `draw`). The function gets `(img, t, scene, ctx)`. `ctx["fill"]` puts numbers into text. Use the library: `from pixel_kit import sprites, charts, fx, ui`. A custom scene that is used a second time moves into the library.

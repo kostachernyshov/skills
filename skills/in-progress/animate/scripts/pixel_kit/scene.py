@@ -79,9 +79,15 @@ class Timeline:
         frames = []
         for i in range(int(dur * fps)):
             frames.append(Image.fromarray(upscale(self.frame(i / fps), scale=scale, scan=False)))
-        pal = frames[0].quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+        # One palette for the whole loop, from frames across the video (not only the first frame:
+        # the title frame has few colors, and later charts became grey).
+        sample = [self.frame(t) for t in np.arange(0, dur, 0.5)]
+        mosaic = Image.fromarray(np.concatenate(sample, axis=0))
+        pal = mosaic.quantize(colors=256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
         frames = [f.quantize(palette=pal, dither=Image.Dither.NONE) for f in frames]
-        frames[0].save(out, save_all=True, append_images=frames[1:], duration=int(1000 / fps), loop=0,
+        # GIF stores delays in 1/100 s: spread the rounding, so that the loop has the length of the video
+        cs = [round(100 * (i + 1) / fps) - round(100 * i / fps) for i in range(len(frames))]
+        frames[0].save(out, save_all=True, append_images=frames[1:], duration=[10 * c for c in cs], loop=0,
                        optimize=True)
         return out
 

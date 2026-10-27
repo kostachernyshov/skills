@@ -7,12 +7,12 @@
 #   tl, marks = story.timeline(plan)      # marks: key times for the storyboard
 #
 # Scene types: title, question, cast, cohort, flow, km, strip, distribution, heatmap, volcano,
-# takeaway, limit, custom.
+# takeaway, limit, summary, custom.
 
 import importlib.util, math, os, re
 from PIL import Image, ImageDraw
 from .palette import *
-from .font import text, text_w, title_text, TITLE_GLYPHS
+from .font import text, text_w, title_text, mini_text, mini_w, TITLE_GLYPHS
 from .timing import clamp, seg, ease, lerp
 from . import sprites as S, fx, ui, bg, charts, data, voice
 from .scene import Timeline, W, H
@@ -116,11 +116,16 @@ def durations(plan):
         end = (by_id[last_ids[-1]].end if last_ids else cs[-1].end) + 0.8
         for i in range(len(scenes)):
             times.append((starts[i], starts[i + 1] if i + 1 < len(scenes) else end))
+        if scenes[-1].get("type") == "summary":
+            a, b = times[-1]
+            times[-1] = (a, max(b, a + float(scenes[-1].get("dur", SUMMARY_HOLD))))
         return times
     t = 0.0
     for sc in scenes:
         words = len(vo.get(sc["id"], "").split())
         d = float(sc.get("dur", max(MIN_SCENE, words / WORDS_PER_S + 0.8)))
+        if sc.get("type") == "summary" and "dur" not in sc:
+            d = max(d, SUMMARY_HOLD)
         times.append((t, t + d))
         t += d
     return times
@@ -145,6 +150,10 @@ def _texts(sc):
             for x in v:
                 if isinstance(x, str):
                     yield f, x
+    for part in ("question", "design"):
+        if isinstance(sc.get(part), dict):
+            for x in sc[part].get("text") or []:
+                yield part, x
     for key in ("groups", "steps", "items"):
         for g in sc.get(key) or sc.get("data", {}).get(key, []) or []:
             if isinstance(g, dict) and isinstance(g.get("label"), str):
@@ -193,7 +202,21 @@ def check(plan):
         if sid in seen:
             out.append(f"{sid}: id is not unique")
         seen.add(sid)
-        if sc.get("type") not in ("title", "question", "cast", "cohort", "flow", "takeaway", "limit", "custom") + CHART_TYPES:
+        if sc.get("type") == "summary":
+            ids = {r.get("id"): r for r in plan["scenes"]}
+            ref = ids.get(sc.get("result"))
+            if not ref or ref.get("type") not in SUMMARY_CHARTS:
+                out.append(f"{sid}: result must be the id of a {', '.join(SUMMARY_CHARTS)} scene")
+            for part in ("question", "design"):
+                for x in (sc.get(part) or {}).get("text") or []:
+                    if len(fill(plan, x) if nums else x) > 15:
+                        out.append(f"{sid}: {part} line is longer than 15 characters: {x!r}")
+            for x in sc.get("text") or []:
+                if len(fill(plan, x) if nums else x) > 28:
+                    out.append(f"{sid}: text line is longer than 28 characters: {x!r}")
+            if len(sc.get("text") or []) > 2:
+                out.append(f"{sid}: text has more than 2 lines")
+        if sc.get("type") not in ("title", "question", "cast", "cohort", "flow", "takeaway", "limit", "summary", "custom") + CHART_TYPES:
             out.append(f"{sid}: unknown type {sc.get('type')!r}")
         if sc.get("type") != "title" and not sc.get("claim"):
             out.append(f"{sid}: no claim (a line of the report that the scene shows)")
@@ -225,9 +248,14 @@ def check(plan):
             for ch in (sc.get("title") or "").upper():
                 if ch not in TITLE_GLYPHS:
                     out.append(f"{sid}: title character {ch!r} is not in the title font")
-    total = times[-1][1] if times else 0
-    if total > 60:
-        out.append(f"total length {total:.0f} s: keep the video at 20-45 s (60 s at most)")
+    if not plan["scenes"] or plan["scenes"][-1].get("type") != "summary":
+        out.append("the last scene must be a summary (graphical abstract)")
+    if sum(1 for sc in plan["scenes"] if sc.get("type") == "summary") > 1:
+        out.append("only one summary scene is allowed")
+    # the summary hold is not counted
+    story_end = times[-2][1] if len(times) > 1 and plan["scenes"][-1].get("type") == "summary" else (times[-1][1] if times else 0)
+    if story_end > 60:
+        out.append(f"length before the summary {story_end:.0f} s: keep it at 20-45 s (60 s at most)")
     return out
 
 
@@ -417,25 +445,25 @@ def _chart_cache(ctx, key, make):
 BOX = (8, 32, W - 8, 228)
 
 
+def _km_groups(plan, dsc):
+    out = []
+    for g in dsc["groups"]:
+        where = dict(dsc.get("where") or {})
+        where[dsc["group"]] = g["value"]
+        tt = data.column(dsc["file"], dsc["time"], where=where, dropna=False)
+        ev = data.column(dsc["file"], dsc["event"], where=where, dropna=False)
+        pairs = [(a, b) for a, b in zip(tt, ev) if a == a and b == b]
+        lab = fill(plan, g["label"])
+        data.shown(f"{lab} n={len(pairs)}", len(pairs), dsc["file"], f"{dsc['time']}+{dsc['event']}", where)
+        out.append(dict(label=lab, times=[a for a, _ in pairs], events=[int(b) for _, b in pairs],
+                        col=color(g.get("color", "neutral"))))
+    return out
+
+
 def p_km(plan, sc, t, dur, ctx):
     img = bg.plain()
     _heading(img, fill(plan, sc.get("title")))
-    dsc = sc["data"]
-
-    def make():
-        out = []
-        for g in dsc["groups"]:
-            where = dict(dsc.get("where") or {})
-            where[dsc["group"]] = g["value"]
-            tt = data.column(dsc["file"], dsc["time"], where=where, dropna=False)
-            ev = data.column(dsc["file"], dsc["event"], where=where, dropna=False)
-            pairs = [(a, b) for a, b in zip(tt, ev) if a == a and b == b]
-            lab = fill(plan, g["label"])
-            data.shown(f"{lab} n={len(pairs)}", len(pairs), dsc["file"], f"{dsc['time']}+{dsc['event']}", where)
-            out.append(dict(label=lab, times=[a for a, _ in pairs], events=[int(b) for _, b in pairs],
-                            col=color(g.get("color", "neutral"))))
-        return out
-    groups = _chart_cache(ctx, sc["id"], make)
+    groups = _chart_cache(ctx, sc["id"], lambda: _km_groups(plan, sc["data"]))
     k, tk = _reveal(sc, t, dur, ctx)
     charts.km(img, BOX, groups, k=k, tmax=sc.get("tmax"), xlabel=sc.get("xlabel", "YEARS"),
               ylabel=sc.get("ylabel", "ALIVE"), time_scale=float(sc.get("time_scale", 1.0)),
@@ -569,6 +597,68 @@ def p_limit(plan, sc, t, dur, ctx):
     lines = [fill(plan, s) for s in (sc.get("text") or [])]
     ui.hypothesis(img, t - 0.2, 60, fill(plan, sc.get("title", "LIMIT")), lines, x0=40, x1=W - 41)
     _caption(img, plan, sc, t)
+    return img
+
+
+SUMMARY_HOLD = 10.0      # s: the last frame stays so that the reader can read it
+SUMMARY_CHARTS = ("km", "strip", "distribution")
+
+
+def _mini_chart(img, plan, ref, box, ctx):
+    """The chart of an earlier scene, small and fully drawn. Returns the km groups (the caller draws
+    their legend under the plot), or None (strip and distribution label their groups)."""
+    dsc = ref["data"]
+    if ref["type"] == "km":
+        groups = _chart_cache(ctx, "km", lambda: _km_groups(plan, dsc))
+        charts.km(img, box, groups, tmax=ref.get("tmax"), xlabel=ref.get("xlabel", "YEARS"), ylabel="",
+                  time_scale=float(ref.get("time_scale", 1.0)), show_legend=False)
+        return groups
+    groups = _chart_cache(ctx, "groups", lambda: _groups_from(dsc, dsc["value"]))
+    for g in groups:
+        g["label"] = fill(plan, g["label"])
+    if ref["type"] == "strip":
+        charts.strip(img, box, groups, ylabel=None)
+    else:
+        charts.distribution(img, box, groups, bins=int(ref.get("bins", 24)))
+    return None
+
+
+def p_summary(plan, sc, t, dur, ctx):
+    """Graphical abstract at the end: question, design, result, and the takeaway. It appears in about
+    1.5 s and then holds still (SUMMARY_HOLD s), so that the reader can read it."""
+    img = bg.plain()
+    _heading(img, fill(plan, sc.get("title") or plan.get("title")))
+    d = ImageDraw.Draw(img)
+    y0, ph = 38, 140
+    panels = (("question", "QUESTION", 8, 120), ("design", "DESIGN", 136, 120), ("result", "RESULT", 264, 208))
+    for i, (part, label, x0, pw) in enumerate(panels):
+        if t < 0.2 + 0.3 * i:
+            continue
+        ui.panel_frame(img, x0, y0, pw, ph, label, NAVY)
+        if part == "result":
+            ref = next(r for r in plan["scenes"] if r["id"] == sc["result"])
+            km_groups = _mini_chart(img, plan, ref, (x0 + 2, y0 + 20, x0 + pw - 4, y0 + ph - (18 if ref["type"] == "km" else 2)), ctx)
+            lx, ly = x0 + 6, y0 + ph - 18
+            for g in km_groups or []:
+                charts._swatch(d, lx, ly + 4, g["col"])
+                text(img, lx + 12, ly, g["label"], g["col"][0])
+                n = f"n={len(g['times'])}"
+                mini_text(img, lx + 14 + text_w(g["label"]), ly + 7, n, g["col"][0])
+                lx += 26 + text_w(g["label"]) + mini_w(n)
+            if sc.get("key"):
+                k = fill(plan, sc["key"])
+                kw = text_w(k) + 8
+                ui.box(d, x0 + pw - kw - 6, y0 + 22, x0 + pw - 6, y0 + 40, fill=PAPER, border=NAVY, inner=LGREY)
+                text(img, x0 + pw - kw - 2, y0 + 23, k, NAVY)
+            continue
+        p = sc.get(part) or {}
+        if p.get("sprite"):
+            S.idle(img, p["sprite"], 0.0, x0 + pw // 2, y0 + 70, scale=2)
+        for j, s in enumerate(p.get("text") or []):
+            text(img, x0 + pw // 2, y0 + ph - 38 + 17 * j, fill(plan, s), INK, align="c")
+    if t >= 1.2:
+        for j, s in enumerate(sc.get("text") or []):
+            text(img, W // 2, 190 + 34 * j, fill(plan, s), NAVY if j == 0 else INK, scale=2, align="c")
     return img
 
 

@@ -1,6 +1,7 @@
 # Palette: PICO-8 (lospec.com/palette-list/pico-8). No transparency, no anti-aliasing.
 # Indices 0-15: the main 16 colors. Sprites use only these.
 # Indices 16-31: the PICO-8 "secret" colors. Only charts and color scales use them.
+# Index 32: PAPER, the background. Sprites do not use it.
 # Meaning of colors in charts: see STYLE.md (blue = better outcome, orange = worse, neutral = no direction).
 
 P = [(0, 0, 0), (29, 43, 83), (126, 37, 83), (0, 135, 81), (171, 82, 54), (95, 87, 79),
@@ -9,19 +10,21 @@ P = [(0, 0, 0), (29, 43, 83), (126, 37, 83), (0, 135, 81), (171, 82, 54), (95, 8
      # secret palette (PICO-8 indices 128-143)
      (41, 24, 20), (17, 29, 53), (66, 33, 54), (18, 83, 89), (116, 47, 41), (73, 51, 59),
      (162, 136, 121), (243, 239, 125), (190, 18, 80), (255, 108, 36), (168, 231, 46),
-     (0, 181, 67), (6, 90, 181), (117, 70, 101), (255, 110, 89), (255, 157, 129)]
+     (0, 181, 67), (6, 90, 181), (117, 70, 101), (255, 110, 89), (255, 157, 129),
+     # 32: the background only (off-palette: whiter and cooler than PICO-8 white)
+     (251, 250, 247)]
 BLACK, NAVY, PLUM, DGREEN, BROWN, DGREY, LGREY, WHITE, RED, ORANGE, YELLOW, GREEN, BLUE, LAV, PINK, PEACH = range(16)
 (XBROWN, XNAVY, XPLUM, XTEAL, XRUST, XMAUVE, XTAUPE, XLEMON, XCRIMSON, XORANGE, XLIME,
  XGREEN, XBLUE, XPURPLE, XSALMON, XAPRICOT) = range(16, 32)
 NAMES = ["BLACK", "NAVY", "PLUM", "DGREEN", "BROWN", "DGREY", "LGREY", "WHITE",
          "RED", "ORANGE", "YELLOW", "GREEN", "BLUE", "LAV", "PINK", "PEACH",
          "XBROWN", "XNAVY", "XPLUM", "XTEAL", "XRUST", "XMAUVE", "XTAUPE", "XLEMON",
-         "XCRIMSON", "XORANGE", "XLIME", "XGREEN", "XBLUE", "XPURPLE", "XSALMON", "XAPRICOT"]
+         "XCRIMSON", "XORANGE", "XLIME", "XGREEN", "XBLUE", "XPURPLE", "XSALMON", "XAPRICOT", "PAPER"]
 
 # Light theme. PAPER is the background, INK is text and axes.
-PAPER = WHITE
+PAPER = 32                      # near white, a little cool. Sprite bodies stay WHITE (warm) with an outline.
 INK = BLACK
-GRID_LINE = (236, 226, 218)     # faint grid on PAPER (off-palette, like the muted backgrounds)
+GRID_LINE = (236, 234, 230)     # faint dotted grid on PAPER (off-palette, like the muted backgrounds)
 
 # Group colors for charts: (line or mark, fill). A line uses the first color: it has >= 3:1 on PAPER.
 # The sets pass colorcheck (Delta E >= 20 in normal, deutan, protan views) inside each set.

@@ -17,15 +17,18 @@ def _cached(key, make):
 
 
 def paper(w=W, h=H, grid=True, step=16):
-    """The default background: PAPER with a faint grid."""
+    """The default background: PAPER with a faint dotted grid."""
     def make():
         img = Image.new("RGB", (w, h), C(PAPER))
         if grid:
             d = ImageDraw.Draw(img)
+            # dotted lines: 2 px on, 2 px off
             for x in range(0, w, step):
-                d.line([x, 0, x, h], fill=GRID_LINE)
+                for y in range(0, h, 4):
+                    d.line([x, y, x, y + 1], fill=GRID_LINE)
             for y in range(0, h, step):
-                d.line([0, y, w, y], fill=GRID_LINE)
+                for x in range(0, w, 4):
+                    d.line([x, y, x + 1, y], fill=GRID_LINE)
         return img
     return _cached(("paper", w, h, grid, step), make)
 

@@ -1,6 +1,6 @@
 ---
 name: animate
-description: Make a short pixel-art animation (20 to 45 s) that explains the design and the result of a run, from the accepted report, with numbers read only from the result files. Experimental.
+description: Make a short pixel-art animation (20 to 45 s and a 10 s summary frame) that explains the design and the result of a run, from the accepted report, with numbers read only from the result files. Experimental.
 disable-model-invocation: true
 ---
 
@@ -30,6 +30,7 @@ The tool also needs `ffmpeg`. If `ffmpeg -version` fails, tell the person to ins
    - Put each number in `numbers`, with its file, column, and row. Write `{name}` in the text. Never type a number into the plan.
    - Give each scene except the title a `claim`: the report line that the scene shows (`L14`).
    - Use the colors of the outcome: blue for the better group, orange for the worse group. If the data has no "better" or "worse", use the neutral colors.
+   - End with a `summary` scene: the question, the design, the result chart, the key number, and the conclusion in 1 or 2 lines. It holds for 10 s.
    - Use a scene type from SCENES.md. If no type fits, write a `custom` scene. Tell the person that the scene is a candidate for the library.
 4. **Check.** Run `animate.py check <plan>`. Fix the plan until the output is `CHECK PASSED`.
 5. **Storyboard and colors.** Run `animate.py board <plan> runs/RNN-<slug>/out/animation-board.png` and `animate.py colors <plan> runs/RNN-<slug>/out/animation-colors`. Look at the board yourself: text does not overlap, labels are not cut, each chart reads in one second. Fix and run again. Then show the board to the person and ask: "Accept the storyboard? yes / changes". Do not render without "yes".
@@ -53,5 +54,6 @@ The tool also needs `ffmpeg`. If `ffmpeg -version` fails, tell the person to ins
 - `animate.py check` prints `CHECK PASSED`.
 - `out/animation-numbers.tsv` lists each number on screen with its file, column, and row.
 - `out/animation-colors/colors.tsv` ends with `OVERALL PASS`: contrast 3:1 or more on the background, and the group colors differ for normal vision, deuteranopia, and protanopia.
+- The last scene is a `summary` that holds still for 10 s or more.
 - `out/animation.mp4` (1920x1080), `out/animation.gif`, and `out/animation-board.png` exist.
 - With a voice: `out/animation-preview.mp4` exists, and each scene starts with its words.

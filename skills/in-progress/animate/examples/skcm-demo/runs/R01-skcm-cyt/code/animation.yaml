@@ -129,8 +129,10 @@ scenes:
     claim: L19
 
   - id: S12
-    type: takeaway
-    sprite: check_card
-    text: ["WEAKER CLAIM:", "LINKED, NOT PROVEN"]
-    caption: "OUR ADVICE"
+    type: summary
+    question: {sprite: clinician, text: ["MORE T CELLS,", "LONGER LIFE?"]}
+    design: {sprite: sequencer, text: ["TCGA MELANOMA", "T-CELL SCORE"]}
+    result: S10
+    key: "HR {hr}"
+    text: ["LINKED, NOT PROVEN", "USE A WEAKER CLAIM"]
     claim: L22

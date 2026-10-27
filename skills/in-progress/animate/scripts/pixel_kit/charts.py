@@ -121,7 +121,8 @@ def km_curve(times, events):
     return out, cens
 
 
-def km(img, box, groups, k=1.0, tmax=None, xlabel="TIME", ylabel="SURVIVAL", time_scale=1.0, legend_xy=None):
+def km(img, box, groups, k=1.0, tmax=None, xlabel="TIME", ylabel="SURVIVAL", time_scale=1.0, legend_xy=None,
+       show_legend=True):
     """Survival curves. groups: [dict(label, times, events, col)]. time_scale divides times
     (for example 365.25 to show years). The legend shows each label with n."""
     tmax = tmax or max(max(g["times"]) for g in groups) / time_scale
@@ -148,6 +149,8 @@ def km(img, box, groups, k=1.0, tmax=None, xlabel="TIME", ylabel="SURVIVAL", tim
         for (t, s) in cens:
             if t <= tcut and t <= tmax:
                 d.line([p.X(t), p.Y(s) - 2, p.X(t), p.Y(s) + 1], fill=line)
+    if not show_legend:
+        return p
     lx, ly = legend_xy or (p.px1 - 150, p.py0 + 2)
     legend(img, lx, ly, [(f"{g['label']} n={len(g['times'])}", g["col"]) for g in groups])
     return p

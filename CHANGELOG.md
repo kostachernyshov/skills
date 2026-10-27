@@ -5,6 +5,7 @@ New experimental skill `animate`: a short pixel-art video that explains the desi
 
 What changes for you:
 - Type `/animate` after `/analyze`. The agent writes an English voice-over, then a plan `animation.yaml`. You accept the voice-over and the storyboard. Then the agent renders `animation.mp4` (1920x1080) and `animation.gif`.
+- The video ends with a summary frame (graphical abstract): the question, the design, the result chart, and the conclusion. It holds still for 10 s.
 - Each number on screen comes from a result file. `animation-numbers.tsv` shows the file, the column, and the row of each number. Each scene points to a line of the report.
 - Blue is the group with the better outcome, orange is the group with the worse outcome. Grey and lavender are for groups without "better" or "worse". `animate.py colors` checks contrast and the colors for deuteranopia and protanopia.
 - A voice is optional. Give a WAV file and a transcript with times (for example from VoiceStudio). The scenes then start on the words.
@@ -12,9 +13,9 @@ What changes for you:
 
 Changes:
 - `skills/in-progress/animate`: `SKILL.md`, `SCENES.md` (plan format and scene types), `STYLE.md` (palette, meaning of colors, contrast, bio cast), `agents/openai.yaml`.
-- `scripts/pixel_kit`: the pixel library from the cancer_wars project, on a light background (`PAPER`), with a 1 px outline on sprites. New: charts (Kaplan-Meier, strip, distribution, heatmap, volcano), `data.py` (numbers from files only), `colorcheck.py` (Machado 2009 simulation, WCAG contrast, Delta E), `story.py` (plan to timeline), a 3x5 mini font, new props (`tube`, `plate`, `sequencer`, `datasheet`) and `clinician`.
+- `scripts/pixel_kit`: the pixel library from the cancer_wars project, on a light background (`PAPER` #FBFAF7, dotted grid), with a 1 px outline on sprites. The GIF uses one palette for the whole video. Unifont is a Latin subset (9 KB). New: the `summary` scene, charts (Kaplan-Meier, strip, distribution, heatmap, volcano), `data.py` (numbers from files only), `colorcheck.py` (Machado 2009 simulation, WCAG contrast, Delta E), `story.py` (plan to timeline), a 3x5 mini font, new props (`tube`, `plate`, `sequencer`, `datasheet`) and `clinician`.
 - `scripts/animate.py`: commands `check`, `cues`, `board`, `colors`, `frames`, `animatic`, `render`, `preview`, `sheet`.
-- `examples/skcm-demo`: a demo on public TCGA SKCM data (UCSC Xena): cytolytic score and overall survival.
+- `examples/skcm-demo`: a demo on public TCGA SKCM data (UCSC Xena): cytolytic score and overall survival. The repository keeps only the inputs (code, voice-over, plan, report); the README shows how to get the data and render.
 - `ask-kosta`, `README.md`: the new skill.
 
 ## 0.11.1 (2026-10-24)

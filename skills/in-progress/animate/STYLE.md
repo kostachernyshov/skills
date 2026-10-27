@@ -6,7 +6,8 @@ Pixel art like an old video game, on a very light background. Frame 480x270, sca
 
 PICO-8: 16 main colors for sprites, and 16 extra ("secret") colors only for charts and scales. Names are in `scripts/pixel_kit/palette.py`.
 
-- Background `PAPER` = PICO-8 white (#FFF1E8) with a faint grid. Text and axes `INK` = black.
+- Background `PAPER` = #FBFAF7, near white and a little cool, with a faint dotted grid. It is outside the palette and only the background uses it. Text and axes `INK` = black.
+- Sprite bodies stay PICO-8 white (#FFF1E8). The outline separates them from `PAPER`.
 - Backgrounds can use muted tints outside the palette. Their texture stays near the fill color.
 
 ## Meaning of colors
@@ -30,6 +31,7 @@ Blue and orange, not green and red: people with red-green color vision deficienc
 ## Text in the frame
 
 - English only. The voice explains.
+- The last frame is the summary (graphical abstract). It holds still for 10 s so that the reader can read it.
 - A caption has 2 or 3 words, large, on a dark plate, and stays on screen for 2 s or more. It names the idea; it does not repeat the voice.
 - A typed number is not allowed. Numbers come from `numbers` in the plan, and `animation-numbers.tsv` shows their source.
 - n for each group shows in each chart.
