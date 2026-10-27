@@ -12,9 +12,10 @@ from .pixdraw import Spr, mask_circle, mask_superellipse, outline
 # ---------------------------------------------------------------- people
 
 def worker(hair=BROWN, top=DGREY, pants=NAVY, shoes=BLACK, tie=None, coat=False, glasses=False,
-           arms="down", laptop=False, blink=False):
+           arms="down", laptop=False, blink=False, tee=False):
     """Person, front view, 20x30. arms: down / up (panic) / point (right arm forward).
-    tie: necktie (manager); coat: white coat over a shirt of color top (scientist); laptop: in the hands."""
+    tie: necktie (manager); coat: white coat over a shirt of color top (scientist); laptop: in the hands;
+    tee: a T-shirt with short sleeves (the forearms show)."""
     w, h = 20, 30
     s = Spr(w, h)
     ys, xs = np.mgrid[0:h, 0:w]
@@ -33,6 +34,8 @@ def worker(hair=BROWN, top=DGREY, pants=NAVY, shoes=BLACK, tie=None, coat=False,
     if arms == "down":
         for ax in (4, 15):
             s.rect(ax, 17, ax, 22, sleeve); s.put(ax, 23, skin)
+            if tee:
+                s.rect(ax, 19, ax, 23, skin)
     elif arms == "up":
         for ax, dx in ((4, -1), (15, 1)):
             s.rect(ax, 13, ax, 17, sleeve); s.put(ax + dx, 11, skin); s.put(ax, 12, skin)
@@ -59,6 +62,15 @@ def worker(hair=BROWN, top=DGREY, pants=NAVY, shoes=BLACK, tie=None, coat=False,
         s.put(9, 9, LGREY); s.put(10, 9, LGREY)
     s.put(9, 13, BROWN); s.put(10, 13, BROWN)
     outline(s, BLACK)
+    return s
+
+
+def person(arms="down", blink=False):
+    """The person who decides ("you"): young, black T-shirt, jeans, white sneakers, dark hair."""
+    s = worker(hair=BROWN, top=BLACK, pants=BLUE, shoes=WHITE, arms=arms, blink=blink, tee=True)
+    for y in range(25, 29):                                # jeans: a darker inner seam
+        s.put(8, y, NAVY); s.put(11, y, NAVY)
+    s.put(9, 4, BROWN); s.put(10, 3, BROWN); s.put(11, 3, BROWN)   # hair: a little volume on top
     return s
 
 
@@ -134,5 +146,70 @@ def bulb(lit=True):
     else:
         s.rect(6, 7, 6, 9, DGREY)
     s.rect(4, 11, 8, 12, LGREY); s.rect(4, 13, 8, 13, DGREY); s.rect(5, 14, 7, 14, LGREY)
+    outline(s, BLACK)
+    return s
+
+
+# ---------------------------------------------------------------- agents (the AI side of the work)
+
+def agent(blink=False, work=0, glass=False, alert=False):
+    """AI agent: a small robot with a screen face, 20x26. work: 0 = calm face, 1..3 = lines run on the
+    screen (it works). glass: a magnifier in the right hand (the supervisor). alert: "!" eyes."""
+    w, h = 27 if glass else 22, 26
+    s = Spr(w, h)
+    s.rect(10, 0, 10, 2, DGREY); s.put(10, 0, BLUE)                      # antenna
+    s.rect(3, 3, 17, 13, LGREY); s.rect(4, 4, 16, 12, NAVY)              # head = screen
+    if work:
+        for i, (y, ln) in enumerate(((6, 8), (8, 5), (10, 9))):
+            k = (ln + work * 3 + i * 2) % 10
+            s.rect(6, y, 6 + max(2, k), y, BLUE if i != 1 else GREEN)
+    elif blink:
+        s.rect(7, 8, 8, 8, BLUE); s.rect(12, 8, 13, 8, BLUE)
+    elif alert:
+        for ex in (7, 13):
+            s.rect(ex, 6, ex, 8, WHITE); s.put(ex, 10, WHITE)
+    else:
+        s.rect(7, 7, 8, 9, BLUE); s.rect(12, 7, 13, 9, BLUE)
+        s.rect(9, 11, 11, 11, BLUE)
+    s.rect(9, 14, 11, 14, DGREY)                                         # neck
+    s.rect(5, 15, 15, 22, WHITE); s.rect(5, 15, 15, 15, LGREY)           # body
+    s.rect(8, 17, 12, 19, LGREY); s.put(10, 18, BLUE)                    # chest light
+    s.rect(3, 16, 4, 20, LGREY)                                          # left arm
+    if glass:
+        s.rect(16, 16, 18, 17, LGREY); s.rect(19, 15, 19, 17, DGREY)       # arm and handle
+        s.a[mask_circle(w, h, 22.0, 11.5, 4.2)] = DGREY
+        s.a[mask_circle(w, h, 22.0, 11.5, 3.0)] = BLUE
+        s.put(21, 10, WHITE); s.put(20, 11, WHITE)
+    else:
+        s.rect(16, 16, 17, 20, LGREY)
+    s.rect(6, 23, 8, 25, DGREY); s.rect(12, 23, 14, 25, DGREY)           # legs
+    outline(s, BLACK)
+    return s
+
+
+def supervisor(blink=False, alert=False):
+    """Supervisor: the agent with a magnifier. It reads the files and answers yes or no."""
+    return agent(blink=blink, glass=True, alert=alert)
+
+
+def lock(open_=False):
+    """Padlock 11x14: closed (data not shown yet) or open (the shackle lifts and turns)."""
+    s = Spr(11, 14)
+    s.rect(0, 6, 10, 13, DGREY); s.rect(1, 7, 9, 12, LGREY)
+    s.rect(5, 9, 5, 11, BLACK)
+    if open_:
+        s.rect(2, 0, 2, 5, DGREY); s.rect(3, 0, 7, 0, DGREY); s.rect(8, 0, 8, 2, DGREY)
+    else:
+        s.rect(2, 2, 2, 5, DGREY); s.rect(3, 1, 7, 1, DGREY); s.rect(8, 2, 8, 5, DGREY)
+    outline(s, BLACK)
+    return s
+
+
+def deck():
+    """Slide with a bar chart, 17x12 (the deck of /designer)."""
+    s = Spr(17, 12)
+    s.rect(0, 0, 16, 11, WHITE); s.rect(0, 0, 16, 1, NAVY)
+    for i, hh in enumerate((3, 5, 7, 4)):
+        s.rect(3 + 3 * i, 10 - hh, 4 + 3 * i, 10, BLUE if i != 2 else LAV)
     outline(s, BLACK)
     return s

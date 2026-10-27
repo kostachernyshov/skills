@@ -34,7 +34,8 @@ def upscale(arr, scale=SCALE, scan=None):
 
 class Timeline:
     def __init__(self, scenes, fade=FADE, fps=FPS, fade_col=PAPER):
-        """scenes: [(start, end, fn(t_local) -> PIL.Image RGB 480x270)]."""
+        """scenes: [(start, end, fn(t_local) -> PIL.Image RGB 480x270, fade=True)].
+        fade=False: no dissolve into this scene (a continuous shot, for example a camera move)."""
         self.scenes = scenes
         self.fade = fade
         self.fps = fps
@@ -46,13 +47,17 @@ class Timeline:
 
     def frame(self, T):
         last_end = self.scenes[-1][1]
-        for (a, b, fn) in self.scenes:
+        for i, sc in enumerate(self.scenes):
+            a, b, fn = sc[:3]
             if a <= T < b or (b == last_end and T >= a):
                 arr = np.array(fn(T - a))
+                fade_in = sc[3] if len(sc) > 3 else True
+                nxt = self.scenes[i + 1] if i + 1 < len(self.scenes) else None
+                fade_out = nxt is not None and (nxt[3] if len(nxt) > 3 else True)
                 fade = 0.0
-                if T - a < self.fade and a > 0:
+                if T - a < self.fade and a > 0 and fade_in:
                     fade = 1 - (T - a) / self.fade
-                if b - T < self.fade and b != last_end:
+                if b - T < self.fade and b != last_end and fade_out:
                     fade = max(fade, 1 - (b - T) / self.fade)
                 return dither_to(arr, fade, self.fade_col)
         return np.full((H, W, 3), C(self.fade_col), np.uint8)
