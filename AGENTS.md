@@ -1,10 +1,16 @@
-# AGENTS.md
+# skills
+
+Workspace rules live in `../AGENTS.md` when this repo sits in the owner's projects workspace; read it first there. A clone outside the workspace has no such file, and this file is complete on its own. It states only what is specific to this project.
 
 Rules for agents (Claude Code, Codex) that work in this repository. Claude Code and Codex read this file from the root. Do not add `CLAUDE.md` at the root: the root is also the plugin root, and `claude plugin validate . --strict` fails on it.
 
-## What this repository is
+## Goal
 
 A plugin for Claude Code and Codex: `kostachernyshov-skills`. Its skills take a bioinformatics project from the question of a client to a decision and a signed release. The users are heads of bioinformatics, bioinformaticians, and the wet-lab and clinical researchers who work with them.
+
+## Kind
+
+Repo
 
 ## Layout
 
@@ -43,7 +49,9 @@ docs/
 
 The only code is in `tests/harness/`, `skills/project/curator/scripts/curate.py` (builds the State section of the `CLAUDE.md` of a user project), and `skills/in-progress/animate/scripts/`.
 
-## Commands
+## Project rules
+
+### Commands
 
 - Validate the plugin: `claude plugin validate . --strict`. Run it before each commit that changes skills or manifests.
 - Unit tests of the harness: `python3 tests/harness/test_harness.py`. One test: `python3 -m unittest tests/harness/test_harness.py -k <name>`.
@@ -55,13 +63,13 @@ The only code is in `tests/harness/`, `skills/project/curator/scripts/curate.py`
 
 A full test round costs about 60 M tokens. Use the smallest test that can show the failure. Write the budget in the results file before the start.
 
-## Communication
+### Communication
 
 - In chat, use ASD-STE100 Simplified Technical English at 80% strictness. Write in the language of the person.
 - In documentation, `SKILL.md` files, and other files, use ASD-STE100 at 100% strictness: short sentences, active voice, one instruction per sentence. Write files in English.
 - For a large or complex concept, prefer an ASCII diagram. For a simple thing, use plain text.
 
-## Scope
+### Scope
 
 In scope:
 - The path from a question to a decision on processed tabular data.
@@ -75,7 +83,7 @@ Out of scope:
 
 Use only public data (TCGA, GEO, GTEx, and similar) in tests and examples. Do not ask for private data or data under NDA.
 
-## Skills
+### Skills
 
 There are two types of skill:
 
@@ -92,7 +100,7 @@ Rules for each skill:
 - Write a dependency as: Call the Skill tool with "<name>". Do not link to files of another skill.
 - Use the words of the glossary below in the same meaning.
 
-## Add or change a skill
+### Add or change a skill
 
 1. Find a failure in a real project or in a test in `tests/`. Do not add a skill without a seen failure.
 2. Write the failure as an issue (see "Issues").
@@ -107,7 +115,7 @@ Rules for each skill:
 
 Pull requests that add checks to `skills/analysis/checker/CHECKS.md` or scenarios to `tests/` are welcome.
 
-## Issues
+### Issues
 
 - One issue is one failure or one idea.
 - Title: `<skill>: <failure>`.
@@ -116,13 +124,13 @@ Pull requests that add checks to `skills/analysis/checker/CHECKS.md` or scenario
 - Close a rejected idea as "not planned", with the label `out-of-scope` and the reason.
 - An agent creates issues by itself only after a test round. At other times, it creates an issue only when the person asks.
 
-## Release
+### Release
 
 - Record each change in `CHANGELOG.md`. Each version starts with "What changes for you", then "Changes".
 - For each release, increase `version` in `.claude-plugin/plugin.json` to match `CHANGELOG.md`. Users get an update only when the version changes.
 - Before a release of a version, run a full test round with 2 replicates for each scenario.
 
-## Glossary
+### Glossary
 
 | Word | Meaning |
 |---|---|
@@ -150,3 +158,15 @@ Pull requests that add checks to `skills/analysis/checker/CHECKS.md` or scenario
 | State | The block in `CLAUDE.md` that says where the work is now. The curator script builds it from `run.yaml`. |
 | Person | The line `Person: <name>, <role>` in `CLAUDE.md`. The only source of the name in `Confirmed`, `plan accepted by`, and `signed`. Never an e-mail address. |
 | responsibility points | The three steps where the person acts: grilling answers, plan approval, release signature. |
+
+## Agent skills
+
+This repo has no own `docs/agents/` yet.
+
+### Issue tracker
+
+GitHub Issues on the `origin` repo, as the Issues section above says (through `gh`). The workspace issue tracker (local Markdown in `.scratch/`) does not apply here, so the repo has no `.scratch/`.
+
+### Triage labels and domain docs
+
+The shared workspace files `../docs/agents/triage-labels.md` and `../docs/agents/domain.md`. The issue labels of this repo are the ones in the Issues section. Domain terms: the Glossary section above.
